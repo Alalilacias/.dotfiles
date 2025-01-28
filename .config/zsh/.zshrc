@@ -14,12 +14,9 @@ if [ -d "$HOME/.dotfiles/zsh/plugins/zsh-autosuggestions" ]; then
 fi
 
 # Set up aliases
-alias ll="ls -la"
-alias vim="nvim"
-alias gs="git status"
-alias ga="git add"
-alias gc="git commit"
-alias gp="git push"
+if [ -f ~/.dotfiles/.config/zsh/aliases ]; then
+    source ~/.dotfiles/.config/zsh/aliases
+fi
 
 # Set up functions
 function mkcd() {

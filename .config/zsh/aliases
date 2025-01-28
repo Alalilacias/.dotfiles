@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+#
+# Author: Alalilacias
+# Description: Creates custom aliases in .zshrc when invoked.
+# Syntax: source aliases
+# Version: 0.1
+# Ref: https://github.com/Phantas0s/.dotfiles/blob/master/aliases/aliases && https://thevaluable.dev/zsh-install-configure-mouseless/
+# Manpages ref: https://man7.org/linux/man-pages/index.html
+
+# Apt
+alias apti='sudo apt install'
+alias aptu='sudo apt update'
+alias aptU='sudo apt upgrade'
+alias aptuu='sudo apt update && sudo apt upgrade'
+# Don't judge me for not being a coward. I saw the opportunity and I took it.
+# Would normally be apturu following my previous logic, but I was listening to
+# Synthwave as I set this up, and the song screamed it, so ifelt obligated.
+alias aptuwu='sudo apt update && sudo apt upgrade && sudo apt autoremove'
+
+# Change Directory
+alias cdl='cd "$1" && ll'
+
+# Copy
+alias cp='cp -iv'
+
+# Dotfiles, and important locations
+alias dotfiles='cd ~/.dotfiles'
+alias dotconfig='cd ~/.dotfiles/.config'
+alias dotbin='cd ~/.dotfiles/bin'
+
+# Git
+alias ga='git add'
+alias gaa='git add .'
+alias gaf='git add -f'
+alias gb='git branch'
+alias gbr='git branch -r'
+alias gc='git commit'
+alias gco='git checkout'
+alias gp='git push'
+alias gplo='git pull origin'
+alias gpo='git push origin'
+alias gr='git remote'
+alias gro='git remote origin'
+alias grs='git remote show'
+alias gs='git status'
+alias gsi='git status --ignored'
+
+# List
+alias ll='ls -laAhF --group-directories-first'
+alias lls='ls -lahFtr'
+
+# Move/Rename
+alias mv='mv -iv'
+
+# Make Directory
+alias mkdir='mkdir -pv'
+
+# Nvim
+alias vim='nvim'
+alias vi='nvim'
+
+# Remove
+alias rm='rm -iv'
