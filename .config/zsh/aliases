@@ -14,7 +14,7 @@ alias aptU='sudo apt upgrade'
 alias aptuu='sudo apt update && sudo apt upgrade'
 # Don't judge me for not being a coward. I saw the opportunity and I took it.
 # Would normally be apturu following my previous logic, but I was listening to
-# Synthwave as I set this up, and the song screamed it, so ifelt obligated.
+# Synthwave as I set this up, and the song screamed it, so i felt obligated.
 alias aptuwu='sudo apt update && sudo apt upgrade && sudo apt autoremove'
 
 # Change Directory
@@ -27,6 +27,8 @@ alias cp='cp -iv'
 alias dotfiles='cd ~/.dotfiles'
 alias dotconfig='cd ~/.dotfiles/.config'
 alias dotbin='cd ~/.dotfiles/bin'
+# Felt cute, might delete later. Ja, I have found changing to this directory too often these days. Might delete when it's less necessary.
+alias zshfiles='cd ~/.dotfiles/.config/zsh'
 
 # Git
 alias ga='git add'
@@ -61,3 +63,11 @@ alias vi='nvim'
 
 # Remove
 alias rm='rm -iv'
+
+# XDG-related (I am currently still fairly ignorant on what XDG is. Until I learn enough to feel confident, it'll remain "-related" to avoid possible confusions)
+alias open='xdg-open'
+alias oc='xdg-open .'
+
+# Zsh
+# If anyone wants to suggest a better abbreviation, I'll appreciate it a lot.
+alias nalias='nvim ~/.dotfiles/config/zsh/aliases'

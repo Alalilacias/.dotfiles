@@ -1,8 +1,3 @@
-# Source system theme (e.g., from .bashrc)
-if [ -f "$HOME/.bashrc" ]; then
-    source "$HOME/.bashrc"
-fi
-
 # Enable syntax highlighting
 if [ -d "$HOME/.dotfiles/zsh/plugins/zsh-syntax-highlighting" ]; then
     source "$HOME/.dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
