@@ -70,4 +70,4 @@ alias oc='xdg-open .'
 
 # Zsh
 # If anyone wants to suggest a better abbreviation, I'll appreciate it a lot.
-alias nalias='nvim ~/.dotfiles/config/zsh/aliases'
+alias nalias='nvim ~/.dotfiles/.config/zsh/aliases'
