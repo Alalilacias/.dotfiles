@@ -15,7 +15,8 @@ alias aptuu='sudo apt update && sudo apt upgrade'
 # Don't judge me for not being a coward. I saw the opportunity and I took it.
 # Would normally be apturu following my previous logic, but I was listening to
 # Synthwave as I set this up, and the song screamed it, so i felt obligated.
-alias aptuwu='sudo apt update && sudo apt upgrade && sudo apt autoremove'
+# Ended up upgrading it, so now aptuwu is more than ever before.
+alias aptuwu='sudo apt update && sudo apt upgrade && sudo apt autoremove && flatpak update && flatpak uninstall --unused && flatpak repair'
 
 # Change Directory
 alias cdl='cd "$1" && ll'
