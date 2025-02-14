@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#
+# Author: Alalilacias
+# Description: Creates custom functions in .zshrc when invoked.
+# Syntax: source pfunctions
+# Version: 0.1
+
+# Makes all cd calls use the ll alias to lists files below the directory we moved to the way I like it.
+function cdl () {
+    cd "$@" && ll
+}
