@@ -18,9 +18,6 @@ alias aptuu='sudo apt update && sudo apt upgrade'
 # Ended up upgrading it, so now aptuwu is more than ever before.
 alias aptuwu='sudo apt update && sudo apt upgrade && sudo apt autoremove && flatpak update && flatpak uninstall --unused && flatpak repair'
 
-# Change Directory
-alias cdl='cd "$1" && ll'
-
 # Copy
 alias cp='cp -iv'
 

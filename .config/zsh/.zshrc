@@ -13,6 +13,11 @@ if [ -f ~/.dotfiles/.config/zsh/aliases ]; then
     source ~/.dotfiles/.config/zsh/aliases
 fi
 
+# Set up functions. Due to my personal ignorance but thanks to the basic intellisense from nvim, it seems functions is a keyword, so pfunctions is the chosen answer. It stands for personal functions, as cfunctions for custom functions seemed improper due to possible confusion with the aclaimed language.
+if [ -f ~/.dotfiles/.config/zsh/pfunctions ]; then
+    source ~/.dotfiles/.config/zsh/pfunctions
+fi
+
 # Set up functions
 function mkcd() {
     mkdir -p "$1" && cd "$1"
