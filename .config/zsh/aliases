@@ -65,6 +65,26 @@ alias vi='nvim'
 # Remove
 alias rm='rm -iv'
 
+# Studies
+# These are to be constantly adapted to the current needs
+
+alias studies='cd Documents/Studies'
+alias law='cd Documents/Studies/Law'
+alias lawc='cd Documents/Studies/Law/2024-2025/semester_two'
+alias ciaa='cd Documents/Studies/Law/2024-2025/semester_two/ciaa'
+alias ciaac='cd Documents/Studies/Law/2024-2025/semester_two/ciaa/classes'
+alias clapl='cd Documents/Studies/Law/2024-2025/semester_two/clapl'
+alias claplc='cd Documents/Studies/Law/2024-2025/semester_two/clapl/classes'
+alias dfis='cd Documents/Studies/Law/2024-2025/semester_two/dfis'
+alias dfisfc='cd Documents/Studies/Law/2024-2025/semester_two/dfis/familia/classes'
+alias dfissc='cd Documents/Studies/Law/2024-2025/semester_two/dfis/sucessions/classes'
+alias die='cd Documents/Studies/Law/2024-2025/semester_two/die'
+alias diec='cd Documents/Studies/Law/2024-2025/semester_two/die/classes'
+alias dpi='cd Documents/Studies/Law/2024-2025/semester_two/dpi'
+alias dpic='cd Documents/Studies/Law/2024-2025/semester_two/dpi/classes'
+alias itf='cd Documents/Studies/Law/2024-2025/semester_two/itf'
+alias itfc='cd Documents/Studies/Law/2024-2025/semester_two/itf/classes'
+
 # XDG-related (I am currently still fairly ignorant on what XDG is. Until I learn enough to feel confident, it'll remain "-related" to avoid possible confusions)
 alias open='xdg-open'
 alias oc='xdg-open .'
