@@ -81,6 +81,8 @@ alias dpi='cdl ~/Documents/Studies/Law/2024-2025/semester_two/dpi'
 alias dpic='cdl ~/Documents/Studies/Law/2024-2025/semester_two/dpi/classes'
 alias itf='cdl ~/Documents/Studies/Law/2024-2025/semester_two/itf'
 alias itfc='cdl ~/Documents/Studies/Law/2024-2025/semester_two/itf/classes'
+alias doi='cdl ~/Documents/Studies/Law/2024-2025/semester_two/doi'
+alias doic='cdl ~/Documents/Studies/Law/2024-2025/semester_two/doi/classes'
 
 # XDG-related (I am currently still fairly ignorant on what XDG is. Until I learn enough to feel confident, it'll remain "-related" to avoid possible confusions)
 alias open='xdg-open'

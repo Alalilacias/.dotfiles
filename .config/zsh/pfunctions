@@ -9,3 +9,8 @@
 function cdl () {
     cd "$@" && ll
 }
+
+# Allows to create a directory and change to it. Have never used it.
+function mkcd() {
+    mkdir -p "$1" && cd "$1"
+}

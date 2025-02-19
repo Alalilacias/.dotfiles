@@ -18,11 +18,6 @@ if [ -f ~/.dotfiles/.config/zsh/pfunctions ]; then
     source ~/.dotfiles/.config/zsh/pfunctions
 fi
 
-# Set up functions
-function mkcd() {
-    mkdir -p "$1" && cd "$1"
-}
-
 # Enable history
 HISTFILE="$HOME/.dotfiles/.config/zsh/.zsh_history"
 HISTSIZE=10000
