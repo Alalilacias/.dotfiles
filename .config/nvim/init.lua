@@ -43,3 +43,5 @@ end
 vim.api.nvim_create_user_command('Shebang', WriteInitialLineCustomShebang, {})
 
 -- Automatic Shebang writting. TODO check if possible.
+
+-- 

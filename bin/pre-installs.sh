@@ -6,7 +6,7 @@
 # Version: 0.1
 
 # Array of critical apps to check. Currently limited, might expand in the future.
-CRITICAL_APPS=( "git" "kitty" )  # Corrected array definition
+CRITICAL_APPS=( "git" "kitty" "nvim" )  # Corrected array definition
 
 # Function to check if an app is installed
 is_app_installed() {
@@ -16,9 +16,22 @@ is_app_installed() {
 # Function to install an app
 install_app() {
     	# Define local app variable
-    	local app="$1"  # Corrected syntax: no spaces around =
+    	local app="$1"
     	# Notify user
     	echo "Installing $app..."
+	# Handle Neovim separately to ensure it's installed from the unstable branch
+    	if [[ "$app" == "nvim" ]]; then
+        	echo "Installing Neovim (unstable branch)..."
+        
+        	# Check if the PPA is already added
+        	if ! grep -q "neovim-ppa" /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null; then
+            	sudo add-apt-repository -y ppa:neovim-ppa/unstable
+        	fi
+        
+        	sudo apt-get update
+        	sudo apt-get install -y neovim
+        	return
+    	fi
     	# Install based on os and package manager. Adapted to personal circumstances, modify if you're outside of Debian or Debian based distros.
     	case "$(uname -s)" in
         	Linux)
