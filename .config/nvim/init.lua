@@ -17,31 +17,12 @@
 -- - $ nvim --startuptime /dev/stdout +qall, for printing to console.
 -- - Ref: https://stackoverflow.com/questions/1687799/profiling-vim-startup-time
 
+--------------------------------------------------
+--
+--------------------------------------------------
+
 -- TODO finish.
 
---------------------------------------------------
--- 2. Bash Support
---------------------------------------------------
-
--- Custom 'shebang' command.
-
-local function WriteInitialLineCustomShebang()
-	-- Define template for custom Shebang, customize at will.
-	local shebang_template = [[
-#!/usr/bin/env bash
-#
-# Author: Alalilacias
-# Description: 
-# Syntax:
-# Version: 
-]]
-		
-	-- Sets the predefined template string array, split separated by an indent.
-	vim.api.nvim_buf_set_lines(0, 0, 0, false, vim.split(shebang_template, "\n"))
-end
-
-vim.api.nvim_create_user_command('Shebang', WriteInitialLineCustomShebang, {})
-
--- Automatic Shebang writting. TODO check if possible.
-
--- 
+require("config.lazy")
+require('config.options')
+require('config.commands.shebang')

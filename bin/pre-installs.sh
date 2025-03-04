@@ -6,7 +6,7 @@
 # Version: 0.1
 
 # Array of critical apps to check. Currently limited, might expand in the future.
-CRITICAL_APPS=( "git" "kitty" "nvim" )  # Corrected array definition
+CRITICAL_APPS=( "git" "kitty" "nvim" "ripgrep" "build-essential")  # Corrected array definition
 
 # Function to check if an app is installed
 is_app_installed() {
