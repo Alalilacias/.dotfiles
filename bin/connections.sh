@@ -85,3 +85,24 @@ else
     echo "Error: $NVIM_CONFIG_SOURCE does not exist."
     exit 1
 fi
+
+# Fonts
+echo "Creating symlink for Nerd Fonts directory..."
+FONTS_SOURCE="$DOTFILES_DIR/.local/share/fonts"
+FONTS_TARGET="$HOME/.local/share/fonts"
+
+if [[ -d "$FONTS_SOURCE" ]]; then
+    if [[ -e "$FONTS_TARGET" || -L "$FONTS_TARGET" ]]; then
+        echo "Removing existing target: $FONTS_TARGET"
+        rm -rf "$FONTS_TARGET"
+    fi
+ 
+    ln -sf "$FONTS_SOURCE" "$FONTS_TARGET" && echo "Success!" || echo "Failed!"
+else
+    echo "Error: $FONTS_SOURCE does not exist."
+    exit 1
+fi
+
+echo "Updating font cache..."
+fc-cache -fv
+

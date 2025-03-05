@@ -3,9 +3,6 @@
 # refs:
 # - https://github.com/bitprophet/dotfiles/blob/main/.gitignore.
 
-# Ignore everything
-*
-
 # Ignore OS-specific files
 .DS_Store
 Thumbs.db
@@ -41,6 +38,7 @@ Thumbs.db
 
 # Ignore local overrides
 .custom/
+.local/
 
 # Ignore the backup directory (if created by the script)
 dotfiles-backup/

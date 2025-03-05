@@ -1,3 +1,6 @@
+# Set Font
+export TERMINAL_FONT="JetBrainsMono Nerd Font"
+
 # Enable syntax highlighting
 if [ -d "$HOME/.dotfiles/zsh/plugins/zsh-syntax-highlighting" ]; then
     source "$HOME/.dotfiles/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
