@@ -42,3 +42,6 @@ Thumbs.db
 
 # Ignore the backup directory (if created by the script)
 dotfiles-backup/
+
+# Ignore this annoying bastard who keeps getting pushed by mistake.
+.config/zsh/.zsh_history
