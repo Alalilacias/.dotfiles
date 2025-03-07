@@ -7,6 +7,10 @@ vim.opt.shiftwidth = 2           -- Spaces to use for indentation
 vim.opt.expandtab = true         -- Use spaces instead of tabs
 vim.opt.clipboard = "unnamedplus"-- Use system clipboard as default
 
+-- Completion
+vim.opt.wildmenu = true
+vim.opt.wildmode = { "longest", "list", "full" }
+
 -- Font Setting
 vim.opt.guifont = "JetBrainsMono Nerd Font:h12"
 
