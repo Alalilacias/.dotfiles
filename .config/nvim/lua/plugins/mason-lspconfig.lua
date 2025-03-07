@@ -3,11 +3,15 @@ return {
   config = function()
     require("mason-lspconfig").setup({
       ensure_installed = {
-        -- General purpose and essential LSPs
-        "clangd",         -- C, C++
-        "dprint",         -- JSON, JSONC, Markdown, Rust (and many more)
-        "glsl_analyzer",  -- OpenGL
-        "lua_ls"          -- Lua
+        "clangd",                 -- C, C++
+        "glsl_analyzer",          -- OpenGL
+        "jdtls",                  -- Java (Maven, Gradle, general Java support)
+        -- "json-lsp",               -- JSON
+        "kotlin_language_server", -- Kotlin
+        "lua_ls",                 -- Lua
+        "marksman",               -- Markdown
+        "rust_analyzer",          -- Rust
+        -- "sqlls"                   -- SQL
       }
     })
   end
