@@ -2,9 +2,13 @@ return {
   "neovim/nvim-lspconfig",
   config = function()
     local lspconfig = require("lspconfig")
+    -- Advertise nvim-cmp capabilities to LSP servers
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
     -- Servers Setup
+    -- Lua_ls
     lspconfig.lua_ls.setup {
+      capabilities = capabilities,
       settings = {
         Lua = {
           diagnostics = {
@@ -19,6 +23,46 @@ return {
         },
       }
     }
+
+    -- C, C++
+    lspconfig.clangd.setup {
+      capabilities = capabilities,
+    }
+
+    -- OpenGL
+    lspconfig.glsl_analyzer.setup {
+      capabilities = capabilities,
+    }
+
+    -- Java
+    lspconfig.jdtls.setup {
+      capabilities = capabilities,
+    }
+
+    -- JSON
+    lspconfig.jsonls.setup { -- Uncomment if you use JSON
+      capabilities = capabilities,
+    }
+
+    -- Kotlin
+    lspconfig.kotlin_language_server.setup {
+      capabilities = capabilities,
+    }
+
+    -- Markdown
+    lspconfig.marksman.setup {
+      capabilities = capabilities,
+    }
+
+    -- Rust
+    lspconfig.rust_analyzer.setup {
+      capabilities = capabilities,
+    }
+
+    -- SQL, commented out because currently not in use.
+    -- lspconfig.sqlls.setup {    -- Uncomment if you use SQL
+    --   capabilities = capabilities,
+    -- }
 
     -- Keybinding
     vim.api.nvim_create_autocmd('LspAttach', {
@@ -48,6 +92,5 @@ return {
         end, opts)
       end,
     })
-
   end
 }
