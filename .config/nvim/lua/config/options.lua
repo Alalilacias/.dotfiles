@@ -1,20 +1,6 @@
--- General Settings
-vim.opt.number = true            -- Show line numbers
-vim.opt.relativenumber = true    -- Relative line numbers
-vim.opt.wrap = false             -- Disable line wrapping
-vim.opt.tabstop = 2              -- Number of spaces for tab
-vim.opt.shiftwidth = 2           -- Spaces to use for indentation
-vim.opt.expandtab = true         -- Use spaces instead of tabs
-vim.opt.clipboard = "unnamedplus"-- Use system clipboard as default
+-- Options are automatically loaded before lazy.nvim startup
+-- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
+-- Add any additional options here
+local opt = vim.opt
 
--- Completion
-vim.opt.wildmenu = true
-vim.opt.wildmode = { "longest", "list", "full" }
-
--- Font Setting
-vim.opt.guifont = "JetBrainsMono Nerd Font:h12"
-
--- Search settings
-vim.opt.ignorecase = true        -- Ignore case while searching
-vim.opt.smartcase = true         -- Case-sensitive if uppercase letters are used
-vim.opt.hlsearch = false         -- Disable highlighting search results
+opt.wrap = true -- Enable line wrap
