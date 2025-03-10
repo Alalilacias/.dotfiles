@@ -5,58 +5,66 @@
 # Syntax: ./pre-installs.sh
 # Version: 0.1
 
-# Array of critical apps to check. Currently limited, might expand in the future.
-CRITICAL_APPS=( "git" "kitty" "nvim" "ripgrep" "build-essential" "luarocks")  # Corrected array definition
+# Associative array of critical apps to check. The structure is as follows: ["package"]="executable"
+declare -A CRITICAL_APPS=(
+  ["git"]="git"
+  ["kitty"]="kitty"
+  ["nvim"]="nvim"
+  ["ripgrep"]="rg"
+  ["build-essential"]="gcc"
+  ["luarocks"]="luarocks"
+  ["fd-find"]="fdfind"
+  ["fzf"]="fzf"
+  ["lazygit"]="lazygit"
+)
 
 # Function to check if an app is installed
 is_app_installed() {
-    	command -v "$1" &> /dev/null
+  local package="$1"
+  local executable="${CRITICAL_APPS[$package]}"
+  command -v "$executable" &>/dev/null
 }
 
 # Function to install an app
 install_app() {
-    	# Define local app variable
-    	local app="$1"
-    	# Notify user
-    	echo "Installing $app..."
-	# Handle Neovim separately to ensure it's installed from the unstable branch
-    	if [[ "$app" == "nvim" ]]; then
-        	echo "Installing Neovim (unstable branch)..."
-        
-        	# Check if the PPA is already added
-        	if ! grep -q "neovim-ppa" /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null; then
-            	sudo add-apt-repository -y ppa:neovim-ppa/unstable
-        	fi
-        
-        	sudo apt-get update
-        	sudo apt-get install -y neovim
-        	return
-    	fi
-    	# Install based on os and package manager. Adapted to personal circumstances, modify if you're outside of Debian or Debian based distros.
-    	case "$(uname -s)" in
-        	Linux)
-            		if command -v apt-get &> /dev/null; then
-                		sudo apt-get update
-                		sudo apt-get install -y "$app"
-            		else
-                		echo "Unsupported package manager. Please install $app manually."
-                		exit 1
-            		fi
-            		;;
-        	*)
-            		echo "Unsupported operating system. Please install $app manually."
-            		exit 1
-            		;;
-    	esac
+  local package="$1"
+  echo "Installing $package..."
+
+  case "$package" in
+  "nvim")
+    echo "Installing Neovim (unstable branch)..."
+    if ! grep -q "neovim-ppa" /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null; then
+      sudo add-apt-repository -y ppa:neovim-ppa/unstable
+    fi
+    sudo apt-get update
+    sudo apt-get install -y neovim
+    ;;
+  "lazygit")
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+    tar xf lazygit.tar.gz lazygit
+    sudo install lazygit -D -t /usr/local/bin/
+    rm lazygit.tar.gz lazygit
+    ;;
+  *)
+    if command -v apt-get &>/dev/null; then
+      sudo apt-get update
+      sudo apt-get install -y "$package"
+    else
+      echo "Unsupported package manager. Please install $package manually."
+      exit 1
+    fi
+    ;;
+  esac
 }
 
 # Loop through critical apps array, check if installed, install if not.
-for app in "${CRITICAL_APPS[@]}"; do
-    	if is_app_installed "$app"; then
-        	echo "$app is already installed."
-    	else
-        	install_app "$app"
-    	fi
+for package in "${!CRITICAL_APPS[@]}"; do
+  if is_app_installed "$package"; then
+    echo "${CRITICAL_APPS[$package]} is already installed."
+  else
+    install_app "$package"
+  fi
 done
 
 # Notify user of script termination

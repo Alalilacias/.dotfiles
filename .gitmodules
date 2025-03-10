@@ -1,6 +1,14 @@
 [submodule "submodules/xdg-ninja"]
-	path = submodules/xdg-ninja
-	url = https://github.com/b3nj5m1n/xdg-ninja.git
-[submodule "/home/alalin/.dotfiles/submodules/yq"]
-	path = /home/alalin/.dotfiles/submodules/yq
-	url = https://github.com/mikefarah/yq.git
+    path = submodules/xdg-ninja
+    url = https://github.com/b3nj5m1n/xdg-ninja.git
+
+[submodule "submodules/yq"]
+    path = submodules/yq
+    url = https://github.com/mikefarah/yq.git
+
+[submodule "submodules/fast-syntax-highlighting"]
+	path = submodules/fast-syntax-highlighting
+	url = https://github.com/zdharma-continuum/fast-syntax-highlighting.git
+[submodule ".config/zsh/submodules/zsh-autocomplete"]
+	path = .config/zsh/submodules/zsh-autocomplete
+	url = https://github.com/marlonrichert/zsh-autocomplete.git

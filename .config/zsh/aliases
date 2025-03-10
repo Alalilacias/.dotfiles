@@ -49,6 +49,15 @@ alias gsi='git status --ignored'
 alias finddivers='ps aux | grep helldivers2.exe'
 alias killdivers='pkill -f helldivers2.exe'
 
+# Lazy
+alias lazy='cdl ~/.dotfiles/.config/nvim'
+alias lazyconfig='lazy && cdl lua/config'
+alias lazyplugins='lazy && cdl lua/plugins'
+alias lazypcommands='lazyconfig && cdl commands'
+alias lazycommands='lazyconfig && nvim autocmds.lua'
+alias lazykeymaps='lazyconfig && nvim keymaps.lua'
+alias lazyoptions='lazyconfig && nvim options.lua'
+
 # List
 alias ll='ls -laAhF --group-directories-first'
 alias lls='ls -lahFtr'
