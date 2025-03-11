@@ -1,7 +1,6 @@
 [submodule "submodules/xdg-ninja"]
     path = submodules/xdg-ninja
     url = https://github.com/b3nj5m1n/xdg-ninja.git
-
 [submodule "submodules/yq"]
     path = submodules/yq
     url = https://github.com/mikefarah/yq.git
@@ -12,3 +11,6 @@
 [submodule ".config/zsh/submodules/zsh-autocomplete"]
 	path = .config/zsh/submodules/zsh-autocomplete
 	url = https://github.com/marlonrichert/zsh-autocomplete.git
+[submodule "submodules/zsh-nvm"]
+	path = submodules/zsh-nvm
+	url = https://github.com/lukechilds/zsh-nvm.git

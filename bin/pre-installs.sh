@@ -3,9 +3,9 @@
 # Author: Alalilacias
 # Description: Installs apps critical for the functioning of the entire ecosystem. Unlikely to be used.
 # Syntax: ./pre-installs.sh
-# Version: 0.1
+# Version: 0.3
 
-# Associative array of critical apps to check. The structure is as follows: ["package"]="executable"
+# Associative array of critical apps to check
 declare -A CRITICAL_APPS=(
   ["git"]="git"
   ["kitty"]="kitty"
@@ -16,6 +16,7 @@ declare -A CRITICAL_APPS=(
   ["fd-find"]="fdfind"
   ["fzf"]="fzf"
   ["lazygit"]="lazygit"
+  ["node"]="node"
 )
 
 # Function to check if an app is installed
@@ -39,13 +40,35 @@ install_app() {
     sudo apt-get update
     sudo apt-get install -y neovim
     ;;
+
   "lazygit")
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
     curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
     tar xf lazygit.tar.gz lazygit
     sudo install lazygit -D -t /usr/local/bin/
     rm lazygit.tar.gz lazygit
     ;;
+
+  "node")
+    if [ -d "$HOME/.dotfiles/submodules/zsh-nvm" ]; then
+      source "$HOME/.dotfiles/submodules/zsh-nvm/zsh-nvm.plugin.zsh"
+    else
+      echo "zsh-nvm plugin not found"
+      exit 1
+    fi
+
+    if is_app_installed "nvm"; then
+      echo "Installing latest Node.js LTS via NVM..."
+      nvm install --lts
+      nvm use --lts
+      nvm alias default lts/*
+
+      echo "Node.js installation complete."
+    else
+      echo "zsh-nvm plugin not found, please install it."
+    fi
+    ;;
+
   *)
     if command -v apt-get &>/dev/null; then
       sudo apt-get update

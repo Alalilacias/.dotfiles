@@ -38,3 +38,7 @@ if [ -n "$PS1" ]; then
     setopt prompt_subst
     PS1='%B%F{green}%n@%m%f %F{blue}%~%f%F{red}${vcs_info_msg_0_}%f%b %# '
 fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

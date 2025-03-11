@@ -18,6 +18,27 @@ require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+    -- Extras can be added here, source: https://github.com/LazyVim/LazyVim/discussions/1674
+    -- AI
+    { import = "lazyvim.plugins.extras.ai.copilot" },
+    { import = "lazyvim.plugins.extras.ai.copilot-chat" },
+
+    -- DAP
+    { import = "lazyvim.plugins.extras.dap.core" },
+    { import = "lazyvim.plugins.extras.dap.nlua" },
+
+    -- Languages
+    { import = "lazyvim.plugins.extras.lang.clangd" }, -- For C, C++
+    { import = "lazyvim.plugins.extras.lang.docker" }, -- For Dockerfile support
+    { import = "lazyvim.plugins.extras.lang.git" }, -- For Git support
+    { import = "lazyvim.plugins.extras.lang.java" }, -- For Java support
+    -- { import = "lazyvim.plugins.extras.lang.json" }, -- For JSON, JSON5, JSONC
+    { import = "lazyvim.plugins.extras.lang.kotlin" }, -- For Kotlin support
+    { import = "lazyvim.plugins.extras.lang.markdown" }, -- For Markdown syntax highlighting and editing
+    { import = "lazyvim.plugins.extras.lang.rust" }, -- For Rust support
+    { import = "lazyvim.plugins.extras.lang.sql" }, -- For SQL support
+    { import = "lazyvim.plugins.extras.lang.yaml" }, -- For YAML support
+
     -- import/override with your plugins
     { import = "plugins" },
   },
@@ -30,7 +51,7 @@ require("lazy").setup({
     version = false, -- always use the latest git commit
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
-  install = { colorscheme = { "tokyonight", "habamax" } },
+  install = { colorscheme = { "everforest" } },
   checker = {
     enabled = true, -- check for plugin updates periodically
     notify = false, -- notify on update
