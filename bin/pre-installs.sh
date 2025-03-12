@@ -8,7 +8,6 @@
 # Associative array of critical apps to check
 declare -A CRITICAL_APPS=(
   ["git"]="git"
-  ["kitty"]="kitty"
   ["nvim"]="nvim"
   ["ripgrep"]="rg"
   ["build-essential"]="gcc"

@@ -3,7 +3,7 @@
 # Author: Alalilacias
 # Description: Creates all connections necessary for the system to use the configurations set in this directory
 # Syntax: ./connections.sh
-# Version: 0.2
+# Version: 0.3
 
 echo "Creating symlinks and giving permissions to necessary files"
 
@@ -19,54 +19,47 @@ DOTFILES_SUBMODULES="$DOTFILES_DIR/submodules"
 # echo "DOTFILES_BIN: $DOTFILES_BIN"
 # echo "DOTFILES_CONFIG: $DOTFILES_CONFIG"
 
+# Ensure bin directory exists
+if [[ ! -d "$DOTFILES_BIN" ]]; then
+  echo "Error: $DOTFILES_BIN does not exist."
+  exit 1
+fi
+
 # Make necessary scripts executable
 echo "Making yq executable..."
 if [[ -f "$DOTFILES_BIN/yq" ]]; then
-    chmod +x "$DOTFILES_BIN/yq" && echo "Success!" || echo "Failed!"
+  chmod +x "$DOTFILES_BIN/yq" && echo "Success!" || echo "Failed!"
 else
-    echo "Error: $DOTFILES_BIN/yq does not exist."
-    exit 1
+  echo "Error: $DOTFILES_BIN/yq does not exist."
+  exit 1
 fi
 
 # Symlink necessary folders
 echo "Creating symlink for xdg-ninja..."
-ln -sf "$DOTFILES_SUBMODULES/xdg-ninja/xdg-ninja.sh" "$DOTFILES_BIN/xdg-ninja"
-if [[ ! -L "$DOTFILES_BIN/xdg-ninja" ]]; then
+if [[ -f "$DOTFILES_SUBMODULES/xdg-ninja/xdg-ninja.sh" ]]; then
+  ln -sf "$DOTFILES_SUBMODULES/xdg-ninja/xdg-ninja.sh" "$DOTFILES_BIN/xdg-ninja"
+  if [[ ! -L "$DOTFILES_BIN/xdg-ninja" ]]; then
     echo "Error: Failed to create symlink for xdg-ninja"
     exit 1
+  fi
+else
+  echo "Error: $DOTFILES_SUBMODULES/xdg-ninja/xdg-ninja.sh does not exist."
+  exit 1
 fi
 
 # Zsh
 echo "Creating symlink for .zshenv..."
 ln -sf "$DOTFILES_CONFIG/zsh/.zshenv" "$HOME/.zshenv"
 if [[ ! -L "$HOME/.zshenv" ]]; then
-    echo "Error: Failed to create symlink for .zshenv"
-    exit 1
+  echo "Error: Failed to create symlink for .zshenv"
+  exit 1
 fi
 
 echo "Creating symlink for .zshrc..."
 ln -sf "$DOTFILES_CONFIG/zsh/.zshrc" "$HOME/.zshrc"
 if [[ ! -L "$HOME/.zshrc" ]]; then
-    echo "Error: Failed to create symlink for .zshrc"
-    exit 1
-fi
-
-# Testing out different ways to configure the code. Might refactor later.
-# Kitty
-echo "Creating symlink for Kitty configuration..."
-KITTY_CONFIG_SOURCE="$DOTFILES_CONFIG/kitty"
-KITTY_CONFIG_TARGET="$HOME/.config/kitty"
-if [[ -d "$KITTY_CONFIG_SOURCE" ]]; then
-    # Remove the target directory if it exists
-    if [[ -e "$KITTY_CONFIG_TARGET" ]]; then
-        echo "Removing existing target directory: $KITTY_CONFIG_TARGET"
-        rm -rf "$KITTY_CONFIG_TARGET"
-    fi
-    # Create the symlink
-    ln -sf "$KITTY_CONFIG_SOURCE" "$KITTY_CONFIG_TARGET" && echo "Success!" || echo "Failed!"
-else
-    echo "Error: $KITTY_CONFIG_SOURCE does not exist."
-    exit 1
+  echo "Error: Failed to create symlink for .zshrc"
+  exit 1
 fi
 
 # Neovim
@@ -74,16 +67,16 @@ echo "Creating symlink for Neovim configuration..."
 NVIM_CONFIG_SOURCE="$DOTFILES_CONFIG/nvim"
 NVIM_CONFIG_TARGET="$HOME/.config/nvim"
 if [[ -d "$NVIM_CONFIG_SOURCE" ]]; then
-    # Remove the target directory if it exists
-    if [[ -e "$NVIM_CONFIG_TARGET" ]]; then
-        echo "Removing existing target directory: $NVIM_CONFIG_TARGET"
-        rm -rf "$NVIM_CONFIG_TARGET"
-    fi
-    # Create the symlink
-    ln -sf "$NVIM_CONFIG_SOURCE" "$NVIM_CONFIG_TARGET" && echo "Success!" || echo "Failed!"
+  # Remove the target directory if it exists
+  if [[ -e "$NVIM_CONFIG_TARGET" ]]; then
+    echo "Removing existing target directory: $NVIM_CONFIG_TARGET"
+    rm -rf "$NVIM_CONFIG_TARGET"
+  fi
+  # Create the symlink
+  ln -sf "$NVIM_CONFIG_SOURCE" "$NVIM_CONFIG_TARGET" && echo "Success!" || echo "Failed!"
 else
-    echo "Error: $NVIM_CONFIG_SOURCE does not exist."
-    exit 1
+  echo "Error: $NVIM_CONFIG_SOURCE does not exist."
+  exit 1
 fi
 
 # Fonts
@@ -92,17 +85,20 @@ FONTS_SOURCE="$DOTFILES_DIR/.local/share/fonts"
 FONTS_TARGET="$HOME/.local/share/fonts"
 
 if [[ -d "$FONTS_SOURCE" ]]; then
-    if [[ -e "$FONTS_TARGET" || -L "$FONTS_TARGET" ]]; then
-        echo "Removing existing target: $FONTS_TARGET"
-        rm -rf "$FONTS_TARGET"
-    fi
- 
-    ln -sf "$FONTS_SOURCE" "$FONTS_TARGET" && echo "Success!" || echo "Failed!"
+  # Avoid overwriting the fonts directory if it's not empty
+  if [[ -e "$FONTS_TARGET" || -L "$FONTS_TARGET" ]]; then
+    echo "Removing existing target: $FONTS_TARGET"
+    rm -rf "$FONTS_TARGET"
+  fi
+
+  ln -sf "$FONTS_SOURCE" "$FONTS_TARGET" && echo "Success!" || echo "Failed!"
 else
-    echo "Error: $FONTS_SOURCE does not exist."
-    exit 1
+  echo "Error: $FONTS_SOURCE does not exist."
+  exit 1
 fi
 
 echo "Updating font cache..."
-fc-cache -fv
-
+fc-cache -fv || {
+  echo "Failed to update font cache"
+  exit 1
+}
