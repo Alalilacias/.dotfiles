@@ -3,8 +3,8 @@
 local function WriteInitialLineCustomShebang()
   -- Define template for custom Shebang, customize at will.
   local shebang_template = [[
-#!/usr/bin/envbash
-## Author: Alalilacias
+#!/usr/bin/env bash
+# Author: Alalilacias
 # Description: 
 # Syntax:
 # Version: 

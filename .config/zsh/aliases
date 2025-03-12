@@ -75,6 +75,9 @@ alias vi='nvim'
 # Remove
 alias rm='rm -iv'
 
+# Secret aliases
+source "$HOME/.dotfiles/.config/zsh/aliases.secrets"
+
 # Steam
 alias killsteam='pkill -f steam'
 alias shutsteam='steam --shutdown'

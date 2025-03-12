@@ -24,6 +24,7 @@ Thumbs.db
 # Ignore sensitive files
 .env
 .secrets
+*.secrets
 *.key
 *.pem
 
