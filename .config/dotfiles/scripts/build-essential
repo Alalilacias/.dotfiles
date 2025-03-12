@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs build-essential package
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/build-essential"
+# Version: 0.1
+
+echo "build-essential not found, installing..."
+if command -v apt &>/dev/null; then
+  sudo apt update
+  sudo apt install -y build-essential
+else
+  echo "Package manager not supported"
+fi

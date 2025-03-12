@@ -38,4 +38,3 @@
 | BREAKING CHANGE      | Introduces breaking changes |
 | Fixes #<issue_number>| References an issue that is fixed |
 | Closes #<issue_number>| Closes the referenced issue |
-

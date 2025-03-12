@@ -1,0 +1,56 @@
+{
+  "essential_packs": [
+    {
+      "package": "git",
+      "executable": "git",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/git"
+    },
+    {
+      "package": "build-essential",
+      "executable": "gcc",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/build-essential"
+    }
+  ],
+  "optional_packs": [
+    {
+      "package": "kitty",
+      "executable": "kitty",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/kitty"
+    },
+    {
+      "package": "nvim",
+      "executable": "nvim",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/nvim"
+    },
+    {
+      "package": "ripgrep",
+      "executable": "rg",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/ripgrep"
+    },
+    {
+      "package": "luarocks",
+      "executable": "luarocks",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/luarocks"
+    },
+    {
+      "package": "fd-find",
+      "executable": "fdfind",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/fd-find"
+    },
+    {
+      "package": "fzf",
+      "executable": "fzf",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/fzf"
+    },
+    {
+      "package": "lazygit",
+      "executable": "lazygit",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/lazygit"
+    },
+    {
+      "package": "node",
+      "executable": "node",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/node"
+    }
+  ]
+}

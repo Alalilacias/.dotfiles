@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs essential files for the correct working of the dotfile configuration
+# Syntax: (. ./"$HOME/.dotfiles/.config/dotfiles/essential-installs")
+# Version: 0.1
+
+# Constants
+HOME_DIR="$HOME"
+JSON_FILE="$HOME_DIR/.dotfiles/.config/dotfiles/config/install.json"
+
+# Functions
+is_app_executable() {
+  command -v "$1" &>/dev/null
+}
+
+install_package() {
+  local package=$1
+  local source_file=$2
+
+  source_file="${source_file//\{HOME_DIR\}/$HOME_DIR}"
+
+  # echo "Source file for $package: '$source_file'" # Debugging line
+
+  if [[ -n "$source_file" && -f "$source_file" ]]; then
+    source "$source_file"
+  else
+    echo "No valid source file found for $package"
+  fi
+}
+
+# Main
+if ! is_app_executable jq; then
+  source "$HOME/.dotfiles/.config/dotfiles/scripts/jq"
+fi
+
+essential_packs=$(jq -r '.essential_packs[] | .package' "$JSON_FILE")
+
+for package in $essential_packs; do
+  executable=$(jq -r ".essential_packs[] | select(.package == \"$package\") | .executable" "$JSON_FILE")
+  if ! is_app_executable "$executable"; then
+    echo "$package not found, installing..."
+    source_file=$(jq -r ".essential_packs[] | select(.package == \"$package\") | .source_file" "$JSON_FILE")
+    install_package "$package" "$source_file"
+  else
+    echo "$package is already installed"
+  fi
+done
