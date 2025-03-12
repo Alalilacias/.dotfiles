@@ -9,6 +9,16 @@
       "package": "build-essential",
       "executable": "gcc",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/build-essential"
+    },
+    {
+      "package": "zsh",
+      "executable": "zsh",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/zsh"
+    },
+    {
+      "package": "software-properties-common",
+      "executable": "add-apt-repository",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/software-properties-common"
     }
   ],
   "optional_packs": [
