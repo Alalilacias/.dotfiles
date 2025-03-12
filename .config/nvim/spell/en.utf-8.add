@@ -23,3 +23,5 @@ dotfiles
 submodules
 gitignore
 linux
+gitignored
+config

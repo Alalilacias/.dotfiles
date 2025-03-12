@@ -32,7 +32,7 @@ alias zshfiles='cdl ~/.dotfiles/.config/zsh'
 if [ -d "$HOME/.dotfiles/.config/zsh/aliases.env" ]; then
   source "$HOME/.dotfiles/.config/zsh/aliases.env"
 fi
-alias nsalias='nvim ~/.dotfiles/.config/zsh/aliases.env'
+alias nealias='nvim ~/.dotfiles/.config/zsh/aliases.env'
 
 # Git
 alias ga='git add'
