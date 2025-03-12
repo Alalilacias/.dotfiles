@@ -12,3 +12,5 @@ set -e
 (. "$HOME/.dotfiles/.config/dotfiles/essential-installs")
 (. "$HOME/.dotfiles/.config/dotfiles/connections")
 (. "$HOME/.dotfiles/.config/dotfiles/optional-installs")
+
+chsh -s $(which zsh)
