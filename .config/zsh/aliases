@@ -29,7 +29,7 @@ alias dotbin='cdl ~/.dotfiles/bin'
 alias zshfiles='cdl ~/.dotfiles/.config/zsh'
 
 # Environmentally dependant aliases
-if [ -d "$HOME/.dotfiles/.config/zsh/aliases.env" ]; then
+if [ -f "$HOME/.dotfiles/.config/zsh/aliases.env" ]; then
   source "$HOME/.dotfiles/.config/zsh/aliases.env"
 fi
 alias nealias='nvim ~/.dotfiles/.config/zsh/aliases.env'
@@ -78,7 +78,7 @@ alias vi='nvim'
 alias rm='rm -iv'
 
 # Secret aliases
-if [ -d "$HOME/.dotfiles/.config/zsh/aliases.secrets" ]; then
+if [ -f "$HOME/.dotfiles/.config/zsh/aliases.secrets" ]; then
   source "$HOME/.dotfiles/.config/zsh/aliases.secrets"
 fi
 alias nsalias='nvim ~/.dotfiles/.config/zsh/aliases.secrets'
