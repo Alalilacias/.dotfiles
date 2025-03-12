@@ -1,6 +1,6 @@
 # Conventional Commits Cheat Sheet
 
-### Common Commit Types
+## Common Commit Types
 
 | Type      | Explanation |
 |-----------|-------------|
@@ -16,7 +16,7 @@
 | chore     | Routine tasks or maintenance |
 | revert    | Reverts a previous commit |
 
-### Common Scopes
+## Common Scopes
 
 | Scope    | Explanation |
 |----------|-------------|
@@ -31,10 +31,11 @@
 | docs     | Documentation changes |
 | example  | Example code or demo changes |
 
-### Common Footer Keywords
+## Common Footer Keywords
 
 | Footer Keyword       | Explanation |
 |----------------------|-------------|
 | BREAKING CHANGE      | Introduces breaking changes |
 | Fixes #<issue_number>| References an issue that is fixed |
 | Closes #<issue_number>| Closes the referenced issue |
+
