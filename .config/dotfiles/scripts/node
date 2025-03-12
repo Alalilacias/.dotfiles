@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs Node
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/node"
+# Version: 0.1
+
+echo "node not found, installing..."
+if command -v apt &>/dev/null; then
+  if [ -d "$HOME/.dotfiles/submodules/zsh-nvm" ]; then
+    source "$HOME/.dotfiles/submodules/zsh-nvm/zsh-nvm.plugin.zsh"
+  else
+    echo "zsh-nvm plugin not found"
+    exit 1
+  fi
+
+  if is_app_installed "nvm"; then
+    echo "Installing latest Node.js LTS via NVM..."
+    nvm install --lts
+    nvm use --lts
+    nvm alias default lts/*
+
+    echo "Node.js installation complete."
+  else
+    echo "zsh-nvm plugin not found, please install it."
+  fi
+else
+  echo "Package manager not supported"
+fi

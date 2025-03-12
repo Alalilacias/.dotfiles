@@ -9,5 +9,6 @@
 set -e
 
 # Source pre-configured installation files.
-source bin/pre-installs.sh
-source bin/connections.sh
+(. "$HOME/.dotfiles/.config/dotfiles/essential-installs")
+(. "$HOME/.dotfiles/.config/dotfiles/connections")
+(. "$HOME/.dotfiles/.config/dotfiles/optional-installs")

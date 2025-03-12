@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+#
+# Author: Alalilacias
+# Description: Creates all connections necessary for the system to use the configurations set in this directory
+# Syntax: (. ./"$HOME/.dotfiles/.config/dotfiles/connections")
+# Version: 0.3
+
+echo "Creating symlinks and giving permissions to necessary files"
+
+# Dotfiles path (configurable via environment variable)
+DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
+# Subdirectory paths
+DOTFILES_BIN="$DOTFILES_DIR/bin"
+DOTFILES_CONFIG="$DOTFILES_DIR/.config"
+DOTFILES_SUBMODULES="$DOTFILES_DIR/submodules"
+
+# Functions
+make_executable() {
+  local file="$1"
+  if [[ ! -f "$file" ]]; then
+    echo "$file does not exist. Skipping."
+  elif [[ ! -x "$file" ]]; then
+    echo "$file is not executable. Making it executable..."
+    chmod +x "$file" && echo "$file has been made executable!" || echo "Failed to make $file executable."
+  else
+    echo "$file is already executable."
+  fi
+}
+create_symlink() {
+  local source="$1"
+  local target="$2"
+  if [[ ! -L "$target" && ! -e "$target" ]]; then
+    echo "Creating symlink for $source..."
+    ln -sf "$source" "$target" && echo "Symlink created for $source." || echo "Failed to create symlink for $source."
+  else
+    echo "Symlink for $source already exists."
+  fi
+}
+
+# Main
+# yq
+make_executable "$DOTFILES_BIN/yq"
+# xdg-ninja
+make_executable "$DOTFILES_BIN/xdg-ninja"
+create_symlink "$DOTFILES_DIR/submodules/xdg-ninja/xdg-ninja.sh" "$DOTFILES_BIN/xdg-ninja"
+# Zsh
+create_symlink "$DOTFILES_DIR/.config/zsh/.zshenv" "$HOME/.zshenv"
+create_symlink "$DOTFILES_DIR/.config/zsh/.zshrc" "$HOME/.zshrc"
+# Kitty
+create_symlink "$DOTFILES_DIR/.config/kitty" "$HOME/.config/kitty"
+# Neovim
+create_symlink "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
+# Fonts
+create_symlink "$DOTFILES_DIR/.local/share/fonts" "$HOME/.local/share/fonts"
