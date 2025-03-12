@@ -28,6 +28,12 @@ alias dotbin='cdl ~/.dotfiles/bin'
 # Felt cute, might delete later. Ja, I have found changing to this directory too often these days. Might delete when it's less necessary.
 alias zshfiles='cdl ~/.dotfiles/.config/zsh'
 
+# Environmentally dependant aliases
+if [ -d "$HOME/.dotfiles/.config/zsh/aliases.env" ]; then
+  source "$HOME/.dotfiles/.config/zsh/aliases.env"
+fi
+alias nsalias='nvim ~/.dotfiles/.config/zsh/aliases.env'
+
 # Git
 alias ga='git add'
 alias gaa='git add .'
@@ -44,10 +50,6 @@ alias gro='git remote origin'
 alias grs='git remote show'
 alias gs='git status'
 alias gsi='git status --ignored'
-
-# Helldivers QoL
-alias finddivers='ps aux | grep helldivers2.exe'
-alias killdivers='pkill -f helldivers2.exe'
 
 # Lazy
 alias lazy='cdl ~/.dotfiles/.config/nvim'
@@ -76,33 +78,10 @@ alias vi='nvim'
 alias rm='rm -iv'
 
 # Secret aliases
-source "$HOME/.dotfiles/.config/zsh/aliases.secrets"
-
-# Steam
-alias killsteam='pkill -f steam'
-alias shutsteam='steam --shutdown'
-
-# Studies
-# These are to be constantly adapted to the current needs
-
-alias studies='cdl ~/Documents/Studies && ll'
-alias law='cdl ~/Documents/Studies/Law && ll'
-alias lawc='cdl ~/Documents/Studies/Law/2024-2025/semester_two'
-alias ciaa='cdl ~/Documents/Studies/Law/2024-2025/semester_two/ciaa'
-alias ciaac='cdl ~/Documents/Studies/Law/2024-2025/semester_two/ciaa/classes'
-alias clapl='cdl ~/Documents/Studies/Law/2024-2025/semester_two/clapl'
-alias claplc='cdl ~/Documents/Studies/Law/2024-2025/semester_two/clapl/classes'
-alias dfis='cdl ~/Documents/Studies/Law/2024-2025/semester_two/dfis'
-alias dfisfc='cdl ~/Documents/Studies/Law/2024-2025/semester_two/dfis/familia/classes'
-alias dfissc='cdl ~/Documents/Studies/Law/2024-2025/semester_two/dfis/sucessions/classes'
-alias die='cdl ~/Documents/Studies/Law/2024-2025/semester_two/die'
-alias diec='cdl ~/Documents/Studies/Law/2024-2025/semester_two/die/classes'
-alias dpi='cdl ~/Documents/Studies/Law/2024-2025/semester_two/dpi'
-alias dpic='cdl ~/Documents/Studies/Law/2024-2025/semester_two/dpi/classes'
-alias itf='cdl ~/Documents/Studies/Law/2024-2025/semester_two/itf'
-alias itfc='cdl ~/Documents/Studies/Law/2024-2025/semester_two/itf/classes'
-alias doi='cdl ~/Documents/Studies/Law/2024-2025/semester_two/doi'
-alias doic='cdl ~/Documents/Studies/Law/2024-2025/semester_two/doi/classes'
+if [ -d "$HOME/.dotfiles/.config/zsh/aliases.secrets" ]; then
+  source "$HOME/.dotfiles/.config/zsh/aliases.secrets"
+fi
+alias nsalias='nvim ~/.dotfiles/.config/zsh/aliases.secrets'
 
 # XDG-related (I am currently still fairly ignorant on what XDG is. Until I learn enough to feel confident, it'll remain "-related" to avoid possible confusions)
 alias open='xdg-open'
