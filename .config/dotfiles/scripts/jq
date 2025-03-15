@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs JQ
+# Description: Installs jq
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/jq"
 # Version: 0.1
 

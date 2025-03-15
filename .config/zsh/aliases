@@ -61,7 +61,7 @@ alias lazykeymaps='lazyconfig && nvim keymaps.lua'
 alias lazyoptions='lazyconfig && nvim options.lua'
 
 # List
-alias ll='ls -laAhF --group-directories-first --color=auto'
+alias ll='ls -laAhFv --group-directories-first --color=always'
 alias lls='ls -lahFtr'
 
 # Move/Rename

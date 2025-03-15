@@ -61,6 +61,16 @@
       "package": "node",
       "executable": "node",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/node"
+    },
+    {
+      "package": "pandoc",
+      "executable": "pandoc",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/pandoc"
+    },
+    {
+      "package": "texlive-xetex",
+      "executable": "xelatex",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/texlive-xetex"
     }
   ]
 }
