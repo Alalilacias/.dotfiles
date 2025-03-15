@@ -53,15 +53,15 @@ alias gsi='git status --ignored'
 
 # Lazy
 alias lazy='cdl ~/.dotfiles/.config/nvim'
-alias lazyconfig='lazy && cdl lua/config'
-alias lazyplugins='lazy && cdl lua/plugins'
-alias lazypcommands='lazyconfig && cdl commands'
+alias lazyconfig='cdl ~/.dotfiles/.config/nvim/lua/config'
+alias lazyplugins='cdl  ~/.dotfiles/.config/nvim/lua/plugins'
+alias lazypcommands='cdl ~/.dotfiles/.config/nvim/lua/config/commands'
 alias lazycommands='lazyconfig && nvim autocmds.lua'
 alias lazykeymaps='lazyconfig && nvim keymaps.lua'
 alias lazyoptions='lazyconfig && nvim options.lua'
 
 # List
-alias ll='ls -laAhF --group-directories-first'
+alias ll='ls -laAhF --group-directories-first --color=auto'
 alias lls='ls -lahFtr'
 
 # Move/Rename

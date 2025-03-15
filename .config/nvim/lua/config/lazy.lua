@@ -37,6 +37,7 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.markdown" }, -- For Markdown syntax highlighting and editing
     { import = "lazyvim.plugins.extras.lang.rust" }, -- For Rust support
     { import = "lazyvim.plugins.extras.lang.sql" }, -- For SQL support
+    { import = "lazyvim.plugins.extras.lang.toml" }, -- For TOML support
     { import = "lazyvim.plugins.extras.lang.yaml" }, -- For YAML support
 
     -- import/override with your plugins
