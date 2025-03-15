@@ -3,14 +3,22 @@
 # Author: Alalilacias
 # Description: Creates custom functions in .zshrc when invoked.
 # Syntax: source pfunctions
-# Version: 0.1
+# Version: 0.2
 
 # Makes all cd calls use the ll alias to lists files below the directory we moved to the way I like it.
-function cdl () {
-    cd "$@" && ll
+cdl() {
+  cd "$@" && ll
 }
 
 # Allows to create a directory and change to it. Have never used it.
-function mkcd() {
-    mkdir -p "$1" && cd "$1"
+mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+# Measure the startup time of the shell (default: $SHELL) by running it 10 times.
+# Uses '/usr/bin/time' to track execution time.
+# The shell starts in interactive mode (-i) but only executes 'exit' (-c exit).
+timezsh() {
+  local shell=${1:-$SHELL}                    # Use the provided shell or default to $SHELL
+  repeat 10 /usr/bin/time "$shell" -i -c exit # Run the timing test 10 times
 }

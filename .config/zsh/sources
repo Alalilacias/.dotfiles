@@ -1,20 +1,27 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Sources all necessary functions for the .zshrc
+# Syntax: source "$HOME/.dotfiles/.config/zsh/sources"
+# Version: 0.5
+
 ###########
 # Imported
 ###########
 
 # Enable fast syntax highlighting
 if [ -d "$HOME/.dotfiles/submodules/fast-syntax-highlighting" ]; then
-    source "$HOME/.dotfiles/submodules/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+  source "$HOME/.dotfiles/submodules/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
 fi
 
 # Enable zsh-autocomplete
 if [ -d "$HOME/.dotfiles/submodules/zsh-autocomplete" ]; then
-    source "$HOME/.dotfiles/submodules/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
+  source "$HOME/.dotfiles/submodules/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 fi
 
 # Enable zsh-nvm if present
+export NVM_LAZY_LOAD=true
 if [ -d "$HOME/.dotfiles/submodules/zsh-nvm" ]; then
-    source "$HOME/.dotfiles/submodules/zsh-nvm/zsh-nvm.plugin.zsh"
+  source "$HOME/.dotfiles/submodules/zsh-nvm/zsh-nvm.plugin.zsh"
 fi
 
 ###########
@@ -23,10 +30,10 @@ fi
 
 # Set up aliases
 if [ -f "$HOME/.dotfiles/.config/zsh/aliases" ]; then
-    source "$HOME/.dotfiles/.config/zsh/aliases"
+  source "$HOME/.dotfiles/.config/zsh/aliases"
 fi
 
 # Set up personal functions
 if [ -f "$HOME/.dotfiles/.config/zsh/pfunctions" ]; then
-    source "$HOME/.dotfiles/.config/zsh/pfunctions"
+  source "$HOME/.dotfiles/.config/zsh/pfunctions"
 fi
