@@ -6,3 +6,6 @@
 --
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+local keymap = vim.keymap
+
+keymap.set("n", "<leader>mpd", ":!pandoc % -o %:r.pdf --pdf-engine=xelatex<CR>", { desc = "Export Markdown to PDF" })
