@@ -29,10 +29,12 @@ alias dotbin='cdl ~/.dotfiles/bin'
 alias zshfiles='cdl ~/.dotfiles/.config/zsh'
 
 # Environmentally dependant aliases
-if [ -f "$HOME/.dotfiles/.config/zsh/aliases.env" ]; then
-  source "$HOME/.dotfiles/.config/zsh/aliases.env"
+if [ -f "$HOME/.dotfiles/.config/zsh/environment/aliases.env" ]; then
+  source "$HOME/.dotfiles/.config/zsh/environment/aliases.env"
+else
+  echo "Unable to locate environment aliases"
 fi
-alias nealias='nvim ~/.dotfiles/.config/zsh/aliases.env'
+alias nealias='nvim ~/.dotfiles/.config/zsh/environment/aliases.env'
 
 # Functions
 alias nfunctions='nvim ~/.dotfiles/.config/zsh/pfunctions'
@@ -86,10 +88,12 @@ alias vi='nvim'
 alias rm='rm -iv'
 
 # Secret aliases
-if [ -f "$HOME/.dotfiles/.config/zsh/aliases.secrets" ]; then
-  source "$HOME/.dotfiles/.config/zsh/aliases.secrets"
+if [ -f "$HOME/.dotfiles/.config/zsh/secrets/aliases.secrets" ]; then
+  source "$HOME/.dotfiles/.config/zsh/secrets/aliases.secrets"
+else
+  echo "Unable to locate secret aliases"
 fi
-alias nsalias='nvim ~/.dotfiles/.config/zsh/aliases.secrets'
+alias nsalias='nvim ~/.dotfiles/.config/zsh/secrets/aliases.secrets'
 
 # XDG-related (I am currently still fairly ignorant on what XDG is. Until I learn enough to feel confident, it'll remain "-related" to avoid possible confusions)
 alias open='xdg-open'

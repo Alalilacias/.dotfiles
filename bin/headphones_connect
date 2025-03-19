@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Restart bluetooth driver and connect to
+# Syntax: ./headphones_connect
+# Version: 0.1
+
+# Setup variables as needed
+ENV_VARIABLES="$HOME/.dotfiles/.config/zsh/environment/variables.env"
+VARIABLE_NAME="BT_HEADPHONES"
+TIME_TO_RESTART=2
+
+# Main
+sudo systemctl restart bluetooth
+sleep TIME_TO_RESTART # Give the driver time to restart.
+
+MAC=$(grep "^$VARIABLE_NAME" "$CONFIG_FILE" | cut -d '=' -f2-)
+
+bluetoothctl connect "$MAC"
