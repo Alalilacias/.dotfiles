@@ -41,3 +41,10 @@ if [ -n "$PS1" ]; then
     setopt prompt_subst
     PS1='%B%F{green}%n@%m%f %F{blue}%~%f%F{red}${vcs_info_msg_0_}%f%b %# '
 fi
+
+# fnm
+FNM_PATH="/home/alalin/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/alalin/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi

@@ -2,7 +2,7 @@
 #
 # Author: Alalilacias
 # Description: Installs dotfiles into system not configured by them.
-# Syntax: ./install.sh
+# Syntax: ./install
 # Version: 0.1
 
 # Set error exit.

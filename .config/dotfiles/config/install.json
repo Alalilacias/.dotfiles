@@ -58,11 +58,6 @@
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/lazygit"
     },
     {
-      "package": "node",
-      "executable": "node",
-      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/node"
-    },
-    {
       "package": "pandoc",
       "executable": "pandoc",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/pandoc"
@@ -71,6 +66,21 @@
       "package": "texlive-xetex",
       "executable": "xelatex",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/texlive-xetex"
+    },
+    {
+      "package": "libstdc++-12-dev",
+      "executable": "g++",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/libstdc++-12-dev"
+    },
+    {
+      "package": "fnm",
+      "executable": "fnm",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/fnm"
+    },
+    {
+      "package": "node",
+      "executable": "node",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/node"
     }
   ]
 }
