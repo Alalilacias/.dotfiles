@@ -81,6 +81,11 @@
       "package": "node",
       "executable": "node",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/node"
+    },
+    {
+      "package": "httrack",
+      "executable": "httrack",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/httrack"
     }
   ]
 }
