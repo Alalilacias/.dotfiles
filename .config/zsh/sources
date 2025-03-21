@@ -18,12 +18,6 @@ if [ -d "$HOME/.dotfiles/submodules/zsh-autocomplete" ]; then
   source "$HOME/.dotfiles/submodules/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
 fi
 
-# Enable zsh-nvm if present
-export NVM_LAZY_LOAD=true
-if [ -d "$HOME/.dotfiles/submodules/zsh-nvm" ]; then
-  source "$HOME/.dotfiles/submodules/zsh-nvm/zsh-nvm.plugin.zsh"
-fi
-
 ###########
 # Personal
 ###########

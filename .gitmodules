@@ -11,6 +11,3 @@
 [submodule ".config/zsh/submodules/zsh-autocomplete"]
 	path = .config/zsh/submodules/zsh-autocomplete
 	url = https://github.com/marlonrichert/zsh-autocomplete.git
-[submodule "submodules/zsh-nvm"]
-	path = submodules/zsh-nvm
-	url = https://github.com/lukechilds/zsh-nvm.git
