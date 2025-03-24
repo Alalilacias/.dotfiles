@@ -4,7 +4,7 @@ return {
   opts = {
     linters = {
       ["markdownlint-cli2"] = {
-        arts = {
+        args = {
           "--config",
           "/home/alalin/.dotfiles/.config/dotfiles/config/.markdownlint-cli2.yaml",
           "--",
