@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
 # Description: Restart Bluetooth driver and connect to OPPO Enco X2
-# Syntax: ./headphones_connect
+# Syntax: sh -c "$HOME/.dotfiles/bin/headphones_connect"
 # Version: 0.4
 
 # Setup variables
 DEVICE_NAME="OPPO Enco X2"
 TIME_TO_RESTART=1
-DEBUG=true
+DEBUG=false
 
 log() {
   if [[ "$DEBUG" == true ]]; then
