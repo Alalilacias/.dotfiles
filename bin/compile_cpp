@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Compiles C++ files, according to options.
+# Version: 0.1
+
+# Displays short version of usage, for non -h/--help invocations
+usage() {
+  echo "Usage: $(basename "$0") [options] [source_file...]"
+  exit 1
+}
+# Displays full version of usage, for -h/--help invocations
+usage_long() {
+  cat <<EOF
+Usage: $(basename "$0") [options] [source_file...]
+
+Options:
+  -a, --all        Compile all .cpp files in the current directory and subdirectories
+  -o, --output     Specify the output executable name (default: a.out)
+  -h, --help       Show this help message and exit
+
+Examples:
+  $(basename "$0") -a -o my_project      # Compile all .cpp files into 'my_project'
+  $(basename "$0") main.cpp -o main      # Compile 'main.cpp' into 'main'
+  $(basename "$0") file1.cpp file2.cpp   # Compile 'file1.cpp' and 'file2.cpp' into 'a.out'
+EOF
+  exit 1
+}
+
+# Parses command-line arguments
+parse_args() {
+  TEMP=$(getopt -o hao: --long help,all,output: -- "$@") || {
+    usage
+  }
+  eval set -- "$TEMP"
+
+  while true; do
+    case "$1" in
+    -h | --help) usage_long ;;
+    -a | --all)
+      compile_all=true
+      shift
+      ;;
+    -o | --output)
+      output_file="$2"
+      shift 2
+      ;;
+    --)
+      shift
+      break
+      ;; # End of options
+    *) break ;;
+    esac
+  done
+
+  source_files=("$@") # Remaining arguments are source files
+}
+
+# Finds all .cpp files recursively
+find_cpp_files() {
+  local files=()
+  while IFS= read -r -d '' file; do
+    files+=("$file")
+  done < <(find . -type f -name "*.cpp" -print0)
+  echo "${files[@]}"
+}
+# Finds include directories and formats them as -I flags
+find_include_dirs() {
+  find . -type d -name "include" | sed 's/^/-I/' | tr '\n' ' '
+}
+
+# Compiles the given C++ files
+compile_cpp() {
+  local base_args=(
+    -std=c++17                                            # Language Standard
+    -pedantic-errors                                      # Disabling compiler extensions
+    -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion # Increase warning level
+    -Werror                                               # Treat warnings as errors
+    -O2                                                   # Optimize for release (Change to -O for debug and -O3 for aggressive optimization)
+  )
+
+  # Use directory name as default output if not set
+  output_file="${output_file:-$(basename "$PWD")}"
+
+  # If --all is set, find all .cpp files
+  if [[ "$compile_all" == true ]]; then
+    source_files=($(find_cpp_files))
+    include_dirs=$(find_include_dirs)
+
+    echo "Compiling files: ${source_files[@]}"
+    echo "Including directories: ${include_dirs}"
+  fi
+
+  # Error if no source files are found
+  if [[ ${#source_files[@]} -eq 0 ]]; then
+    echo "Error: No source files specified or found."
+    usage
+  fi
+
+  # Compile with g++
+  g++ "${base_args[@]}" ${include_dirs} -o "$output_file" "${source_files[@]}"
+}
+
+# Main execution (yes, it can be clearly seen that I learnt to program with other
+# programs)
+main() {
+  compile_all=false
+  output_file=""
+  source_files=()
+
+  parse_args "$@"
+  compile_cpp
+}
+
+main "$@"

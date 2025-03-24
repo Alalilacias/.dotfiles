@@ -6,9 +6,11 @@ local function WriteInitialLineCustomShebang()
 #!/usr/bin/env bash
 # Author: Alalilacias
 # Description: 
-# Syntax:
 # Version: 
-]]
+
+usage() {
+  usage_string = "usage: $ "
+}]]
 
   -- Sets the predefined template string array, split separated by an indent.
   vim.api.nvim_buf_set_lines(0, 0, 0, false, vim.split(shebang_template, "\n"))

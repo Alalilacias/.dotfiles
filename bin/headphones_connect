@@ -1,18 +1,53 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Restart bluetooth driver and connect to
+# Description: Restart Bluetooth driver and connect to OPPO Enco X2
 # Syntax: ./headphones_connect
-# Version: 0.1
+# Version: 0.4
 
-# Setup variables as needed
-ENV_VARIABLES="$HOME/.dotfiles/.config/zsh/environment/variables.env"
-VARIABLE_NAME="BT_HEADPHONES"
-TIME_TO_RESTART=2
+# Setup variables
+DEVICE_NAME="OPPO Enco X2"
+TIME_TO_RESTART=1
+DEBUG=true
 
-# Main
-sudo systemctl restart bluetooth
-sleep TIME_TO_RESTART # Give the driver time to restart.
+log() {
+  if [[ "$DEBUG" == true ]]; then
+    echo "[DEBUG] $1"
+  fi
+}
 
-MAC=$(grep "^$VARIABLE_NAME" "$CONFIG_FILE" | cut -d '=' -f2-)
+restart_bluetooth() {
+  log "Restarting Bluetooth service..."
+  systemctl restart bluetooth
+  sleep "$TIME_TO_RESTART"
+}
 
-bluetoothctl connect "$MAC"
+ensure_bluetooth_on() {
+  log "Ensuring Bluetooth is powered on..."
+  bluetoothctl power on
+  sleep "$TIME_TO_RESTART"
+}
+
+get_mac_address() {
+  bluetoothctl devices | grep "$DEVICE_NAME" | awk '{print $2}'
+}
+
+connect_device() {
+  local mac
+  mac=$(get_mac_address)
+
+  if [[ -z "$mac" ]]; then
+    echo "Error: Could not find device \"$DEVICE_NAME\""
+    exit 1
+  fi
+
+  log "Connecting to $DEVICE_NAME ($mac)..."
+  bluetoothctl connect "$mac"
+}
+
+main() {
+  restart_bluetooth
+  ensure_bluetooth_on
+  connect_device
+}
+
+main

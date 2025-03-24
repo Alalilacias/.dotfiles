@@ -22,23 +22,3 @@ timezsh() {
   local shell=${1:-$SHELL}                    # Use the provided shell or default to $SHELL
   repeat 10 /usr/bin/time "$shell" -i -c exit # Run the timing test 10 times
 }
-
-# Helps more easily compile cpp files
-compile_cpp() {
-  local base_args=(
-    -std=c++17                                            # Language Standard
-    -pedantic-errors                                      # Disabling compiler extensions
-    -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion # Increase warning level
-    -Werror                                               # Treat warnings as errors
-    -O2                                                   # Optimize for release (Change to -O for debug and -O3 for aggressive optimization)
-  )
-  local output_file="$1"
-  local source_file="$2"
-
-  if [[ -z "$output_file" || -z "$source_file" ]]; then
-    echo "Usage: compile_cpp <output_file> <source_file>"
-    return 1
-  fi
-
-  g++ "${base_args[@]}" -o "$output_file" "$source_file"
-}
