@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
 # Description: Compiles C++ files, according to options.
-# Version: 0.1
+# Version: 0.4
 
 # Displays short version of usage, for non -h/--help invocations
 usage() {
   echo "Usage: $(basename "$0") [options] [source_file...]"
   exit 1
 }
+
 # Displays full version of usage, for -h/--help invocations
 usage_long() {
   cat <<EOF
@@ -16,6 +17,7 @@ Usage: $(basename "$0") [options] [source_file...]
 Options:
   -a, --all        Compile all .cpp files in the current directory and subdirectories
   -o, --output     Specify the output executable name (default: a.out)
+  -d, --debug      Compile with debug flags (-g -O0)
   -h, --help       Show this help message and exit
 
 Examples:
@@ -28,7 +30,7 @@ EOF
 
 # Parses command-line arguments
 parse_args() {
-  TEMP=$(getopt -o hao: --long help,all,output: -- "$@") || {
+  TEMP=$(getopt -o hado: --long help,all,debug,output: -- "$@") || {
     usage
   }
   eval set -- "$TEMP"
@@ -44,10 +46,14 @@ parse_args() {
       output_file="$2"
       shift 2
       ;;
+    -d | --debug)
+      debug_mode=true
+      shift
+      ;;
     --)
       shift
       break
-      ;; # End of options
+      ;;
     *) break ;;
     esac
   done
@@ -63,6 +69,7 @@ find_cpp_files() {
   done < <(find . -type f -name "*.cpp" -print0)
   echo "${files[@]}"
 }
+
 # Finds include directories and formats them as -I flags
 find_include_dirs() {
   find . -type d -name "include" | sed 's/^/-I/' | tr '\n' ' '
@@ -75,8 +82,13 @@ compile_cpp() {
     -pedantic-errors                                      # Disabling compiler extensions
     -Wall -Weffc++ -Wextra -Wconversion -Wsign-conversion # Increase warning level
     -Werror                                               # Treat warnings as errors
-    -O2                                                   # Optimize for release (Change to -O for debug and -O3 for aggressive optimization)
   )
+
+  if [[ "$debug_mode" == true ]]; then
+    base_args+=(-g -O0) # Debug flags
+  else
+    base_args+=(-O2) # Optimize for release
+  fi
 
   # Use directory name as default output if not set
   output_file="${output_file:-$(basename "$PWD")}"
@@ -100,10 +112,10 @@ compile_cpp() {
   g++ "${base_args[@]}" ${include_dirs} -o "$output_file" "${source_files[@]}"
 }
 
-# Main execution (yes, it can be clearly seen that I learnt to program with other
-# programs)
+# Main execution
 main() {
   compile_all=false
+  debug_mode=false
   output_file=""
   source_files=()
 

@@ -40,6 +40,9 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.toml" }, -- For TOML support
     { import = "lazyvim.plugins.extras.lang.yaml" }, -- For YAML support
 
+    -- Testing
+    { import = "lazyvim.plugins.extras.test.core" }, -- For testing core support
+
     -- import/override with your plugins
     { import = "plugins" },
   },
