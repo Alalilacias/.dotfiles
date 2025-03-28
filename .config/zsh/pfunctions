@@ -16,29 +16,29 @@ mkcd() {
 }
 
 check_git() {
-  SEARCH_DIR=~                             # Change to wherever your projects live
-  EXCLUDES="proc sys dev run var/lib/snap" # Add more if needed
+  SEARCH_DIR=~
+  echo "Scanning for git repos in $SEARCH_DIR..."
 
-  find "$SEARCH_DIR" -type d -name ".git" 2>/dev/null | while read gitdir; do
+  find "$SEARCH_DIR" \( \
+    -path "$HOME/.local" -o \
+    -path "$HOME/.cache" -o \
+    -path "$HOME/.cargo" -o \
+    -path "$HOME/.nvm" -o \
+    -path "$HOME/.config/nvm" -o \
+    -path "$HOME/.Trash" -o \
+    -path "/timeshift" \
+    \) -prune -false -o -type d -name ".git" 2>/dev/null | while read gitdir; do
     repo_dir="$(dirname "$gitdir")"
-
-    # Skip excluded dirs
-    for excl in $EXCLUDES; do
-      [[ "$repo_dir" == /$excl* ]] && continue 2
-    done
-
-    # Check it's a real Git repo
     if git -C "$repo_dir" rev-parse --is-inside-work-tree &>/dev/null; then
-      echo "Checking $repo_dir"
       cd "$repo_dir" || continue
 
-      git_status=$(git status --porcelain)
-      ahead=$(git status -sb 2>/dev/null | grep -o '\[ahead [0-9]*\]' || true)
+      git_status=$(git status --porcelain --untracked-files=no)
+      ahead=$(git rev-list @{u}..HEAD 2>/dev/null | wc -l | tr -d ' ')
 
-      if [[ -n "$git_status" || -n "$ahead" ]]; then
-        echo "  --> Changes detected:"
-        [[ -n "$git_status" ]] && echo "$git_status" | sed 's/^/     /'
-        [[ -n "$ahead" ]] && echo "     Unpushed commits: $ahead"
+      if [[ -n "$git_status" || "$ahead" -ne 0 ]]; then
+        echo "→ $repo_dir"
+        [[ -n "$git_status" ]] && echo "$git_status" | sed 's/^/   /'
+        [[ "$ahead" -ne 0 ]] && echo "   Unpushed commits: $ahead"
       fi
     fi
   done
