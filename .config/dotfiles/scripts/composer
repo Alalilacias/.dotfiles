@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs Composer (PHP dependency manager)
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/composer"
+# Version: 0.5
+
+echo "composer not found, installing..."
+
+BIN_DIR="$HOME/.dotfiles/bin"
+TMP_DIR="/tmp/dotfiles-composer-install"
+
+mkdir -p "$BIN_DIR" "$TMP_DIR"
+cd "$TMP_DIR" || exit 1
+
+# Download installer
+curl -sS https://getcomposer.org/installer -o composer-setup.php
+
+# Verify checksum
+EXPECTED_CHECKSUM=$(curl -sS https://composer.github.io/installer.sig)
+ACTUAL_CHECKSUM=$(php -r "echo hash_file('sha384', 'composer-setup.php');")
+
+if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
+  echo 'ERROR: Invalid installer checksum'
+  rm -rf "$TMP_DIR"
+  exit 1
+fi
+
+# Install into temp, then move binary
+php composer-setup.php --install-dir="$TMP_DIR" --filename=composer.phar
+
+# Move to bin (rename to composer)
+mv "$TMP_DIR/composer.phar" "$BIN_DIR/composer"
+
+# Cleanup
+rm -rf "$TMP_DIR"
+
+echo "composer installed successfully to $BIN_DIR/composer"

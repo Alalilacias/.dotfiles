@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs tree-sitter CLI locally and symlinks binary
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/tree-sitter"
+# Version: 0.4
+
+echo "tree-sitter not found, installing..."
+
+BIN_DIR="$HOME/.dotfiles/bin"
+NPM_PREFIX="$HOME/.dotfiles/.local/tools/tree-sitter-npm"
+
+mkdir -p "$BIN_DIR" "$NPM_PREFIX"
+cd "$HOME" || exit 1
+
+npm install -g tree-sitter-cli --prefix "$NPM_PREFIX"
+ln -sf "$NPM_PREFIX/bin/tree-sitter" "$BIN_DIR/tree-sitter"
+
+echo "tree-sitter installed successfully to $BIN_DIR/tree-sitter"

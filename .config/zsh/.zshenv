@@ -20,3 +20,4 @@ export LC_ALL="en_US.UTF-8"
 if [ -f "$HOME/.env" ]; then
     source "$HOME/.env"
 fi
+. "$HOME/.cargo/env"

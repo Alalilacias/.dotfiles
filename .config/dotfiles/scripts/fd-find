@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs Fdfind
-# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/fd-find"
-# Version: 0.1
+# Description: Installs fd (modern find) via cargo into .local/tools and symlinks
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/fd"
+# Version: 0.2
 
-echo "fd-find not found, installing..."
-if command -v apt &>/dev/null; then
-  sudo apt update
-  sudo apt install -y fd-find
-else
-  echo "Package manager not supported"
+echo "fd not found or outdated, installing with cargo..."
+
+CARGO_HOME="$HOME/.dotfiles/.local/tools/rust/.cargo"
+BIN_DIR="$HOME/.dotfiles/bin"
+
+if ! command -v "$CARGO_HOME/bin/cargo" &>/dev/null; then
+  echo "Rust is required (cargo not found at $CARGO_HOME/bin)."
+  exit 1
 fi
+
+"$CARGO_HOME/bin/cargo" install --locked fd-find
+
+mkdir -p "$BIN_DIR"
+ln -sf "$CARGO_HOME/bin/fd" "$BIN_DIR/fd"

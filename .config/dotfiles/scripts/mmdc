@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs Mermaid CLI (mmdc) locally and symlinks binary
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/mmdc"
+# Version: 0.3
+
+echo "mmdc not found, installing..."
+
+INSTALL_DIR="$HOME/.dotfiles/.local/tools/mmdc"
+BIN_DIR="$HOME/.dotfiles/bin"
+
+mkdir -p "$INSTALL_DIR" "$BIN_DIR"
+
+npm install -g @mermaid-js/mermaid-cli --prefix "$INSTALL_DIR"
+ln -sf "$INSTALL_DIR/bin/mmdc" "$BIN_DIR/mmdc"
+
+echo "mmdc installed and linked to $BIN_DIR/mmdc"

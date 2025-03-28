@@ -2,46 +2,54 @@
 # Author: Alalilacias
 # Description: Installs optional files for the correct working of the dotfile configuration
 # Syntax: (. ./"$HOME/.dotfiles/.config/dotfiles/optional-installs")
-# Version: 0.1
+# Version: 0.3
 
 # Constants
 HOME_DIR="$HOME"
 JSON_FILE="$HOME_DIR/.dotfiles/.config/dotfiles/config/install.json"
+export PATH="$HOME_DIR/.dotfiles/bin:$PATH"
 
 # Functions
-is_app_executable() {
-  command -v "$1" &>/dev/null
+is_app_available() {
+  local executable="$1"
+
+  case "$executable" in
+  neovim-pip)
+    pip3 show neovim &>/dev/null
+    ;;
+  neovim-gem)
+    gem list -i neovim &>/dev/null
+    ;;
+  python3-setuptools | ruby-dev)
+    dpkg -l "$executable" &>/dev/null
+    ;;
+  *.h)
+    # Keep as fallback if you ever need it
+    find /usr/include /usr/local/include -name "$executable" &>/dev/null
+    ;;
+  *)
+    command -v "$executable" &>/dev/null
+    ;;
+  esac
 }
 
 install_package() {
-  local package=$1
-  local source_file=$2
-
-  source_file="${source_file//\{HOME_DIR\}/$HOME_DIR}"
-
-  # echo "Source file for $package: '$source_file'" # Debugging line
-
-  if [[ -n "$source_file" && -f "$source_file" ]]; then
-    source "$source_file"
-  else
-    echo "No valid source file found for $package"
-  fi
+  local package="$1"
+  local source_file="${2//\{HOME_DIR\}/$HOME_DIR}"
+  [[ -f "$source_file" ]] && source "$source_file" || echo "No valid source file found for $package"
 }
 
 # Main
-if ! is_app_executable jq; then
-  source "$HOME/.dotfiles/.config/dotfiles/scripts/jq"
-fi
+command -v jq &>/dev/null || source "$HOME/.dotfiles/.config/dotfiles/scripts/jq"
 
-optional_packs=$(jq -r '.optional_packs[] | .package' "$JSON_FILE")
+jq -c '.optional_packs[]' "$JSON_FILE" | while read -r pack; do
+  pkg=$(jq -r '.package' <<<"$pack")
+  exe=$(jq -r '.executable' <<<"$pack")
+  src=$(jq -r '.source_file' <<<"$pack" | sed "s|{HOME_DIR}|$HOME|g")
 
-for package in $optional_packs; do
-  executable=$(jq -r ".optional_packs[] | select(.package == \"$package\") | .executable" "$JSON_FILE")
-  if ! is_app_executable "$executable"; then
-    echo "$package not found, installing..."
-    source_file=$(jq -r ".optional_packs[] | select(.package == \"$package\") | .source_file" "$JSON_FILE")
-    install_package "$package" "$source_file"
+  if ! is_app_available "$exe"; then
+    install_package "$pkg" "$src"
   else
-    echo "$package is already installed"
+    echo "$pkg is already installed"
   fi
 done

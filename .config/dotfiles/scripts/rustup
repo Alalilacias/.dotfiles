@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs Rust toolchain via rustup into .local/tools
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/rustup"
+# Version: 0.3
+
+echo "Installing Rust toolchain with rustup..."
+
+RUSTUP_HOME="$HOME/.dotfiles/.local/tools/rust"
+CARGO_HOME="$RUSTUP_HOME/.cargo"
+BIN_DIR="$HOME/.dotfiles/bin"
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
+  sh -s -- -y --no-modify-path --default-toolchain stable --profile default --prefix="$RUSTUP_HOME"
+
+export PATH="$CARGO_HOME/bin:$PATH"
+
+mkdir -p "$BIN_DIR"
+ln -sf "$CARGO_HOME/bin/cargo" "$BIN_DIR/cargo"
+ln -sf "$CARGO_HOME/bin/rustc" "$BIN_DIR/rustc"
+ln -sf "$CARGO_HOME/bin/rust-analyzer" "$BIN_DIR/rust-analyzer"
+
+"$CARGO_HOME/bin/rustup" component add rust-analyzer

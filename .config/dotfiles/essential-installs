@@ -10,7 +10,14 @@ JSON_FILE="$HOME_DIR/.dotfiles/.config/dotfiles/config/install.json"
 
 # Functions
 is_app_executable() {
-  command -v "$1" &>/dev/null
+  case "$executable" in
+  ruby-dev)
+    dpkg -s "$executable" &>/dev/null
+    ;;
+  *)
+    command -v "$executable" &>/dev/null
+    ;;
+  esac
 }
 
 install_package() {
@@ -29,7 +36,8 @@ install_package() {
 }
 
 # Main
-if ! is_app_executable jq; then
+executable="jq"
+if ! is_app_executable "$executable"; then
   source "$HOME/.dotfiles/.config/dotfiles/scripts/jq"
 fi
 
@@ -38,7 +46,6 @@ essential_packs=$(jq -r '.essential_packs[] | .package' "$JSON_FILE")
 for package in $essential_packs; do
   executable=$(jq -r ".essential_packs[] | select(.package == \"$package\") | .executable" "$JSON_FILE")
   if ! is_app_executable "$executable"; then
-    echo "$package not found, installing..."
     source_file=$(jq -r ".essential_packs[] | select(.package == \"$package\") | .source_file" "$JSON_FILE")
     install_package "$package" "$source_file"
   else

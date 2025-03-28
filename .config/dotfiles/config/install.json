@@ -19,6 +19,21 @@
       "package": "software-properties-common",
       "executable": "add-apt-repository",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/software-properties-common"
+    },
+    {
+      "package": "curl",
+      "executable": "curl",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/curl"
+    },
+    {
+      "package": "python3-pip",
+      "executable": "pip3",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/python3-pip"
+    },
+    {
+      "package": "ruby-dev",
+      "executable": "ruby-dev",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/ruby-dev"
     }
   ],
   "optional_packs": [
@@ -86,6 +101,83 @@
       "package": "httrack",
       "executable": "httrack",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/httrack"
+    },
+    {
+      "package": "go",
+      "executable": "go",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/go"
+    },
+    {
+      "package": "php",
+      "executable": "php",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/php"
+    },
+    {
+      "package": "composer",
+      "executable": "composer",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/composer"
+    },
+    {
+      "package": "julia",
+      "executable": "julia",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/julia"
+    },
+    {
+      "package": "fish",
+      "executable": "fish",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/fish"
+    },
+    {
+      "package": "sqlite3",
+      "executable": "sqlite3",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/sqlite3"
+    },
+    {
+      "package": "tree-sitter",
+      "executable": "tree-sitter",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/tree-sitter"
+    },
+    {
+      "package": "imagemagick",
+      "executable": "convert",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/imagemagick"
+    },
+    {
+      "package": "mmdc",
+      "executable": "mmdc",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/mmdc"
+    },
+
+    {
+      "package": "neovim-npm",
+      "executable": "nvim",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/neovim-npm"
+    },
+    {
+      "package": "neovim-pip",
+      "executable": "neovim-pip",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/neovim-pip"
+    },
+    {
+      "package": "neovim-gem",
+      "executable": "neovim-ruby-host",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/neovim-gem"
+    },
+
+    {
+      "package": "rustup",
+      "executable": "cargo",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/rustup"
+    },
+    {
+      "package": "dotnet",
+      "executable": "dotnet",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/dotnet"
+    },
+    {
+      "package": "python-modules",
+      "executable": "python3-setuptools",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/python-modules"
     }
   ]
 }

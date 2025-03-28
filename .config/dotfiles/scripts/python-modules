@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs Python3 modules: pip, venv, setuptools
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/python-modules"
+# Version: 0.1
+
+echo "Installing Python3 modules: pip, venv, setuptools..."
+
+if command -v apt &>/dev/null; then
+  sudo apt update
+  sudo apt install -y python3-venv python3-setuptools
+else
+  echo "Unsupported package manager."
+  exit 1
+fi
+
+echo "Python modules installed successfully."
