@@ -15,6 +15,35 @@ mkcd() {
   mkdir -p "$1" && cdl "$1"
 }
 
+check_git() {
+  SEARCH_DIR=~                             # Change to wherever your projects live
+  EXCLUDES="proc sys dev run var/lib/snap" # Add more if needed
+
+  find "$SEARCH_DIR" -type d -name ".git" 2>/dev/null | while read gitdir; do
+    repo_dir="$(dirname "$gitdir")"
+
+    # Skip excluded dirs
+    for excl in $EXCLUDES; do
+      [[ "$repo_dir" == /$excl* ]] && continue 2
+    done
+
+    # Check it's a real Git repo
+    if git -C "$repo_dir" rev-parse --is-inside-work-tree &>/dev/null; then
+      echo "Checking $repo_dir"
+      cd "$repo_dir" || continue
+
+      git_status=$(git status --porcelain)
+      ahead=$(git status -sb 2>/dev/null | grep -o '\[ahead [0-9]*\]' || true)
+
+      if [[ -n "$git_status" || -n "$ahead" ]]; then
+        echo "  --> Changes detected:"
+        [[ -n "$git_status" ]] && echo "$git_status" | sed 's/^/     /'
+        [[ -n "$ahead" ]] && echo "     Unpushed commits: $ahead"
+      fi
+    fi
+  done
+}
+
 # Measure the startup time of the shell (default: $SHELL) by running it 10 times.
 # Uses '/usr/bin/time' to track execution time.
 # The shell starts in interactive mode (-i) but only executes 'exit' (-c exit).
