@@ -178,6 +178,11 @@
       "package": "python-modules",
       "executable": "python3-setuptools",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/python-modules"
+    },
+    {
+      "package": "cmake",
+      "executable": "cmake",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/cmake"
     }
   ]
 }
