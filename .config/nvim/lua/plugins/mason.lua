@@ -2,6 +2,7 @@ return {
   "williamboman/mason.nvim",
   opts = {
     ensure_installed = {
+      "clang-format",
       "shfmt",
       "stylua",
       "prettier",

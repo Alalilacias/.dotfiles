@@ -183,6 +183,11 @@
       "package": "cmake",
       "executable": "cmake",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/cmake"
+    },
+    {
+      "package": "tree",
+      "executable": "tree",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/tree"
     }
   ]
 }
