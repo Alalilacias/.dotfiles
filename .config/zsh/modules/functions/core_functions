@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Creates core functions necessary for the restoration of the system.
+# Version: 0.1
+
+simple-file-source() {
+  local file="$1"
+  [[ -f "$file" ]] && source "$file"
+}

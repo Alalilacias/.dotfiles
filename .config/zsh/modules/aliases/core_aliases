@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Creates a set of core aliases for Zsh
+# Version: 0.1
+
+alias ll='ls -laAhFv --group-directories-first --color=always'

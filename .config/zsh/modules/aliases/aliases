@@ -32,15 +32,15 @@ alias dotbin='cdl ~/.dotfiles/bin'
 alias zshfiles='cdl ~/.dotfiles/.config/zsh'
 
 # Environmentally dependant aliases
-if [ -f "$HOME/.dotfiles/.config/zsh/environment/aliases.env" ]; then
-  source "$HOME/.dotfiles/.config/zsh/environment/aliases.env"
+if [ -f "$HOME/.dotfiles/.config/zsh/modules/environment/aliases.env" ]; then
+  source "$HOME/.dotfiles/.config/zsh/modules/environment/aliases.env"
 else
   echo "Unable to locate environment aliases"
 fi
-alias nealias='nvim ~/.dotfiles/.config/zsh/environment/aliases.env'
+alias nealias='nvim ~/.dotfiles/.config/zsh/modules/environment/aliases.env'
 
 # Functions
-alias nfunctions='nvim ~/.dotfiles/.config/zsh/pfunctions'
+alias nfunctions='nvim ~/.dotfiles/.config/zsh/modules/functions/functions'
 
 # Git
 alias ga='git add'
@@ -75,7 +75,6 @@ alias lazykeymaps='lazyconfig && nvim keymaps.lua'
 alias lazyoptions='lazyconfig && nvim options.lua'
 
 # List
-alias ll='ls -laAhFv --group-directories-first --color=always'
 alias lls='ls -lahFtr'
 alias llt='tree -CahF --dirsfirst'
 
@@ -93,12 +92,12 @@ alias vi='nvim'
 alias rm='rm -iv'
 
 # Secret aliases
-if [ -f "$HOME/.dotfiles/.config/zsh/secrets/aliases.secrets" ]; then
-  source "$HOME/.dotfiles/.config/zsh/secrets/aliases.secrets"
+if [ -f "$HOME/.dotfiles/.config/zsh/modules/secrets/aliases.secrets" ]; then
+  source "$HOME/.dotfiles/.config/zsh/modules/secrets/aliases.secrets"
 else
   echo "Unable to locate secret aliases"
 fi
-alias nsalias='nvim ~/.dotfiles/.config/zsh/secrets/aliases.secrets'
+alias nsalias='nvim ~/.dotfiles/.config/zsh/modules/secrets/aliases.secrets'
 
 # XDG-related (I am currently still fairly ignorant on what XDG is. Until I learn enough to feel confident, it'll remain "-related" to avoid possible confusions)
 alias open='xdg-open'
@@ -106,4 +105,4 @@ alias oc='xdg-open .'
 
 # Zsh
 # If anyone wants to suggest a better abbreviation, I'll appreciate it a lot.
-alias nalias='nvim ~/.dotfiles/.config/zsh/aliases'
+alias nalias='nvim ~/.dotfiles/.config/zsh/modules/aliases/aliases'

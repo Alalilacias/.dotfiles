@@ -5,6 +5,21 @@
 # Version: 0.8
 
 ###########
+# Personal
+###########
+
+source "$HOME/.dotfiles/.config/zsh/modules/aliases/core_aliases"
+source "$HOME/.dotfiles/.config/zsh/modules/functions/core_functions"
+
+if [ -f "$HOME/.dotfiles/.config/zsh/modules/aliases/aliases" ]; then
+  source "$HOME/.dotfiles/.config/zsh/modules/aliases/aliases"
+fi
+
+if [ -f "$HOME/.dotfiles/.config/zsh/modules/functions/functions" ]; then
+  source "$HOME/.dotfiles/.config/zsh/modules/functions/functions"
+fi
+
+###########
 # Imported
 ###########
 
@@ -14,18 +29,6 @@ fi
 
 if [ -d "$HOME/.dotfiles/submodules/zsh-autocomplete" ]; then
   source "$HOME/.dotfiles/submodules/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
-fi
-
-###########
-# Personal
-###########
-
-if [ -f "$HOME/.dotfiles/.config/zsh/aliases" ]; then
-  source "$HOME/.dotfiles/.config/zsh/aliases"
-fi
-
-if [ -f "$HOME/.dotfiles/.config/zsh/pfunctions" ]; then
-  source "$HOME/.dotfiles/.config/zsh/pfunctions"
 fi
 
 ###########
