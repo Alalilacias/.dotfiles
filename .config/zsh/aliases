@@ -24,6 +24,9 @@ alias cp='cp -iv'
 # Dotfiles, and important locations
 alias dotfiles='cdl ~/.dotfiles'
 alias dotconfig='cdl ~/.dotfiles/.config'
+alias dotconfiles='cdl ~/.dotfiles/.config/dotfiles'
+alias dotcoconfig='cdl ~/.dotfiles/.config/dotfiles/config/'
+alias dotcoscripts='cdl ~/.dotfiles/.config/dotfiles/scripts/'
 alias dotbin='cdl ~/.dotfiles/bin'
 # Felt cute, might delete later. Ja, I have found changing to this directory too often these days. Might delete when it's less necessary.
 alias zshfiles='cdl ~/.dotfiles/.config/zsh'
