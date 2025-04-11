@@ -7,3 +7,17 @@ simple-file-source() {
   local file="$1"
   [[ -f "$file" ]] && source "$file"
 }
+file-if-directory-source() {
+  local dir="$1"
+  local file="$2"
+  [[ -d "$dir" ]] && [[ -f "$dir/$file" ]] && source "$dir/$file"
+}
+export-if-dir() {
+  local dir="$1"
+  shift
+  [[ -d "$dir" ]] || return
+  while (($#)); do
+    export "$1"
+    shift
+  done
+}

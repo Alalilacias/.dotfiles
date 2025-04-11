@@ -4,65 +4,24 @@
 # Syntax: source "$HOME/.dotfiles/.config/zsh/sources"
 # Version: 0.8
 
-###########
-# Personal
-###########
-
+# Core
+# See these two scripts for the functions used in this script.
 source "$HOME/.dotfiles/.config/zsh/modules/aliases/core_aliases"
 source "$HOME/.dotfiles/.config/zsh/modules/functions/core_functions"
 
-if [ -f "$HOME/.dotfiles/.config/zsh/modules/aliases/aliases" ]; then
-  source "$HOME/.dotfiles/.config/zsh/modules/aliases/aliases"
-fi
+simple-file-source "$HOME/.dotfiles/.config/zsh/modules/aliases/aliases"
+simple-file-source "$HOME/.dotfiles/.config/zsh/modules/functions/functions"
 
-if [ -f "$HOME/.dotfiles/.config/zsh/modules/functions/functions" ]; then
-  source "$HOME/.dotfiles/.config/zsh/modules/functions/functions"
-fi
+simple-file-source "$HOME/.dotfiles/.config/zsh/modules/prompt/prompt.zsh"
+simple-file-source "$HOME/.dotfiles/.config/zsh/modules/options/options.zsh"
 
-###########
-# Imported
-###########
+# Plugins
 
-if [ -d "$HOME/.dotfiles/submodules/fast-syntax-highlighting" ]; then
-  source "$HOME/.dotfiles/submodules/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
-fi
+file-if-directory-source "$HOME/.dotfiles/submodules/fast-syntax-highlighting" "fast-syntax-highlighting.plugin.zsh"
+file-if-directory-source "$HOME/.dotfiles/submodules/zsh-autocomplete/" "zsh-autocomplete.plugin.zsh"
 
-if [ -d "$HOME/.dotfiles/submodules/zsh-autocomplete" ]; then
-  source "$HOME/.dotfiles/submodules/zsh-autocomplete/zsh-autocomplete.plugin.zsh"
-fi
-
-###########
 # Toolchains
-###########
 
-# Dotfiles bin
-if [ -d "$HOME/.dotfiles/bin" ]; then
-  export PATH="$HOME/.dotfiles/bin:$PATH"
-fi
-
-# Rust (cargo)
-if [ -d "$HOME/.dotfiles/.local/tools/rust/.cargo/bin" ]; then
-  export CARGO_HOME="$HOME/.dotfiles/.local/tools/rust/.cargo"
-  export RUSTUP_HOME="$HOME/.dotfiles/.local/tools/rust"
-  export PATH="$CARGO_HOME/bin:$PATH"
-fi
-
-# Go
-if [ -d "$HOME/.dotfiles/.local/tools/go/bin" ]; then
-  export GOROOT="$HOME/.dotfiles/.local/tools/go"
-  export GOPATH="$HOME/go"
-  export GOBIN="$GOPATH/bin"
-  export PATH="$GOROOT/bin:$GOBIN:$PATH"
-fi
-
-# Dotnet
-if [ -d "$HOME/.dotfiles/.local/tools/dotnet" ]; then
-  export DOTNET_ROOT="$HOME/.dotfiles/.local/tools/dotnet"
-  export PATH="$DOTNET_ROOT:$PATH"
-fi
-
-# Ruby (gems)
-if [ -d "$HOME/.dotfiles/.local/tools/gems/bin" ]; then
-  export GEM_HOME="$HOME/.dotfiles/.local/tools/gems"
-  export PATH="$GEM_HOME/bin:$PATH"
-fi
+for file in $HOME/.dotfiles/.config/zsh/modules/{toolchains,prompt,options}/*.zsh; do
+  simple-file-source "$file"
+done
