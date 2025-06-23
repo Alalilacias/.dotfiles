@@ -6,7 +6,7 @@
 
 echo "pip3 not found, installing..."
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y python3-pip
 else
   echo "Package manager not supported"

@@ -6,7 +6,7 @@
 
 echo "julia not found, installing..."
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y julia
 else
   echo "Package manager not supported"

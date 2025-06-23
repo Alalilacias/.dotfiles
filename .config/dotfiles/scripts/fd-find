@@ -4,12 +4,12 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/fd"
 # Version: 0.2
 
-echo "fd not found or outdated, installing with cargo..."
+echo "fd-find not found or outdated, installing with cargo..."
 
 CARGO_HOME="$HOME/.dotfiles/.local/tools/rust/.cargo"
 BIN_DIR="$HOME/.dotfiles/bin"
 
-if ! command -v "$CARGO_HOME/bin/cargo" &>/dev/null; then
+if [[ ! -x "$CARGO_HOME/bin/cargo" ]]; then
   echo "Rust is required (cargo not found at $CARGO_HOME/bin)."
   exit 1
 fi

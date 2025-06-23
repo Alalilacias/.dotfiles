@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description:
+# Version: 0.1
+
+echo "latex2latex not found, installing..."
+if command -v apt &>/dev/null; then
+  # This is a Python tool: https://github.com/phfaist/pylatexenc
+  pip3 install --user latex2text
+
+  # Ensure ~/.local/bin is in PATH if needed
+  if ! echo "$PATH" | grep -q "$HOME/.local/bin"; then
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >>"$HOME/.profile"
+  fi
+else
+  echo "Package manager not supported"
+fi

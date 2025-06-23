@@ -5,10 +5,51 @@
 # Syntax: ./install
 # Version: 0.1
 
-# Set error exit.
-set -e
+# Logging helper funciton, to avoid duplicating echo.
+log() {
+  echo "$1";
+}
+readopts() {
+  
+}
+# Help function, invoke on mistakes and whenever the user asks for it.
+usage() {
+  cat << EOF
+  Usage $0 [options]
+  -d| --devenv  Specify the development environment to install. 
+                Remember to include at least a single environment, more than one would be okay as well.
+                Lack of specification will install all environments.
+  -h| --help    Show this help message
+  -f| --force   Force installation, overwriting existing files
+  
+  EOF
+}
 
-# Source pre-configured installation files.
-(. "$HOME/.dotfiles/.config/dotfiles/essential-installs")
-(. "$HOME/.dotfiles/.config/dotfiles/connections")
-(. "$HOME/.dotfiles/.config/dotfiles/optional-installs")
+# Variables
+FORCE=false
+PACKAGE_MANAGER=""
+
+
+extract_pm() {
+  if command -v apt >/dev/null 2>&1; then
+    return "apt"  # Debian-based
+  elif command -v pacman >/dev/null 2>&1; then
+    return "pacman"  # Arch-based
+  else
+    log "Package manager not supported, skipping installation of packages no supported outside of them."
+  fi
+}
+
+main() {
+  PACKAGE_MANAGER=$(extract_pm)
+  # Set error exit.
+  set -e
+
+
+  # Source pre-configured installation files.
+  (. "$HOME/.dotfiles/.config/dotfiles/essential-installs")
+  (. "$HOME/.dotfiles/.config/dotfiles/connections")
+  (. "$HOME/.dotfiles/.config/dotfiles/optional-installs")
+}
+
+main

@@ -6,7 +6,7 @@
 
 echo "git not found, installing..."
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y git
 else
   echo "Package manager not supported"

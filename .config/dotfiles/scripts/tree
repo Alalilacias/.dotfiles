@@ -6,7 +6,7 @@
 
 echo "tree not found, installing..."
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y tree
 else
   echo "Package manager not supported"

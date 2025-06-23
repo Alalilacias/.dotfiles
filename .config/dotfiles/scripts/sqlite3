@@ -6,7 +6,7 @@
 
 echo "sqlite3 not found, installing..."
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y sqlite3
 else
   echo "Package manager not supported"

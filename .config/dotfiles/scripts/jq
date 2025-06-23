@@ -6,7 +6,7 @@
 
 echo "jq not found, installing..."
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y jq
 else
   echo "Package manager not supported"

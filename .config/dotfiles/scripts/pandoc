@@ -6,7 +6,7 @@
 
 echo "pandoc not found, installing..."
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y pandoc
 else
   echo "Package manager not supported"

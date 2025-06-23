@@ -7,7 +7,7 @@
 echo "Installing Python3 modules: pip, venv, setuptools..."
 
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y python3-venv python3-setuptools
 else
   echo "Unsupported package manager."

@@ -143,11 +143,15 @@
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/imagemagick"
     },
     {
+      "package": "openjdk-17-jdk",
+      "executable": "javac",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/openjdk-17-jdk"
+    },
+    {
       "package": "mmdc",
       "executable": "mmdc",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/mmdc"
     },
-
     {
       "package": "neovim-npm",
       "executable": "nvim",
@@ -163,7 +167,6 @@
       "executable": "neovim-ruby-host",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/neovim-gem"
     },
-
     {
       "package": "rustup",
       "executable": "cargo",
@@ -188,6 +191,16 @@
       "package": "tree",
       "executable": "tree",
       "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/tree"
+    },
+    {
+      "package": "lynx",
+      "executable": "lynx",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/lynx"
+    },
+    {
+      "package": "latex2text",
+      "executable": "latex2text",
+      "source_file": "{HOME_DIR}/.dotfiles/.config/dotfiles/scripts/latex2text"
     }
   ]
 }

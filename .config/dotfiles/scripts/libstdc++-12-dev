@@ -6,7 +6,7 @@
 
 echo "libstdc++-12-dev not found, installing..."
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y libstdc++-12-dev
 else
   echo "Package manager not supported"

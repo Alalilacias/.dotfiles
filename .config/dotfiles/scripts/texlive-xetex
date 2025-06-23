@@ -6,7 +6,7 @@
 
 echo "texlive-xetex not found, installing..."
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y texlive-xetex
 else
   echo "Package manager not supported"

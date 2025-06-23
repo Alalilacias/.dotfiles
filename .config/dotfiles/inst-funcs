@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Recopilation of the functions necesssary for the installation of the dotfiles
+# Version: 0.1
+
+# Makeshift constant for
+FORCE_INSTALL="${FORCE_INSTALL:-false}"
+APT_UPDATED=false
+
+# Checks if the given package installed, with some exceptions for special files that aren't installed through the manager.
+# Currently only setup for apt.
+is_app_executable() {
+  # If FORCE_INSTALL is true, always pretend the executable is not available. I'll probably change this soon enough.
+  if [[ "$FORCE_INSTALL" == "true" ]]; then
+    return 1
+  fi
+
+  local executable="$1"
+
+  case "$executable" in
+  neovim-pip)
+    pip3 show neovim &>/dev/null
+    ;;
+  neovim-gem)
+    gem list --local neovim &>/dev/null
+    ;;
+  python3-setuptools | ruby-dev)
+    dpkg -l | grep -q "$executable" &>/dev/null
+    ;;
+  *)
+    command -v "$executable" &>/dev/null
+    ;;
+  esac
+}
+
+install_package() {
+  local package="$1"
+  local source_file="${2//\{HOME_DIR\}/$HOME_DIR}"
+
+  # echo "Source file for $package: '$source_file'" # Debug line
+  update_apt_if_needed
+
+  if [[ -n "$source_file" && -f "$source_file" ]]; then
+    source "$source_file"
+  else
+    echo "No valid source file found for $package"
+  fi
+}
+# Makeshift funcition. Should be modified if Dotfiles are modified to accomodate other package managers.
+update_apt_if_needed() {
+  if [[ "$APT_UPDATED" == "false" ]]; then
+    sudo apt update
+    APT_UPDATED=true
+  fi
+}

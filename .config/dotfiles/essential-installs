@@ -8,34 +8,9 @@
 HOME_DIR="$HOME"
 JSON_FILE="$HOME_DIR/.dotfiles/.config/dotfiles/config/install.json"
 
-# Functions
-is_app_executable() {
-  case "$executable" in
-  ruby-dev)
-    dpkg -s "$executable" &>/dev/null
-    ;;
-  *)
-    command -v "$executable" &>/dev/null
-    ;;
-  esac
-}
-
-install_package() {
-  local package=$1
-  local source_file=$2
-
-  source_file="${source_file//\{HOME_DIR\}/$HOME_DIR}"
-
-  # echo "Source file for $package: '$source_file'" # Debugging line
-
-  if [[ -n "$source_file" && -f "$source_file" ]]; then
-    source "$source_file"
-  else
-    echo "No valid source file found for $package"
-  fi
-}
-
 # Main
+source "$HOME_DIR/.dotfiles/.config/dotfiles/inst-funcs"
+
 executable="jq"
 if ! is_app_executable "$executable"; then
   source "$HOME/.dotfiles/.config/dotfiles/scripts/jq"

@@ -9,45 +9,16 @@ HOME_DIR="$HOME"
 JSON_FILE="$HOME_DIR/.dotfiles/.config/dotfiles/config/install.json"
 export PATH="$HOME_DIR/.dotfiles/bin:$PATH"
 
-# Functions
-is_app_available() {
-  local executable="$1"
-
-  case "$executable" in
-  neovim-pip)
-    pip3 show neovim &>/dev/null
-    ;;
-  neovim-gem)
-    gem list -i neovim &>/dev/null
-    ;;
-  python3-setuptools | ruby-dev)
-    dpkg -l "$executable" &>/dev/null
-    ;;
-  *.h)
-    # Keep as fallback if you ever need it
-    find /usr/include /usr/local/include -name "$executable" &>/dev/null
-    ;;
-  *)
-    command -v "$executable" &>/dev/null
-    ;;
-  esac
-}
-
-install_package() {
-  local package="$1"
-  local source_file="${2//\{HOME_DIR\}/$HOME_DIR}"
-  [[ -f "$source_file" ]] && source "$source_file" || echo "No valid source file found for $package"
-}
-
 # Main
 command -v jq &>/dev/null || source "$HOME/.dotfiles/.config/dotfiles/scripts/jq"
+source "$HOME_DIR/.dotfiles/.config/dotfiles/inst-funcs"
 
 jq -c '.optional_packs[]' "$JSON_FILE" | while read -r pack; do
   pkg=$(jq -r '.package' <<<"$pack")
   exe=$(jq -r '.executable' <<<"$pack")
   src=$(jq -r '.source_file' <<<"$pack" | sed "s|{HOME_DIR}|$HOME|g")
 
-  if ! is_app_available "$exe"; then
+  if ! is_app_executable "$exe"; then
     install_package "$pkg" "$src"
   else
     echo "$pkg is already installed"

@@ -6,7 +6,7 @@
 
 echo "imagemagick not found, installing..."
 if command -v apt &>/dev/null; then
-  sudo apt update
+  
   sudo apt install -y imagemagick
 else
   echo "Package manager not supported"
