@@ -5,19 +5,60 @@
 # Syntax: ./install
 # Version: 0.1
 
+# TODO Finish setting up the script. That includes:
+# - Add support for more package managers.
+# - Add support for more development environments.
+# - Add logger functionality. Preemptive thanks to Graham Watson for the logger script.
+# - Look into better code organitzation, perhaps compartimentalization and the value of it, or lack thereof.
+
+# Variables
+FORCE=false
+PACKAGE_MANAGER=""
+
 # Logging helper funciton, to avoid duplicating echo.
-log() {
-  echo "$1";
-}
 readopts() {
-  
+  TEMP=$(getopt -o d:hf --long devenv:,help,force -n "installing script" -- "$@")
+
+  eval set -- "$TEMP"
+
+  while true; do
+    case "$1" in
+      -d | --devenv)
+        if [[ -n "$2" ]]; then
+          DEVENV="$2"
+          shift 2
+        else
+          log "Error: --devenv requires an argument."
+          usage
+          exit 1
+        fi
+        ;;
+      -h | --help)
+        usage
+        exit 0
+        ;;
+      -f | --force)
+        FORCE=true
+        shift
+        ;;
+      --)
+        shift
+        break
+        ;;
+      *)
+        log "Error: Invalid option $1"
+        shift
+        ;;
+    esac
+  done
 }
 # Help function, invoke on mistakes and whenever the user asks for it.
 usage() {
   cat << EOF
   Usage $0 [options]
   -d| --devenv  Specify the development environment to install. 
-                Remember to include at least a single environment, more than one would be okay as well.
+                Remember to include at least a single environment.
+                More than one works provided they're separated by commas not spaces (e.g. java,cpp,server).
                 Lack of specification will install all environments.
   -h| --help    Show this help message
   -f| --force   Force installation, overwriting existing files
@@ -25,9 +66,6 @@ usage() {
   EOF
 }
 
-# Variables
-FORCE=false
-PACKAGE_MANAGER=""
 
 
 extract_pm() {
