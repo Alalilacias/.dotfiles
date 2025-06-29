@@ -6,88 +6,156 @@
 # Version: 0.1
 
 # TODO Finish setting up the script. That includes:
-# - Add support for more package managers.
-# - Add support for more development environments.
-# - Add logger functionality. Preemptive thanks to Graham Watson for the logger script.
 # - Look into better code organitzation, perhaps compartimentalization and the value of it, or lack thereof.
+# - Finish setting up installation.
+# - Modify install.json or the method for configuration of installation database used by script.
 
-# Variables
-FORCE=false
+# Get the directory where the script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Set REPO_ROOT to the script directory, as that should be the git repo root
+REPO_ROOT="${SCRIPT_DIR}"
+
+# Global Variables
+CLEANED_ARGS=() # Arguments cleaned of log level and other options.
+FORCE=false     # Ignore if the program is installed and proceed to installation request to pm.
 PACKAGE_MANAGER=""
+DEVENVS=() # Environments are sets of programs, so they can be mixed and matched.
+LOG_LEVEL="INFO"
 
-# Logging helper funciton, to avoid duplicating echo.
+main() {
+  start_logger "$@"
+  log_debug "Starting installation script with log level: $LOG_LEVEL"
+
+  readopts "${CLEANED_ARGS[@]}"
+  log_debug "Parsed options: FORCE=$FORCE, DEVENVS=${DEVENVS[*]}"
+
+  PACKAGE_MANAGER=$(extract_pm)
+  log_debug "Detected package manager: $PACKAGE_MANAGER"
+}
+
+# Parse log level manually and previously to the rest of the opts as the logger is needed for the rest of the script.
+extract_log_level() {
+  local args=()
+  local valid_levels=("DEBUG" "INFO" "NOTICE" "WARN" "ERROR" "CRITICAL" "ALERT" "EMERGENCY")
+  local found_level=""
+  local arg value
+
+  while [[ $# -gt 0 ]]; do
+    arg="$1"
+    value="$2"
+
+    case "$arg" in
+    -l | --log-level)
+      if [[ -n "$value" && "$value" != -* ]]; then
+        for level in "${valid_levels[@]}"; do
+          if [[ "$value" == "$level" ]]; then
+            found_level="$value"
+            break
+          fi
+        done
+
+        if [[ -n "$found_level" ]]; then
+          LOG_LEVEL="$found_level"
+        else
+          echo "Invalid log level: '$value'. Defaulting to INFO."
+        fi
+        shift 2
+      else
+        echo "Missing log level value after $arg. Defaulting to INFO."
+        shift
+      fi
+      ;;
+    *)
+      args+=("$arg")
+      shift
+      ;;
+    esac
+  done
+
+  CLEANED_ARGS=("${args[@]}")
+}
+
+# Logger for this script. Thanks to [GingerGraham](https://github.com/GingerGraham).
+# His script is something I was considering making myself, but his work saved me the time
+# and the structure of his code has helped shape this install script itself.
+start_logger() {
+  extract_log_level "$@"
+  source "${REPO_ROOT}/.config/dotfiles/utils/bash_logging/logging.sh"
+  # LOG_LEVEL will be set to the default if not specified.
+  init_logger --color --journal --tag "$(basename "${0}")" --level "$LOG_LEVEL"
+}
+
+# Argument parsing.
 readopts() {
-  TEMP=$(getopt -o d:hf --long devenv:,help,force -n "installing script" -- "$@")
+  TEMP=$(getopt -o d:hf --long devenv:,help,force -n "$0" -- "$@")
 
   eval set -- "$TEMP"
 
   while true; do
     case "$1" in
-      -d | --devenv)
-        if [[ -n "$2" ]]; then
-          DEVENV="$2"
-          shift 2
-        else
-          log "Error: --devenv requires an argument."
-          usage
-          exit 1
-        fi
-        ;;
-      -h | --help)
+    -d | --devenv)
+      if [[ -n "$2" && "$2" != -* ]]; then
+        IFS=',' read -ra ENV_ARRAY <<<"$2"
+        DEVENVS+=("${ENV_ARRAY[@]}")
+        shift 2
+      else
+        log_error "command --devenv requires an argument."
         usage
-        exit 0
-        ;;
-      -f | --force)
-        FORCE=true
-        shift
-        ;;
-      --)
-        shift
-        break
-        ;;
-      *)
-        log "Error: Invalid option $1"
-        shift
-        ;;
+        exit 1
+      fi
+      ;;
+    -f | --force)
+      FORCE=true
+      shift
+      ;;
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    --)
+      shift
+      break
+      ;;
+    *)
+      log_error "Invalid option $1"
+      shift
+      ;;
     esac
   done
 }
+
 # Help function, invoke on mistakes and whenever the user asks for it.
 usage() {
-  cat << EOF
-  Usage $0 [options]
-  -d| --devenv  Specify the development environment to install. 
+  cat <<-EOF
+Usage $0 [options]
+
+$0 is a script that installs the appropiate mix of programs into the current system.
+It is meant to be used at the root of the dotfiles folder and it uses mainly the package manager
+of the system to install the programs. Some programs can be installed without it, but they're the exception.
+
+Current available options are:
+-d| --devenv    Specify the development environment to install. 
                 Remember to include at least a single environment.
                 More than one works provided they're separated by commas not spaces (e.g. java,cpp,server).
                 Lack of specification will install all environments.
-  -h| --help    Show this help message
-  -f| --force   Force installation, overwriting existing files
-  
-  EOF
+-f| --force     Force installation, overwriting existing files
+-h| --help      Show this help message
+-l| --log-level The log level to use. 
+                See .config/dotfiles/utils/bash_logging/bash_logging.md for available levels.
+                Default is INFO. Recommended are DEBUG, INFO or ERROR.
+EOF
 }
 
-
-
+# Extract the package manager from the system. This is to facilitat installation and because
+# many programs will depend on being installed through their pm.
 extract_pm() {
   if command -v apt >/dev/null 2>&1; then
-    return "apt"  # Debian-based
+    echo "apt" # Debian-based
   elif command -v pacman >/dev/null 2>&1; then
-    return "pacman"  # Arch-based
+    echo "pacman" # Arch-based
   else
-    log "Package manager not supported, skipping installation of packages no supported outside of them."
+    log_error "Package manager not supported, skipping installation of packages no supported outside of them."
   fi
 }
 
-main() {
-  PACKAGE_MANAGER=$(extract_pm)
-  # Set error exit.
-  set -e
-
-
-  # Source pre-configured installation files.
-  (. "$HOME/.dotfiles/.config/dotfiles/essential-installs")
-  (. "$HOME/.dotfiles/.config/dotfiles/connections")
-  (. "$HOME/.dotfiles/.config/dotfiles/optional-installs")
-}
-
-main
+main "$@"

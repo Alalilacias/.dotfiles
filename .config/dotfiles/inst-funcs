@@ -3,15 +3,13 @@
 # Description: Recopilation of the functions necesssary for the installation of the dotfiles
 # Version: 0.1
 
-# Makeshift constant for
-FORCE_INSTALL="${FORCE_INSTALL:-false}"
-APT_UPDATED=false
+PKG_MANAGER_UPDATED=false
 
 # Checks if the given package installed, with some exceptions for special files that aren't installed through the manager.
-# Currently only setup for apt.
+# Currently only tested for apt, as I have no other machines.
 is_app_executable() {
-  # If FORCE_INSTALL is true, always pretend the executable is not available. I'll probably change this soon enough.
-  if [[ "$FORCE_INSTALL" == "true" ]]; then
+  # Pretend app is not installed so installation proceeds regardless.
+  if [[ "$FORCE" == "true" ]]; then
     return 1
   fi
 
@@ -25,7 +23,20 @@ is_app_executable() {
     gem list --local neovim &>/dev/null
     ;;
   python3-setuptools | ruby-dev)
-    dpkg -l | grep -q "$executable" &>/dev/null
+    case "$PACKAGE_MANAGER" in
+    apt)
+      dpkg -l | grep -q "$executable" &>/dev/null
+      ;;
+    pacman)
+      pacman -Qi "$executable" &>/dev/null
+      ;;
+    dnf)
+      dnf list installed "$executable" &>/dev/null
+      ;;
+    *)
+      command -v "$executable" &>/dev/null
+      ;;
+    esac
     ;;
   *)
     command -v "$executable" &>/dev/null
@@ -46,10 +57,22 @@ install_package() {
     echo "No valid source file found for $package"
   fi
 }
-# Makeshift funcition. Should be modified if Dotfiles are modified to accomodate other package managers.
-update_apt_if_needed() {
-  if [[ "$APT_UPDATED" == "false" ]]; then
-    sudo apt update
-    APT_UPDATED=true
+
+# Makeshift function. Should be modified if Dotfiles are modified to accomodate other package managers.
+update_pm_if_needed() {
+  if [[ "$PKG_MANAGER_UPDATED" == "false" ]]; then
+    case "$PACKAGE_MANAGER" in
+    apt)
+      sudo apt update
+      ;;
+    pacman) ;;
+    dnf)
+      sudo dnf check-update || true
+      ;;
+    *)
+      echo "Unknown package manager: $PACKAGE_MANAGER"
+      ;;
+    esac
+    PKG_MANAGER_UPDATED=true
   fi
 }
