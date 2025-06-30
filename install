@@ -10,118 +10,38 @@
 # - Finish setting up installation.
 # - Modify install.json or the method for configuration of installation database used by script.
 
-# Get the directory where the script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# Set REPO_ROOT to the script directory, as that should be the git repo root
-REPO_ROOT="${SCRIPT_DIR}"
-
 # Global Variables
-CLEANED_ARGS=() # Arguments cleaned of log level and other options.
-FORCE=false     # Ignore if the program is installed and proceed to installation request to pm.
+DOTFILES_DIR="${HOME}/.dotfiles"
+DOTCONFIG_DIR="${DOTFILES_DIR}/.config/dotfiles"
+SETUP_FUNCS="${DOTCONFIG_DIR}/dotfiles-setup"
+INSTALL_FUNCS="${DOTCONFIG_DIR}/dotfiles-installation"
+
 PACKAGE_MANAGER=""
-DEVENVS=() # Environments are sets of programs, so they can be mixed and matched.
-LOG_LEVEL="INFO"
 
 main() {
-  start_logger "$@"
-  log_debug "Starting installation script with log level: $LOG_LEVEL"
+  # Sourcing the file where most of the setup functions are.
+  # Keep in mind that this file sources the following:
+  # - Variables: CLEANED_ARGS, DEVENVS, FORCE, LOG_LEVEL
+  # - Functions: start_logger, extract_log_level, readopts, extract_pm
+  source "${SETUP_FUNCS}"
 
-  readopts "${CLEANED_ARGS[@]}"
+  # Extract log level and cleaned arguments and initialize the logger.
+  extract_log_level "$@"
+  start_logger
+  log_debug "Starting installation script with the following cleaned arguments: ${cleaned_args[*]}"
+
+  readopts "${cleaned_args[@]}"
   log_debug "Parsed options: FORCE=$FORCE, DEVENVS=${DEVENVS[*]}"
 
   PACKAGE_MANAGER=$(extract_pm)
   log_debug "Detected package manager: $PACKAGE_MANAGER"
-}
 
-# Parse log level manually and previously to the rest of the opts as the logger is needed for the rest of the script.
-extract_log_level() {
-  local args=()
-  local valid_levels=("DEBUG" "INFO" "NOTICE" "WARN" "ERROR" "CRITICAL" "ALERT" "EMERGENCY")
-  local found_level=""
-  local arg value
-
-  while [[ $# -gt 0 ]]; do
-    arg="$1"
-    value="$2"
-
-    case "$arg" in
-    -l | --log-level)
-      if [[ -n "$value" && "$value" != -* ]]; then
-        for level in "${valid_levels[@]}"; do
-          if [[ "$value" == "$level" ]]; then
-            found_level="$value"
-            break
-          fi
-        done
-
-        if [[ -n "$found_level" ]]; then
-          LOG_LEVEL="$found_level"
-        else
-          echo "Invalid log level: '$value'. Defaulting to INFO."
-        fi
-        shift 2
-      else
-        echo "Missing log level value after $arg. Defaulting to INFO."
-        shift
-      fi
-      ;;
-    *)
-      args+=("$arg")
-      shift
-      ;;
-    esac
-  done
-
-  CLEANED_ARGS=("${args[@]}")
-}
-
-# Logger for this script. Thanks to [GingerGraham](https://github.com/GingerGraham).
-# His script is something I was considering making myself, but his work saved me the time
-# and the structure of his code has helped shape this install script itself.
-start_logger() {
-  extract_log_level "$@"
-  source "${REPO_ROOT}/.config/dotfiles/utils/bash_logging/logging.sh"
-  # LOG_LEVEL will be set to the default if not specified.
-  init_logger --color --journal --tag "$(basename "${0}")" --level "$LOG_LEVEL"
-}
-
-# Argument parsing.
-readopts() {
-  TEMP=$(getopt -o d:hf --long devenv:,help,force -n "$0" -- "$@")
-
-  eval set -- "$TEMP"
-
-  while true; do
-    case "$1" in
-    -d | --devenv)
-      if [[ -n "$2" && "$2" != -* ]]; then
-        IFS=',' read -ra ENV_ARRAY <<<"$2"
-        DEVENVS+=("${ENV_ARRAY[@]}")
-        shift 2
-      else
-        log_error "command --devenv requires an argument."
-        usage
-        exit 1
-      fi
-      ;;
-    -f | --force)
-      FORCE=true
-      shift
-      ;;
-    -h | --help)
-      usage
-      exit 0
-      ;;
-    --)
-      shift
-      break
-      ;;
-    *)
-      log_error "Invalid option $1"
-      shift
-      ;;
-    esac
-  done
+  # Setup finished, starting installation.
+  # Sourcing the file where the installation functions are.
+  # Keep in mind that this file sources the following:
+  # - Variables:
+  # - Functions:
+  source "${INSTALL_FUNCS}"
 }
 
 # Help function, invoke on mistakes and whenever the user asks for it.
@@ -144,18 +64,6 @@ Current available options are:
                 See .config/dotfiles/utils/bash_logging/bash_logging.md for available levels.
                 Default is INFO. Recommended are DEBUG, INFO or ERROR.
 EOF
-}
-
-# Extract the package manager from the system. This is to facilitat installation and because
-# many programs will depend on being installed through their pm.
-extract_pm() {
-  if command -v apt >/dev/null 2>&1; then
-    echo "apt" # Debian-based
-  elif command -v pacman >/dev/null 2>&1; then
-    echo "pacman" # Arch-based
-  else
-    log_error "Package manager not supported, skipping installation of packages no supported outside of them."
-  fi
 }
 
 main "$@"

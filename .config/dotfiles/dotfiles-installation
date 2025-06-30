@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
 # Description: Recopilation of the functions necesssary for the installation of the dotfiles
-# Version: 0.1
+# Version: 0.3
 
 PKG_MANAGER_UPDATED=false
 

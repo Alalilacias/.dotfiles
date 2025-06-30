@@ -20,8 +20,8 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- Extras can be added here, source: https://github.com/LazyVim/LazyVim/discussions/1674
     -- AI
-    { import = "lazyvim.plugins.extras.ai.copilot" },
-    { import = "lazyvim.plugins.extras.ai.copilot-chat" },
+    -- { import = "lazyvim.plugins.extras.ai.copilot" },
+    -- { import = "lazyvim.plugins.extras.ai.copilot-chat" },
 
     -- DAP
     { import = "lazyvim.plugins.extras.dap.core" },
