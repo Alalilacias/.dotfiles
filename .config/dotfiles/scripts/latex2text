@@ -1,17 +1,19 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description:
-# Version: 0.1
+# Description: Installs latex2text via pip3
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/latex2text"
+# Version: 0.4
 
-echo "latex2latex not found, installing..."
-if command -v apt &>/dev/null; then
-  # This is a Python tool: https://github.com/phfaist/pylatexenc
-  pip3 install --user latex2text
+set -euo pipefail
 
-  # Ensure ~/.local/bin is in PATH if needed
-  if ! echo "$PATH" | grep -q "$HOME/.local/bin"; then
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >>"$HOME/.profile"
-  fi
-else
-  echo "Package manager not supported"
+log_debug "Checking for pip3..."
+if ! command -v pip3 &>/dev/null; then
+  log_error "pip3 is not installed. Cannot install latex2text."
+  return 1
 fi
+
+log_debug "Installing latex2text using pip..."
+pip3 install --user latex2text
+
+log_info "latex2text installed."
+return 0

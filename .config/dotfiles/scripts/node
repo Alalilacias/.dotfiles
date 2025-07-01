@@ -4,16 +4,16 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/node"
 # Version: 0.2
 
-echo "node not found, installing..."
+set -euo pipefail
 
 if ! command -v fnm &>/dev/null; then
-  echo "fnm is not installed. Please install it before running this script."
-  exit 1
+  log_error "fnm is not installed. Please install it before running this script."
+  return 1
 fi
 
-echo "Installing latest Node.js LTS via fnm..."
+log_debug "Installing latest Node.js LTS via fnm..."
 fnm install --lts
 fnm use -- --lts
 fnm default lts
 
-echo "Node.js installation complete."
+log_debug "Node.js installation complete."

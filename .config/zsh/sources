@@ -12,9 +12,6 @@ source "$HOME/.dotfiles/.config/zsh/modules/functions/core_functions"
 simple-file-source "$HOME/.dotfiles/.config/zsh/modules/aliases/aliases"
 simple-file-source "$HOME/.dotfiles/.config/zsh/modules/functions/functions"
 
-simple-file-source "$HOME/.dotfiles/.config/zsh/modules/prompt/prompt.zsh"
-simple-file-source "$HOME/.dotfiles/.config/zsh/modules/options/options.zsh"
-
 # Plugins
 
 file-if-directory-source "$HOME/.dotfiles/submodules/fast-syntax-highlighting" "fast-syntax-highlighting.plugin.zsh"

@@ -1,13 +1,29 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs Kitty
+# Description: Installs the latest stable version of Kitty terminal emulator
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/kitty"
 # Version: 0.1
 
-echo "kitty not found, installing..."
-if command -v apt &>/dev/null; then
-  
-  sudo apt install -y kitty
-else
-  echo "Package manager not supported"
+set -euo pipefail
+
+log_debug "Installing kitty terminal..."
+
+KITTY_INSTALL_DIR="$HOME/.local/kitty"
+KITTY_BIN_DIR="$HOME/.local/bin"
+KITTY_EXEC="$KITTY_BIN_DIR/kitty"
+
+if [ -x "$KITTY_EXEC" ]; then
+  log_debug "kitty already installed at $KITTY_EXEC"
+  return 0
 fi
+
+log_debug "Downloading and running official installer..."
+curl -L https://sw.kovidgoyal.net/kitty/installer.sh | bash -s -- --install-dir "$KITTY_INSTALL_DIR"
+
+log_debug "Ensuring bin directory exists: $KITTY_BIN_DIR"
+mkdir -p "$KITTY_BIN_DIR"
+
+log_debug "Linking kitty binary to $KITTY_EXEC"
+ln -sf "$KITTY_INSTALL_DIR"/bin/kitty "$KITTY_EXEC"
+
+log_info "kitty installed successfully."

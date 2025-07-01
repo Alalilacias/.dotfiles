@@ -21,3 +21,12 @@ export-if-dir() {
     shift
   done
 }
+export-if-exec() {
+  local bin_path="$1"
+  shift
+  if [[ -x "$bin_path" ]]; then
+    for var in "$@"; do
+      export "$var"
+    done
+  fi
+}

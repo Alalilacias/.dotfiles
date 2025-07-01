@@ -2,8 +2,8 @@
 # Author: Alalilacias
 # Description: Installs fnm
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/fnm"
-# Version: 0.1
+# Version: 0.2
 
-echo "fnm not found, installing..."
+log_info "fnm not found, installing..."
 
-curl -fsSL https://fnm.vercel.app/install | bash
+curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell

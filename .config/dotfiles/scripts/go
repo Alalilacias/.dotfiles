@@ -2,14 +2,14 @@
 # Author: Alalilacias
 # Description: Installs Go into .local/tools and symlinks binaries to bin/
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/go"
-# Version: 0.2
+# Version: 0.3
 
 GO_VERSION="1.22.0"
 GO_DIR="$HOME/.dotfiles/.local/tools/go"
 BIN_DIR="$HOME/.dotfiles/bin"
 TMP_DIR="/tmp/dotfiles-go-install"
 
-echo "Installing Go $GO_VERSION..."
+log_info "Installing Go $GO_VERSION..."
 
 mkdir -p "$TMP_DIR" "$GO_DIR" "$BIN_DIR"
 cd "$TMP_DIR" || exit 1
@@ -21,4 +21,4 @@ ln -sf "$GO_DIR/bin/go" "$BIN_DIR/go"
 ln -sf "$GO_DIR/bin/gofmt" "$BIN_DIR/gofmt"
 
 rm -rf "$TMP_DIR"
-echo "Go $GO_VERSION installed in $GO_DIR and linked to $BIN_DIR"
+log_info "Go $GO_VERSION installed in $GO_DIR and linked to $BIN_DIR"

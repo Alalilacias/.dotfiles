@@ -2,16 +2,20 @@
 # Author: Alalilacias
 # Description: Installs Neovim Python provider into .local/tools
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/neovim-pip"
-# Version: 0.2
+# Version: 0.3
 
-echo "Installing Neovim Python module..."
+set -euo pipefail
 
 PYTHON_HOME="$HOME/.dotfiles/.local/tools/python"
-mkdir -p "$PYTHON_HOME"
+PIP_TARGET="$PYTHON_HOME/lib"
 
-if command -v pip3 &>/dev/null; then
-  PIP_TARGET="$PYTHON_HOME/lib"
-  PYTHONUSERBASE="$PYTHON_HOME" pip3 install --no-warn-script-location --upgrade neovim
-else
-  echo "pip3 is required but not found"
+mkdir -p "$PIP_TARGET"
+
+if ! command -v pip3 &>/dev/null; then
+  log_error "pip3 is required but not found in PATH."
+  return 1
 fi
+
+PYTHONUSERBASE="$PYTHON_HOME" pip3 install --no-warn-script-location --upgrade pynvim
+
+log_info "Neovim Python provider installed to $PYTHON_HOME"

@@ -6,42 +6,22 @@
 # Version: 0.1
 
 # TODO Finish setting up the script. That includes:
-# - Look into better code organitzation, perhaps compartimentalization and the value of it, or lack thereof.
-# - Finish setting up installation.
 # - Modify install.json or the method for configuration of installation database used by script.
+# - Finish setting up installation.
 
 # Global Variables
-DOTFILES_DIR="${HOME}/.dotfiles"
-DOTCONFIG_DIR="${DOTFILES_DIR}/.config/dotfiles"
+# Directories
+DOTFILES_DIR="${HOME}/.dotfiles/"
+DOTCONFIG_DIR="${DOTFILES_DIR}.config/dotfiles/"
+# Function files
 SETUP_FUNCS="${DOTCONFIG_DIR}/dotfiles-setup"
 INSTALL_FUNCS="${DOTCONFIG_DIR}/dotfiles-installation"
-
+#Utility
 PACKAGE_MANAGER=""
 
 main() {
-  # Sourcing the file where most of the setup functions are.
-  # Keep in mind that this file sources the following:
-  # - Variables: CLEANED_ARGS, DEVENVS, FORCE, LOG_LEVEL
-  # - Functions: start_logger, extract_log_level, readopts, extract_pm
-  source "${SETUP_FUNCS}"
-
-  # Extract log level and cleaned arguments and initialize the logger.
-  extract_log_level "$@"
-  start_logger
-  log_debug "Starting installation script with the following cleaned arguments: ${cleaned_args[*]}"
-
-  readopts "${cleaned_args[@]}"
-  log_debug "Parsed options: FORCE=$FORCE, DEVENVS=${DEVENVS[*]}"
-
-  PACKAGE_MANAGER=$(extract_pm)
-  log_debug "Detected package manager: $PACKAGE_MANAGER"
-
-  # Setup finished, starting installation.
-  # Sourcing the file where the installation functions are.
-  # Keep in mind that this file sources the following:
-  # - Variables:
-  # - Functions:
-  source "${INSTALL_FUNCS}"
+  manage_setup "$@"
+  manage_installation
 }
 
 # Help function, invoke on mistakes and whenever the user asks for it.
@@ -64,6 +44,33 @@ Current available options are:
                 See .config/dotfiles/utils/bash_logging/bash_logging.md for available levels.
                 Default is INFO. Recommended are DEBUG, INFO or ERROR.
 EOF
+}
+manage_setup() {
+  # Sourcing the file where most of the setup functions are.
+  # Keep in mind that this file sources the following:
+  # - Variables: CLEANED_ARGS, DEVENVS, FORCE, LOG_LEVEL
+  # - Functions: start_logger, extract_log_level, readopts, extract_pm
+  source "${SETUP_FUNCS}"
+
+  # Extract log level and cleaned arguments and initialize the logger.
+  extract_log_level "$@"
+  start_logger
+  log_debug "Starting installation script with the following cleaned arguments: ${cleaned_args[*]}"
+
+  readopts "${cleaned_args[@]}"
+  log_debug "Parsed options: FORCE=$FORCE, DEVENVS=${DEVENVS[*]}"
+
+  PACKAGE_MANAGER=$(extract_pm)
+  log_debug "Detected package manager: $PACKAGE_MANAGER"
+}
+manage_installation() {
+  # Setup finished, starting installation.
+  # Sourcing the file where the installation functions are.
+  # Keep in mind that this file sources the following:
+  # - Variables:
+  # - Functions:
+  source "${INSTALL_FUNCS}"
+
 }
 
 main "$@"

@@ -1,0 +1,25 @@
+{
+  "base": ["git", "zsh", "curl", "software-properties-common"],
+  "cpp": ["build-essential", "libstdc++-12-dev", "cmake", "tree-sitter"],
+  "java": ["openjdk-17-jdk"],
+  "neovim-minimal": ["nvim", "ripgrep", "fd-find", "luarocks"],
+  "neovim-advanced": [
+    "python3-pip",
+    "neovim-pip",
+    "ruby-dev",
+    "neovim-gem",
+    "fnm",
+    "node",
+    "neovim-npm",
+    "lazygit",
+    "tree-sitter",
+    "fzf",
+    "ripgrep",
+    "rustup",
+    "fd-find",
+    "luarocks",
+    "tree"
+  ],
+  "data-sci": ["julia", "python-modules", "python3-pip"],
+  "docs": ["pandoc", "texlive-xetex", "latex2text", "imagemagick"]
+}

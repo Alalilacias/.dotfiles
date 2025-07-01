@@ -1,16 +1,48 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs Lazygit
+# Description: Installs Lazygit via package manager or GitHub release (fallback for apt)
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/lazygit"
-# Version: 0.1
+# Version: 0.3
 
-echo "lazygit not found, installing..."
-if command -v apt &>/dev/null; then
-  LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
-  curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-  tar xf lazygit.tar.gz lazygit
-  sudo install lazygit -D -t /usr/local/bin/
-  rm lazygit.tar.gz lazygit
+set -euo pipefail
+
+log_debug "Checking for lazygit..."
+
+if command -v pacman &>/dev/null; then
+  log_debug "Detected pacman. Installing lazygit..."
+  sudo pacman -Sy --noconfirm lazygit
+elif command -v dnf &>/dev/null; then
+  log_debug "Detected dnf. Installing lazygit..."
+  sudo dnf install -y lazygit
+elif command -v apt &>/dev/null; then
+  log_debug "Detected apt. Checking if lazygit is available..."
+  if apt-cache show lazygit &>/dev/null; then
+    log_debug "Installing lazygit from apt..."
+    sudo apt update
+    sudo apt install -y lazygit
+  else
+    log_debug "lazygit not available in apt. Falling back to GitHub binary release..."
+
+    ARCH=$(uname -m)
+    if [[ "$ARCH" != "x86_64" ]]; then
+      log_error "Manual install only supports x86_64 at this time."
+      return 1
+    fi
+
+    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
+    URL="https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+
+    log_debug "Downloading lazygit $LAZYGIT_VERSION from GitHub..."
+    curl -Lo lazygit.tar.gz "$URL"
+    tar xf lazygit.tar.gz lazygit
+    sudo install lazygit -D -t /usr/local/bin/
+    rm lazygit.tar.gz lazygit
+
+    log_info "lazygit installed manually from GitHub."
+  fi
 else
-  echo "Package manager not supported"
+  log_error "Unsupported package manager. Please install lazygit manually."
+  return 1
 fi
+
+log_info "lazygit installation complete."

@@ -1,4 +1,4 @@
-export-if-dir "$HOME/.dotfiles/.local/tools/go/bin" \
+export-if-exec "$HOME/.dotfiles/.local/tools/go/bin/go" \
   "GOROOT=$HOME/.dotfiles/.local/tools/go" \
   "GOPATH=$HOME/go" \
   "GOBIN=$HOME/go/bin" \

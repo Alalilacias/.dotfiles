@@ -4,10 +4,15 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/neovim-gem"
 # Version: 0.3
 
-echo "Installing Neovim Ruby gem..."
+set -euo pipefail
 
 GEM_HOME="$HOME/.dotfiles/.local/tools/gems"
 BIN_DIR="$HOME/.dotfiles/bin"
+
+if ! command -v gem &>/dev/null; then
+  log_error "RubyGems (gem) not found in PATH."
+  return 1
+fi
 
 mkdir -p "$GEM_HOME/bin" "$BIN_DIR"
 

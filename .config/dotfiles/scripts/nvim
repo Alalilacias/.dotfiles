@@ -1,17 +1,54 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs Neovim
+# Description: Installs the latest Neovim using system-specific unstable repositories
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/nvim"
-# Version: 0.1
+# Version: 0.3
 
-echo "nvim not found, installing..."
-if command -v apt &>/dev/null; then
-  echo "Installing Neovim (unstable branch)..."
-  if ! grep -q "neovim-ppa" /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null; then
-    sudo add-apt-repository -y ppa:neovim-ppa/unstable
+main() {
+  set -euo pipefail
+
+  if command -v apt &>/dev/null; then
+    debian_installation
+  elif command -v dnf &>/dev/null; then
+    fedora_installation
+  elif command -v pacman &>/dev/null; then
+    arch_installation
+  else
+    log_error "Unsupported system: no known package manager found"
+    return 1
   fi
-  sudo apt-get update
-  sudo apt-get install -y neovim
-else
-  echo "Package manager not supported"
-fi
+}
+
+debian_installation() {
+  if ! command -v add-apt-repository &>/dev/null; then
+    log_error "software-properties-common not found, unable to install neovim."
+    return 1
+  fi
+
+  log_debug "Adding Neovim unstable PPA"
+  sudo add-apt-repository -y ppa:neovim-ppa/unstable
+  sudo apt update
+  sudo apt install -y neovim
+}
+
+fedora_installation() {
+  log_debug "Installing dnf-plugins-core if not present"
+  sudo dnf install -y dnf-plugins-core
+
+  log_debug "Enabling Neovim nightly COPR repo"
+  sudo dnf copr enable -y agriffis/neovim-nightly
+  sudo dnf install -y neovim
+}
+
+arch_installation() {
+  if command -v paru &>/dev/null || command -v yay &>/dev/null; then
+    AUR_HELPER=$(command -v paru || command -v yay)
+    log_debug "Installing neovim-nightly-bin via $AUR_HELPER"
+    "$AUR_HELPER" -S --noconfirm neovim-nightly-bin
+  else
+    log_warn "No AUR helper (paru or yay) found. Falling back to stable Neovim."
+    sudo pacman -S --noconfirm neovim
+  fi
+}
+
+main

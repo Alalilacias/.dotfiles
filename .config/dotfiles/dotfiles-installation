@@ -3,6 +3,10 @@
 # Description: Recopilation of the functions necesssary for the installation of the dotfiles
 # Version: 0.3
 
+# All custom install scripts must go in the same folder, as that is the way the installer is built.
+# This is entirely due to my personal preference, but I believe that should be easier to manage than
+# putting a distinct address (duplicated most of the time) in the config json files.
+CUSTOM_INSTALL_DIR="${DOTCONFIG_DIR}/scripts/"
 PKG_MANAGER_UPDATED=false
 
 # Checks if the given package installed, with some exceptions for special files that aren't installed through the manager.
@@ -59,6 +63,9 @@ install_package() {
 }
 
 # Makeshift function. Should be modified if Dotfiles are modified to accomodate other package managers.
+# It is important to note that I haven't gotten my hands on a Fedora or Arch based system yet.
+# That is to say, most applications of pacman and dnf are based on what I've found online about them,
+# rather than my own experience with the systems.
 update_pm_if_needed() {
   if [[ "$PKG_MANAGER_UPDATED" == "false" ]]; then
     case "$PACKAGE_MANAGER" in

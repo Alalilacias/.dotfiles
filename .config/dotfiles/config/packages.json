@@ -1,0 +1,397 @@
+{
+  "packages": {
+    "git": {
+      "description": "Distributed version control system used for source code management. It should, normally, be installed previously as the dotfiles are normally installed through it, but, just in case, it is included.",
+      "check_type": "executable",
+      "check_value": "git",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["git"],
+        "dnf": ["git"],
+        "pacman": ["git"]
+      },
+      "dependencies": []
+    },
+    "zsh": {
+      "description": "A powerful interactive shell with advanced scripting capabilities, often used as a Bash alternative. I am part of that often, for ricing purposes mainly, but some functionality as well.",
+      "check_type": "executable",
+      "check_value": "zsh",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["zsh"],
+        "dnf": ["zsh"],
+        "pacman": ["zsh"]
+      },
+      "dependencies": []
+    },
+    "curl": {
+      "description": "Command-line tool for transferring data with URL syntax, supporting various protocols including HTTP, HTTPS, FTP, and more. I should learn more about using CURL, but, for now, it is used as the installation tool for some other packages.",
+      "check_type": "executable",
+      "check_value": "curl",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["curl"],
+        "dnf": ["curl"],
+        "pacman": ["curl"]
+      },
+      "dependencies": []
+    },
+    "software-properties-common": {
+      "description": "Ubuntu/Debian package providing scripts like add-apt-repository to manage APT sources more easily. Used mainly for the executable add-apt-repository that I use to get some unstable repositories.",
+      "check_type": "executable",
+      "check_value": "add-apt-repository",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["software-properties-common"]
+      },
+      "dependencies": []
+    },
+    "build-essential": {
+      "description": "Meta-package in Debian-based systems that installs essential tools for building software, including gcc, g++, make, and others. Given that it is a set of essential tools for compiling and building software, including GCC, G++, Make, and development headers, I searched for equivalents on Google and the package to it.",
+      "check_type": "executable",
+      "check_value": "gcc",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["build-essential"],
+        "dnf": ["gcc", "gcc-c++", "make", "kernel-devel"],
+        "pacman": ["base-devel"]
+      },
+      "dependencies": []
+    },
+    "libstdc++-12-dev": {
+      "description": "Development files for the GNU Standard C++ Library, providing headers and libraries required to compile C++ programs.Lacking this gave me a three hour headache when I was learning to configure neovim for cpp coding, so, praise the package.",
+      "check_type": "executable",
+      "check_value": "g++",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["libstdc++-12-dev"],
+        "dnf": ["libstdc++-devel"],
+        "pacman": ["base-devel"]
+      },
+      "dependencies": []
+    },
+    "cmake": {
+      "description": "Cross-platform tool for managing the build process of software using compiler-independent configuration files. I love this thing. Perhaps it's lack of experience with it and I might grow to hate it one day, but, for now, my cpp experience depends on it.",
+      "check_type": "executable",
+      "check_value": "cmake",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["cmake"],
+        "dnf": ["cmake"],
+        "pacman": ["cmake"]
+      },
+      "dependencies": []
+    },
+    "tree-sitter": {
+      "description": "Parser generator tool and incremental parsing library used for syntax highlighting and code analysis.",
+      "check_type": "executable",
+      "check_value": "tree-sitter",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["fnm", "node"]
+    },
+    "openjdk-17-jdk": {
+      "description": "Open-source implementation of the Java Platform, Standard Edition — includes the JDK, compiler, and development tools for Java 17.",
+      "check_type": "executable",
+      "check_value": "javac",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["openjdk-17-jdk"],
+        "dnf": ["java-17-openjdk-devel"],
+        "pacman": ["jdk-openjdk"]
+      },
+      "dependencies": []
+    },
+    "nvim": {
+      "description": "Neovim is a hyperextensible Vim-based text editor. This installs the latest available release or nightly build.",
+      "check_type": "executable",
+      "check_value": "nvim",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": []
+    },
+    "ripgrep": {
+      "description": "Fast command-line search tool written in Rust that recursively searches your current directory for a regex pattern. Necessary for some neovim utilities.",
+      "check_type": "executable",
+      "check_value": "rg",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["ripgrep"],
+        "dnf": ["ripgrep"],
+        "pacman": ["ripgrep"]
+      },
+      "dependencies": []
+    },
+    "fd-find": {
+      "description": "A simple, fast and user-friendly alternative to 'find', installed via cargo and symlinked locally. Again, needed for some extra functionalities in neovim.",
+      "check_type": "executable",
+      "check_value": "fdfind",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["rustup"]
+    },
+    "luarocks": {
+      "description": "A package manager for the Lua programming language used to install and manage Lua modules. Neovim requested this of me and I was not about to deny it to it.",
+      "check_type": "executable",
+      "check_value": "luarocks",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["luarocks"],
+        "dnf": ["luarocks"],
+        "pacman": ["luarocks"]
+      },
+      "dependencies": []
+    },
+    "python3-pip": {
+      "description": "Python package installer for Python 3, used to manage and install Python modules from PyPI.",
+      "check_type": "executable",
+      "check_value": "pip3",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["python3-pip"],
+        "dnf": ["python3-pip"],
+        "pacman": ["python-pip"]
+      },
+      "dependencies": []
+    },
+    "neovim-pip": {
+      "description": "Python client for Neovim, required for Python plugin support in Neovim.",
+      "check_type": "python_module",
+      "check_value": "pynvim",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["python3-pip"]
+    },
+    "ruby-dev": {
+      "description": "Development headers for Ruby, needed to build native extensions such as Neovim's Ruby provider.",
+      "check_type": "file",
+      "check_value": "ruby.h",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["ruby-dev"],
+        "dnf": ["ruby-devel"],
+        "pacman": ["ruby"]
+      },
+      "dependencies": []
+    },
+    "neovim-gem": {
+      "description": "Ruby host for Neovim, required for running plugins written in Ruby.",
+      "check_type": "executable",
+      "check_value": "neovim-ruby-host",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["ruby-dev"]
+    },
+    "fnm": {
+      "description": "Fast and simple Node.js version manager, used to manage multiple Node versions. Installed via a custom script since it's not available through default package managers. It’s required for managing versions cleanly and used by tools like tree-sitter.",
+      "check_type": "executable",
+      "check_value": "fnm",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["curl"]
+    },
+    "node": {
+      "description": "Node.js runtime environment, required for tools like tree-sitter and Neovim plugins. Installed via fnm to allow easy version management and consistency across environments.",
+      "check_type": "executable",
+      "check_value": "node",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["fnm"]
+    },
+    "neovim-npm": {
+      "description": "Node.js provider for Neovim, installed via npm as a global package. Required for Neovim plugins that depend on Node functionality.",
+      "check_type": "npm_global_module",
+      "check_value": "neovim",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["node"]
+    },
+    "lazygit": {
+      "description": "A simple terminal UI for Git commands, useful for quickly staging, committing, and reviewing changes from the command line. Great for speeding up Git workflows inside terminals or Neovim.",
+      "check_type": "executable",
+      "check_value": "lazygit",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": []
+    },
+    "tree": {
+      "description": "Command-line utility that recursively displays directory contents in a tree-like format. Useful for quickly visualizing folder hierarchies.",
+      "check_type": "executable",
+      "check_value": "tree",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["tree"],
+        "dnf": ["tree"],
+        "pacman": ["tree"]
+      },
+      "dependencies": []
+    },
+    "sqlite3": {
+      "description": "Command-line interface for interacting with SQLite databases, commonly used for development, scripting, and lightweight storage tasks.",
+      "check_type": "executable",
+      "check_value": "sqlite3",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["sqlite3"],
+        "dnf": ["sqlite"],
+        "pacman": ["sqlite"]
+      },
+      "dependencies": []
+    },
+    "pandoc": {
+      "description": "Universal document converter that supports conversion between numerous markup and word processing formats, widely used for documentation, academic writing, and scripting.",
+      "check_type": "executable",
+      "check_value": "pandoc",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["pandoc"],
+        "dnf": ["pandoc"],
+        "pacman": ["pandoc"]
+      },
+      "dependencies": []
+    },
+    "texlive-xetex": {
+      "description": "LaTeX engine supporting Unicode and OpenType fonts. Required for generating PDF documents from markdown via Pandoc using the XeTeX engine.",
+      "check_type": "executable",
+      "check_value": "xelatex",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["texlive-xetex"],
+        "dnf": ["texlive-scheme-basic"],
+        "pacman": ["texlive-core"]
+      },
+      "dependencies": []
+    },
+    "latex2text": {
+      "description": "Python-based utility to convert LaTeX content into plain text. Useful for document processing or extracting readable content from LaTeX sources.",
+      "check_type": "executable",
+      "check_value": "latex2text",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["python3-pip"]
+    },
+    "imagemagick": {
+      "description": "Suite of tools for image manipulation and conversion. Commonly used in automation scripts and document generation workflows (e.g., PDF to PNG).",
+      "check_type": "executable",
+      "check_value": "convert",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["imagemagick"],
+        "dnf": ["imagemagick"],
+        "pacman": ["imagemagick"]
+      },
+      "dependencies": []
+    },
+    "mmdc": {
+      "description": "CLI tool for rendering Mermaid.js diagrams to images (SVG, PNG, PDF). Installed via npm and useful for documentation workflows.",
+      "check_type": "executable",
+      "check_value": "mmdc",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["node"]
+    },
+    "dotnet": {
+      "description": "CLI interface for the .NET SDK, used to develop and run applications using C#, F#, and VB.NET. Required for building and running .NET projects.",
+      "check_type": "executable",
+      "check_value": "dotnet",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": []
+    },
+    "go": {
+      "description": "Compiled programming language developed by Google, known for its simplicity, performance, and built-in concurrency. Required for Go-based tooling such as language servers or linters.",
+      "check_type": "executable",
+      "check_value": "go",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": []
+    },
+    "php": {
+      "description": "Widely-used general-purpose scripting language especially suited for web development. Required for installing and running PHP tools like Composer.",
+      "check_type": "executable",
+      "check_value": "php",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["php"],
+        "dnf": ["php"],
+        "pacman": ["php"]
+      },
+      "dependencies": []
+    },
+    "composer": {
+      "description": "Dependency manager for PHP used to manage project libraries. Required for installing PHP packages in modern web development environments.",
+      "check_type": "executable",
+      "check_value": "composer",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["php"]
+    },
+    "httrack": {
+      "description": "Command-line utility for downloading entire websites for offline browsing. Useful for archiving and mirroring static web content.",
+      "check_type": "executable",
+      "check_value": "httrack",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["httrack"],
+        "dnf": ["httrack"]
+      },
+      "dependencies": []
+    },
+    "python-modules": {
+      "description": "Essential Python modules including setuptools and venv, installed through system package managers to support virtual environments and module management.",
+      "check_type": "python_module",
+      "check_value": "setuptools",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["python3-setuptools", "python3-venv"],
+        "dnf": ["python3-setuptools", "python3-virtualenv"],
+        "pacman": ["python-setuptools", "python-virtualenv"]
+      },
+      "dependencies": ["python3-pip"]
+    },
+    "julia": {
+      "description": "High-level, high-performance programming language for scientific computing, machine learning, and data analysis. Often used in academia and research environments.",
+      "check_type": "executable",
+      "check_value": "julia",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["julia"],
+        "dnf": ["julia"],
+        "pacman": ["julia"]
+      },
+      "dependencies": []
+    },
+    "fish": {
+      "description": "A smart and user-friendly interactive shell, with autosuggestions, syntax highlighting, and scripting support. Used as an alternative to Bash or Zsh. Needed for some functionality in LazyVim.",
+      "check_type": "executable",
+      "check_value": "fish",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["fish"],
+        "dnf": ["fish"],
+        "pacman": ["fish"]
+      },
+      "dependencies": []
+    },
+    "lynx": {
+      "description": "Text-based web browser for the terminal, useful for browsing or testing websites in CLI environments, including limited-resource or SSH-only systems.",
+      "check_type": "executable",
+      "check_value": "lynx",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["lynx"],
+        "dnf": ["lynx"],
+        "pacman": ["lynx"]
+      },
+      "dependencies": []
+    },
+    "kitty": {
+      "description": "GPU-accelerated terminal emulator with ligature, image, and tab support. Known for high performance and good font rendering, used in riced terminal setups.",
+      "check_type": "executable",
+      "check_value": "kitty",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["curl"]
+    }
+  }
+}

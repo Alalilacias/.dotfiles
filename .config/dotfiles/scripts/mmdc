@@ -2,16 +2,30 @@
 # Author: Alalilacias
 # Description: Installs Mermaid CLI (mmdc) locally and symlinks binary
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/mmdc"
-# Version: 0.3
+# Version: 0.5
 
-echo "mmdc not found, installing..."
+set -euo pipefail
+
+log_debug "Checking for npm..."
+if ! command -v npm &>/dev/null; then
+  log_error "npm not found. Please install Node.js first."
+  return 1
+fi
 
 INSTALL_DIR="$HOME/.dotfiles/.local/tools/mmdc"
 BIN_DIR="$HOME/.dotfiles/bin"
+MMDC_BIN="$BIN_DIR/mmdc"
 
+if [ -x "$MMDC_BIN" ]; then
+  log_debug "mmdc already installed at $MMDC_BIN"
+  return 0
+fi
+
+log_debug "Installing mmdc locally via npm..."
 mkdir -p "$INSTALL_DIR" "$BIN_DIR"
-
 npm install -g @mermaid-js/mermaid-cli --prefix "$INSTALL_DIR"
-ln -sf "$INSTALL_DIR/bin/mmdc" "$BIN_DIR/mmdc"
 
-echo "mmdc installed and linked to $BIN_DIR/mmdc"
+log_debug "Linking mmdc binary to $MMDC_BIN"
+ln -sf "$INSTALL_DIR/bin/mmdc" "$MMDC_BIN"
+
+log_info "mmdc installed and linked to $MMDC_BIN"
