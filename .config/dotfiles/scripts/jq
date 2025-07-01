@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs jq
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/jq"
+# Version: 0.2
+
+set -euo pipefail
+
+log_debug "jq not found, installing..."
+
+if command -v apt &>/dev/null; then
+  sudo apt update -qq
+  sudo apt install -y jq
+elif command -v dnf &>/dev/null; then
+  sudo dnf install -y jq
+elif command -v pacman &>/dev/null; then
+  sudo pacman -Sy --noconfirm jq
+else
+  log_error "Package manager not supported"
+  return 1
+fi
+
+log_debug "jq installation finished."
