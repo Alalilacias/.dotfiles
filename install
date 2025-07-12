@@ -75,6 +75,7 @@ manage_installation() {
 
   check_databaseparser_availability
 
+  install_all_environments
 }
 
 main "$@"
