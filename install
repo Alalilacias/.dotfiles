@@ -47,7 +47,7 @@ EOF
 }
 manage_setup() {
   # Sourcing the file where most of the setup functions are.
-  # Keep in mind that this file sources the following:
+  # Keep in mind that this file sources the following relevant:
   # - Variables: CLEANED_ARGS, DEVENVS, FORCE, LOG_LEVEL
   # - Functions: start_logger, extract_log_level, readopts, extract_pm
   source "${SETUP_FUNCS}"
@@ -55,10 +55,12 @@ manage_setup() {
   # Extract log level and cleaned arguments and initialize the logger.
   extract_log_level "$@"
   start_logger
-  log_debug "Starting installation script with the following cleaned arguments: ${cleaned_args[*]}"
+  log_debug "Starting installation script with the following cleaned arguments: ${CLEANED_ARGS[*]}"
 
-  readopts "${cleaned_args[@]}"
+  readopts "${CLEANED_ARGS[@]}"
   log_debug "Parsed options: FORCE=$FORCE, DEVENVS=${DEVENVS[*]}"
+
+  check_dev_present "${CLEANED_ARGS[@]}"
 
   PACKAGE_MANAGER=$(extract_pm)
   log_debug "Detected package manager: $PACKAGE_MANAGER"
@@ -66,10 +68,12 @@ manage_setup() {
 manage_installation() {
   # Setup finished, starting installation.
   # Sourcing the file where the installation functions are.
-  # Keep in mind that this file sources the following:
+  # Keep in mind that this file sources the following relevant:
   # - Variables:
-  # - Functions:
+  # - Functions: check_databaseparser_availability
   source "${INSTALL_FUNCS}"
+
+  check_databaseparser_availability
 
 }
 

@@ -6,60 +6,89 @@
 # All custom install scripts must go in the same folder, as that is the way the installer is built.
 # This is entirely due to my personal preference, but I believe that should be easier to manage than
 # putting a distinct address (duplicated most of the time) in the config json files.
+CUSTOM_CONFIG_DIR="${DOTCONFIG_DIR}/config/"
 CUSTOM_INSTALL_DIR="${DOTCONFIG_DIR}/scripts/"
+ENV_FILE="${CUSTOM_CONFIG_DIR}/environments.json"
+PKG_FILE="${CUSTOM_CONFIG_DIR}/packages.json"
 PKG_MANAGER_UPDATED=false
+DATABASE_PARSER="jq"
+
+check_databaseparser_availability() {
+  if ! is_app_installed "executable" "$DATABASE_PARSER"; then
+    log_warn "${DATABASE_PARSER} not available, installing..."
+
+    local script_path="${CUSTOM_INSTALL_DIR}/${DATABASE_PARSER}"
+    if [[ -f "$script_path" ]]; then
+      source "$script_path"
+    else
+      log_error "Install script for ${DATABASE_PARSER} not found at ${script_path}"
+      exit 1
+    fi
+  fi
+}
 
 # Checks if the given package installed, with some exceptions for special files that aren't installed through the manager.
 # Currently only tested for apt, as I have no other machines.
-is_app_executable() {
-  # Pretend app is not installed so installation proceeds regardless.
-  if [[ "$FORCE" == "true" ]]; then
+is_app_installed() {
+  local check_type="$1"
+  local check_value="$2"
+
+  # Always return false if FORCE is set
+  if [[ "${FORCE:-false}" == "true" ]]; then
     return 1
   fi
 
-  local executable="$1"
-
-  case "$executable" in
-  neovim-pip)
-    pip3 show neovim &>/dev/null
+  case "$check_type" in
+  executable)
+    command -v "$check_value" &>/dev/null
     ;;
-  neovim-gem)
-    gem list --local neovim &>/dev/null
+  file)
+    # Check common include paths
+    find /usr/include /usr/local/include -name "$check_value" 2>/dev/null | grep -q .
     ;;
-  python3-setuptools | ruby-dev)
-    case "$PACKAGE_MANAGER" in
-    apt)
-      dpkg -l | grep -q "$executable" &>/dev/null
-      ;;
-    pacman)
-      pacman -Qi "$executable" &>/dev/null
-      ;;
-    dnf)
-      dnf list installed "$executable" &>/dev/null
-      ;;
-    *)
-      command -v "$executable" &>/dev/null
-      ;;
-    esac
+  python_module)
+    python3 -c "import $check_value" &>/dev/null
+    ;;
+  npm_global_module)
+    npm list -g --depth=0 "$check_value" &>/dev/null
     ;;
   *)
-    command -v "$executable" &>/dev/null
+    log_warn "Unknown check_type '$check_type' with value '$check_value'. Assuming not installed."
+    return 1
     ;;
   esac
 }
 
-install_package() {
-  local package="$1"
-  local source_file="${2//\{HOME_DIR\}/$HOME_DIR}"
+install_all_environments() {
+  for env in "${DEVENVS[@]}"; do
+    install_environment "$env"
+  done
+}
 
-  # echo "Source file for $package: '$source_file'" # Debug line
-  update_apt_if_needed
+install_environment() {
+  local environment="$1"
 
-  if [[ -n "$source_file" && -f "$source_file" ]]; then
-    source "$source_file"
-  else
-    echo "No valid source file found for $package"
+  if [[ ! -f "$ENV_FILE" ]]; then
+    log_error "Environment file not found: $ENV_FILE"
+    return 1
   fi
+
+  if ! jq -e --arg e "$environment" '.[$e]' "$ENV_FILE" >/dev/null; then
+    log_warn "Environment '$environment' not defined in $ENV_FILE"
+    return 1
+  fi
+
+  log_info "Installing environment: $environment"
+
+  mapfile -t env_packages < <(jq -r --arg e "$environment" '.[$e][]' "$ENV_FILE")
+
+  for package in "${env_packages[@]}"; do
+    install_package "$package"
+  done
+}
+
+install_package() {
+  echo $1
 }
 
 # Makeshift function. Should be modified if Dotfiles are modified to accomodate other package managers.

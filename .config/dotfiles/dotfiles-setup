@@ -17,17 +17,40 @@ LOG_LEVEL="INFO"
 start_logger() {
   source "${HOME}/.dotfiles/.config/dotfiles/utils/bash_logging/logging.sh"
   # LOG_LEVEL will be set to the default if not specified.
-  init_logger --color --journal --tag "$(basename "${0}")" --level "$LOG_LEVEL"
+  init_logger --color --journal --tag "dotfiles-install" --level "$LOG_LEVEL"
 }
 
 # Helper functions.
 #
+# Check if there's any dev argument
+check_dev_present() {
+  local -a args=("$@")
+  for ((i = 0; i < ${#args[@]}; i++)); do
+    case "${args[i]}" in
+    -d | --devenv)
+      if [[ -z "${args[i + 1]}" || "${args[i + 1]}" == -* ]]; then
+        log_error "Missing or invalid value for --devenv. You must pass a comma-separated list (e.g., -d base,cpp)"
+        exit 1
+      fi
+      return 0
+      ;;
+    esac
+  done
+
+  log_error "Missing required argument: --devenv <env1,env2,...>"
+  exit 1
+}
 # Parse log level manually and previously to the rest of the opts as the logger is needed for the rest of the script.
 extract_log_level() {
   local args=()
   local valid_levels=("DEBUG" "INFO" "NOTICE" "WARN" "ERROR" "CRITICAL" "ALERT" "EMERGENCY")
   local found_level=""
   local arg value
+
+  if [[ $# -eq 0 ]]; then
+    echo "No arguments provided. Some arguments are necessary for installation. Use -h|--help to obtain more information."
+    exit 1
+  fi
 
   while [[ $# -gt 0 ]]; do
     arg="$1"
@@ -72,15 +95,9 @@ readopts() {
   while true; do
     case "$1" in
     -d | --devenv)
-      if [[ -n "$2" && "$2" != -* ]]; then
-        IFS=',' read -ra ENV_ARRAY <<<"$2"
-        DEVENVS+=("${ENV_ARRAY[@]}")
-        shift 2
-      else
-        log_error "command --devenv requires an argument."
-        usage
-        exit 1
-      fi
+      IFS=',' read -ra ENV_ARRAY <<<"$2"
+      DEVENVS+=("${ENV_ARRAY[@]}")
+      shift 2
       ;;
     -f | --force)
       FORCE=true

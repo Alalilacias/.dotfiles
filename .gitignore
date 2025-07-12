@@ -47,3 +47,6 @@ dotfiles-backup/
 
 # Ignore this annoying bastard who keeps getting pushed by mistake.
 .config/zsh/.zsh_history
+
+# Temporary test file
+test
