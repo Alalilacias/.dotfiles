@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/dotnet"
 # Version: 0.3
 
-set -euo pipefail
-
 log_debug "Starting .NET SDK installation..."
 
 BIN_DIR="$HOME/.dotfiles/bin"

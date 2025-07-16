@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/kitty"
 # Version: 0.1
 
-set -euo pipefail
-
 log_debug "Installing kitty terminal..."
 
 KITTY_INSTALL_DIR="$HOME/.local/kitty"

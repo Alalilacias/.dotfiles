@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/lazygit"
 # Version: 0.3
 
-set -euo pipefail
-
 log_debug "Checking for lazygit..."
 
 if command -v pacman &>/dev/null; then

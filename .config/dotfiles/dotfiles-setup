@@ -123,8 +123,6 @@ readopts() {
 extract_pm() {
   if command -v apt >/dev/null 2>&1; then
     echo "apt" # Debian-based
-  elif command -v pacman >/dev/null 2>&1; then
-    echo "pacman" # Arch-based
   else
     log_error "Package manager not supported, skipping installation of packages no supported outside of them."
   fi

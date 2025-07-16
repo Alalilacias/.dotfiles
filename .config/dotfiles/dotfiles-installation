@@ -6,8 +6,8 @@
 # All custom install scripts must go in the same folder, as that is the way the installer is built.
 # This is entirely due to my personal preference, but I believe that should be easier to manage than
 # putting a distinct address (duplicated most of the time) in the config json files.
-CUSTOM_CONFIG_DIR="${DOTCONFIG_DIR}/config/"
-CUSTOM_INSTALL_DIR="${DOTCONFIG_DIR}/scripts/"
+CUSTOM_CONFIG_DIR="${DOTCONFIG_DIR}/config"
+CUSTOM_INSTALL_DIR="${DOTCONFIG_DIR}/scripts"
 ENV_FILE="${CUSTOM_CONFIG_DIR}/environments.json"
 PKG_FILE="${CUSTOM_CONFIG_DIR}/packages.json"
 PKG_MANAGER_UPDATED=false
@@ -88,22 +88,62 @@ install_environment() {
 }
 
 install_package() {
-  echo $1
+  local package_name="$1"
+  log_debug "Starting installation check for package: $package_name"
+
+  if ! is_package_known "$package_name"; then
+    log_error "Package '$package_name' not found in package database ($PKG_FILE)"
+    return 1
+  fi
+
+  local check_type check_value
+  check_type=$(get_pkg_field "$package_name" "check_type")
+  check_value=$(get_pkg_field "$package_name" "check_value")
+
+  if is_app_installed "$check_type" "$check_value"; then
+    log_debug "Package '$package_name' already installed"
+    return 0
+  fi
+
+  log_info "Installing package: $package_name"
+
+  # Recursively install dependencies
+  local dependencies
+  dependencies=$(get_pkg_field "$package_name" "dependencies" | jq -r '.[]')
+  for dep in $dependencies; do
+    log_debug "Starting installation check for dependency: $dep"
+    install_package "$dep"
+  done
+
+  if is_pkg_available_through_pm "$package_name"; then
+    update_pm_if_needed
+    echo "Package $package_name is available_through_pm"
+  else
+    echo "Package $package_name is not available_through_pm"
+  fi
+
+  #  log_info "Successfully installed: $package_name"
+}
+
+is_package_known() {
+  local name="$1"
+  jq -e --arg pkg "$name" '.packages[$pkg]' "$PKG_FILE" >/dev/null
+}
+get_pkg_field() {
+  local name="$1" field="$2"
+  jq -r --arg pkg "$name" --arg field "$field" '.packages[$pkg][$field]' "$PKG_FILE"
+}
+is_pkg_available_through_pm() {
+  local name="$1"
+  jq -e --arg pkg "$name" '.packages[$pkg].available_through_pm == true' "$PKG_FILE" >/dev/null
 }
 
 # Makeshift function. Should be modified if Dotfiles are modified to accomodate other package managers.
-# It is important to note that I haven't gotten my hands on a Fedora or Arch based system yet.
-# That is to say, most applications of pacman and dnf are based on what I've found online about them,
-# rather than my own experience with the systems.
 update_pm_if_needed() {
   if [[ "$PKG_MANAGER_UPDATED" == "false" ]]; then
     case "$PACKAGE_MANAGER" in
     apt)
       sudo apt update
-      ;;
-    pacman) ;;
-    dnf)
-      sudo dnf check-update || true
       ;;
     *)
       echo "Unknown package manager: $PACKAGE_MANAGER"

@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/neovim-gem"
 # Version: 0.3
 
-set -euo pipefail
-
 GEM_HOME="$HOME/.dotfiles/.local/tools/gems"
 BIN_DIR="$HOME/.dotfiles/bin"
 

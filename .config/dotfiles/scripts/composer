@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/composer"
 # Version: 0.6
 
-set -euo pipefail
-
 log_debug "Checking for php..."
 if ! command -v php &>/dev/null; then
   log_error "php not found. Cannot install Composer."

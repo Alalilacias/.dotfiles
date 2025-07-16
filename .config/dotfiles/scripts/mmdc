@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/mmdc"
 # Version: 0.5
 
-set -euo pipefail
-
 log_debug "Checking for npm..."
 if ! command -v npm &>/dev/null; then
   log_error "npm not found. Please install Node.js first."

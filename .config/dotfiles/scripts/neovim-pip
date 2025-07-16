@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/neovim-pip"
 # Version: 0.3
 
-set -euo pipefail
-
 PYTHON_HOME="$HOME/.dotfiles/.local/tools/python"
 PIP_TARGET="$PYTHON_HOME/lib"
 

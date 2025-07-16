@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/fd"
 # Version: 0.3
 
-set -euo pipefail
-
 CARGO_HOME="$HOME/.dotfiles/.local/tools/rust/.cargo"
 BIN_DIR="$HOME/.dotfiles/bin"
 FD_BIN="$CARGO_HOME/bin/fd"

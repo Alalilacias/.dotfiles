@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/tree-sitter"
 # Version: 0.5
 
-set -euo pipefail
-
 BIN_DIR="$HOME/.dotfiles/bin"
 NPM_PREFIX="$HOME/.dotfiles/.local/tools/tree-sitter-npm"
 TREE_SITTER_BIN="$NPM_PREFIX/bin/tree-sitter"

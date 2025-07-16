@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/rustup"
 # Version: 0.4
 
-set -euo pipefail
-
 log_debug "Installing Rust toolchain with rustup..."
 
 RUSTUP_HOME="$HOME/.dotfiles/.local/tools/rust"

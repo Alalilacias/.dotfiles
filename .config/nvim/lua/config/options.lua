@@ -5,3 +5,4 @@ local opt = vim.opt
 
 opt.wrap = true -- Enable line wrap
 opt.spelllang = { "en", "es", "ca" } -- Enable spell check in English, Spanish and Catalan
+opt.foldmethod = "manual"

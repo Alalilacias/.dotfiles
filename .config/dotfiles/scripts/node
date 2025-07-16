@@ -4,8 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/node"
 # Version: 0.2
 
-set -euo pipefail
-
 if ! command -v fnm &>/dev/null; then
   log_error "fnm is not installed. Please install it before running this script."
   return 1

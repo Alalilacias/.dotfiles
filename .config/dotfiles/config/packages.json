@@ -6,9 +6,7 @@
       "check_value": "git",
       "available_through_pm": true,
       "installation": {
-        "apt": ["git"],
-        "dnf": ["git"],
-        "pacman": ["git"]
+        "apt": ["git"]
       },
       "dependencies": []
     },
@@ -18,9 +16,7 @@
       "check_value": "zsh",
       "available_through_pm": true,
       "installation": {
-        "apt": ["zsh"],
-        "dnf": ["zsh"],
-        "pacman": ["zsh"]
+        "apt": ["zsh"]
       },
       "dependencies": []
     },
@@ -30,9 +26,7 @@
       "check_value": "curl",
       "available_through_pm": true,
       "installation": {
-        "apt": ["curl"],
-        "dnf": ["curl"],
-        "pacman": ["curl"]
+        "apt": ["curl"]
       },
       "dependencies": []
     },
@@ -52,9 +46,7 @@
       "check_value": "gcc",
       "available_through_pm": true,
       "installation": {
-        "apt": ["build-essential"],
-        "dnf": ["gcc", "gcc-c++", "make", "kernel-devel"],
-        "pacman": ["base-devel"]
+        "apt": ["build-essential"]
       },
       "dependencies": []
     },
@@ -64,9 +56,7 @@
       "check_value": "g++",
       "available_through_pm": true,
       "installation": {
-        "apt": ["libstdc++-12-dev"],
-        "dnf": ["libstdc++-devel"],
-        "pacman": ["base-devel"]
+        "apt": ["libstdc++-12-dev"]
       },
       "dependencies": []
     },
@@ -76,9 +66,7 @@
       "check_value": "cmake",
       "available_through_pm": true,
       "installation": {
-        "apt": ["cmake"],
-        "dnf": ["cmake"],
-        "pacman": ["cmake"]
+        "apt": ["cmake"]
       },
       "dependencies": []
     },
@@ -96,9 +84,7 @@
       "check_value": "javac",
       "available_through_pm": true,
       "installation": {
-        "apt": ["openjdk-17-jdk"],
-        "dnf": ["java-17-openjdk-devel"],
-        "pacman": ["jdk-openjdk"]
+        "apt": ["openjdk-17-jdk"]
       },
       "dependencies": []
     },
@@ -116,9 +102,7 @@
       "check_value": "rg",
       "available_through_pm": true,
       "installation": {
-        "apt": ["ripgrep"],
-        "dnf": ["ripgrep"],
-        "pacman": ["ripgrep"]
+        "apt": ["ripgrep"]
       },
       "dependencies": []
     },
@@ -136,9 +120,7 @@
       "check_value": "luarocks",
       "available_through_pm": true,
       "installation": {
-        "apt": ["luarocks"],
-        "dnf": ["luarocks"],
-        "pacman": ["luarocks"]
+        "apt": ["luarocks"]
       },
       "dependencies": []
     },
@@ -148,9 +130,7 @@
       "check_value": "pip3",
       "available_through_pm": true,
       "installation": {
-        "apt": ["python3-pip"],
-        "dnf": ["python3-pip"],
-        "pacman": ["python-pip"]
+        "apt": ["python3-pip"]
       },
       "dependencies": []
     },
@@ -168,9 +148,7 @@
       "check_value": "ruby.h",
       "available_through_pm": true,
       "installation": {
-        "apt": ["ruby-dev"],
-        "dnf": ["ruby-devel"],
-        "pacman": ["ruby"]
+        "apt": ["ruby-dev"]
       },
       "dependencies": []
     },
@@ -220,9 +198,17 @@
       "check_value": "tree",
       "available_through_pm": true,
       "installation": {
-        "apt": ["tree"],
-        "dnf": ["tree"],
-        "pacman": ["tree"]
+        "apt": ["tree"]
+      },
+      "dependencies": []
+    },
+    "fzf": {
+      "description": "A general-purpose command-line fuzzy finder, used for interactive filtering and selection of items such as files, commands, and processes.",
+      "check_type": "executable",
+      "check_value": "fzf",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["fzf"]
       },
       "dependencies": []
     },
@@ -232,9 +218,7 @@
       "check_value": "sqlite3",
       "available_through_pm": true,
       "installation": {
-        "apt": ["sqlite3"],
-        "dnf": ["sqlite"],
-        "pacman": ["sqlite"]
+        "apt": ["sqlite3"]
       },
       "dependencies": []
     },
@@ -244,9 +228,7 @@
       "check_value": "pandoc",
       "available_through_pm": true,
       "installation": {
-        "apt": ["pandoc"],
-        "dnf": ["pandoc"],
-        "pacman": ["pandoc"]
+        "apt": ["pandoc"]
       },
       "dependencies": []
     },
@@ -256,9 +238,7 @@
       "check_value": "xelatex",
       "available_through_pm": true,
       "installation": {
-        "apt": ["texlive-xetex"],
-        "dnf": ["texlive-scheme-basic"],
-        "pacman": ["texlive-core"]
+        "apt": ["texlive-xetex"]
       },
       "dependencies": []
     },
@@ -276,9 +256,7 @@
       "check_value": "convert",
       "available_through_pm": true,
       "installation": {
-        "apt": ["imagemagick"],
-        "dnf": ["imagemagick"],
-        "pacman": ["imagemagick"]
+        "apt": ["imagemagick"]
       },
       "dependencies": []
     },
@@ -312,9 +290,7 @@
       "check_value": "php",
       "available_through_pm": true,
       "installation": {
-        "apt": ["php"],
-        "dnf": ["php"],
-        "pacman": ["php"]
+        "apt": ["php"]
       },
       "dependencies": []
     },
@@ -332,8 +308,7 @@
       "check_value": "httrack",
       "available_through_pm": true,
       "installation": {
-        "apt": ["httrack"],
-        "dnf": ["httrack"]
+        "apt": ["httrack"]
       },
       "dependencies": []
     },
@@ -343,9 +318,7 @@
       "check_value": "setuptools",
       "available_through_pm": true,
       "installation": {
-        "apt": ["python3-setuptools", "python3-venv"],
-        "dnf": ["python3-setuptools", "python3-virtualenv"],
-        "pacman": ["python-setuptools", "python-virtualenv"]
+        "apt": ["python3-setuptools", "python3-venv"]
       },
       "dependencies": ["python3-pip"]
     },
@@ -355,9 +328,7 @@
       "check_value": "julia",
       "available_through_pm": true,
       "installation": {
-        "apt": ["julia"],
-        "dnf": ["julia"],
-        "pacman": ["julia"]
+        "apt": ["julia"]
       },
       "dependencies": []
     },
@@ -367,9 +338,7 @@
       "check_value": "fish",
       "available_through_pm": true,
       "installation": {
-        "apt": ["fish"],
-        "dnf": ["fish"],
-        "pacman": ["fish"]
+        "apt": ["fish"]
       },
       "dependencies": []
     },
@@ -379,11 +348,17 @@
       "check_value": "lynx",
       "available_through_pm": true,
       "installation": {
-        "apt": ["lynx"],
-        "dnf": ["lynx"],
-        "pacman": ["lynx"]
+        "apt": ["lynx"]
       },
       "dependencies": []
+    },
+    "rustup": {
+      "description": "Rust toolchain installer and version manager. Installs `cargo`, `rustc`, and `rust-std`. Required for compiling Rust projects and managing Rust versions.",
+      "check_type": "executable",
+      "check_value": "rustup",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["curl"]
     },
     "kitty": {
       "description": "GPU-accelerated terminal emulator with ligature, image, and tab support. Known for high performance and good font rendering, used in riced terminal setups.",

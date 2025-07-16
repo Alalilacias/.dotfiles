@@ -252,7 +252,7 @@ format_log_message() {
     # Replace format variables - zsh compatible method
     local formatted_message="$LOG_FORMAT"
     # Handle % escaping for zsh compatibility
-    if [[ -n "$ZSH_VERSION" ]]; then
+    if [[ -n "${ZSH_VERSION:-}" ]]; then
         # In zsh, we need a different approach
         formatted_message=${formatted_message:gs/%d/$current_date}
         formatted_message=${formatted_message:gs/%l/$level_name}
