@@ -50,7 +50,7 @@ is_app_installed() {
     python3 -c "import $check_value" &>/dev/null
     ;;
   npm_global_module)
-    npm list -g --depth=0 "$check_value" &>/dev/null
+    [[ -f "$HOME/.dotfiles/.local/tools/neovim-npm/lib/node_modules/$check_value/package.json" ]]
     ;;
   *)
     log_warn "Unknown check_type '$check_type' with value '$check_value'. Assuming not installed."
@@ -117,12 +117,10 @@ install_package() {
 
   if is_pkg_available_through_pm "$package_name"; then
     update_pm_if_needed
-    echo "Package $package_name is available_through_pm"
+    install_package_by_pm "$package_name"
   else
-    echo "Package $package_name is not available_through_pm"
+    install_package_by_custom_install "$package_name"
   fi
-
-  #  log_info "Successfully installed: $package_name"
 }
 
 is_package_known() {
@@ -146,9 +144,33 @@ update_pm_if_needed() {
       sudo apt update
       ;;
     *)
-      echo "Unknown package manager: $PACKAGE_MANAGER"
+      log_error "Unknown package manager: $PACKAGE_MANAGER"
       ;;
     esac
     PKG_MANAGER_UPDATED=true
+  fi
+}
+
+install_package_by_pm() {
+  local package=$1
+
+  case "$PACKAGE_MANAGER" in
+  apt)
+    sudo apt install -y $package
+    ;;
+  *)
+    log_info "Package manager $PACKAGE_MANAGER not supported. Skipping installation of $package."
+    ;;
+  esac
+}
+install_package_by_custom_install() {
+  local package=$1
+  local custom_install_script="$CUSTOM_INSTALL_DIR/$package"
+
+  if [[ -f $custom_install_script ]]; then
+    source $custom_install_script
+  else
+    log_error "Install script for $package not found at $custom_install_script"
+    return 1
   fi
 }

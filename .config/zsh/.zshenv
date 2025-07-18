@@ -1,7 +1,7 @@
 # ref: https://github.com/Phantas0s/.dotfiles/blob/master/zsh/zshenv
 
 # Set the path to include ~/.dotfiles/bin
-export PATH="$HOME/.dotfiles/bin:$PATH"
+export PATH="$HOME/.dotfiles/bin:$HOME/.local/bin:$PATH"
 
 # Set the XDG base directories
 export XDG_CONFIG_HOME="$HOME/.config"

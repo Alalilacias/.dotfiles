@@ -11,7 +11,7 @@ if ! command -v pip3 &>/dev/null; then
 fi
 
 log_debug "Installing latex2text using pip..."
-pip3 install --user latex2text
+pip3 install --user pylatexenc
 
 log_info "latex2text installed."
 return 0

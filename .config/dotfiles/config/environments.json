@@ -18,7 +18,8 @@
     "rustup",
     "fd-find",
     "luarocks",
-    "tree"
+    "tree",
+    "mmdc"
   ],
   "data-sci": ["julia", "python-modules", "python3-pip"],
   "docs": ["pandoc", "texlive-xetex", "latex2text", "imagemagick"]
