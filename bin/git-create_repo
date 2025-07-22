@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Automates local Git repo creation, initial commit, and pushing to GitHub.
+# Version: 0.0.1
+
+main() {
+  set -euo pipefail
+
+  local reponame="$1"
+  local desc="${2:-""}"
+  local priv="${3:-true}" # true = private, false = public
+
+  check_gh_git
+  check_correct_wd "$reponame"
+  check_repo_name "$reponame"
+
+  mkdir "$reponame"
+  cd "$reponame"
+
+  # Init local repo
+  git init -b main
+  echo "# $reponame" >README.md
+  git add README.md
+  git commit -m "chore: initial commit"
+
+  # Create GitHub repo via API (requires gh CLI)
+  gh repo create "$reponame" \
+    --description "$desc" \
+    --"$([[ "$priv" == "true" ]] && echo "private" || echo "public")" \
+    --source=. \
+    --remote=origin \
+    --push
+}
+check_gh_git() {
+  command -v gh >/dev/null || {
+    echo "gh CLI not installed"
+    exit 1
+  }
+  command -v git >/dev/null || {
+    echo "git not installed"
+    exit 1
+  }
+}
+check_correct_wd() {
+  echo "You are about to create the repository '$1' at: $PWD"
+  read -r -p "Continue? [y/N] " response
+  response="${response,,}" # convert to lowercase
+
+  if [[ "$response" != "y" && "$response" != "yes" ]]; then
+    echo "Aborted by user."
+    exit 1
+  fi
+}
+check_repo_name() {
+  if [[ -d "$1" ]]; then
+    echo "Directory '$1' already exists."
+    exit 1
+  fi
+}
+
+main "$@"

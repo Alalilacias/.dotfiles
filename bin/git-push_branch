@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Automate git add, commit, and push with clipboard diff and conventional commit.
+# Version: 0.0.1
+
+set -euo pipefail
+
+main() {
+  check_git_available
+  check_git_repo
+  check_changes_exist
+  copy_diff_to_clipboard
+
+  local curbran="$(git symbolic-ref --short HEAD)"
+
+  # Stage all changes
+  git add -A
+
+  # Open editor for conventional commit
+  GIT_EDITOR=nvim git commit -e
+
+  git push origin "$curbran"
+}
+
+check_git_available() {
+  command -v git >/dev/null || {
+    echo "Git is not installed or not in PATH."
+    exit 1
+  }
+}
+
+check_git_repo() {
+  git rev-parse --is-inside-work-tree &>/dev/null || {
+    echo "Current directory is not a Git repository."
+    exit 1
+  }
+}
+
+check_changes_exist() {
+  if git diff --quiet && git diff --cached --quiet; then
+    echo "No changes to commit. Working tree clean."
+    exit 0
+  fi
+}
+
+copy_diff_to_clipboard() {
+  if command -v xsel >/dev/null; then
+    git diff HEAD | xsel --clipboard --input
+  else
+    echo "xsel not found; skipping clipboard copy."
+  fi
+}
+
+main "$@"

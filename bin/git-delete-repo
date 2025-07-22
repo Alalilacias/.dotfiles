@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Deletes GitHub repo only if local copy exists. Requires double confirmation.
+# Somehow scared by the power this script gives me.
+# Version: 0.0.5
+
+set -euo pipefail
+
+main() {
+  local reponame="$1"
+  local github_user="${2:-$(gh api user -q .login)}"
+
+  check_gh_git
+
+  check_delete_scope
+
+  check_local_repo "$reponame"
+  check_remote_repo "$github_user" "$reponame"
+
+  confirm_delete "$reponame" "$github_user"
+
+  # Delete remote repo
+  gh repo delete "$github_user/$reponame" --yes
+
+  # Delete local repo
+  rm -rf "$reponame"
+  echo "✅ Deleted both local and remote repositories: $reponame"
+}
+
+check_gh_git() {
+  command -v gh >/dev/null || {
+    echo "gh CLI not installed"
+    exit 1
+  }
+  command -v git >/dev/null || {
+    echo "git not installed"
+    exit 1
+  }
+  command -v jq >/dev/null || {
+    echo "jq not installed"
+    exit 1
+  }
+}
+
+check_delete_scope() {
+  if ! gh auth status --show-token | grep -E '^Token scopes:' | grep -q 'delete_repo'; then
+    echo "❌ GitHub token does not include the 'delete_repo' scope."
+    echo "   This scope is required to delete repositories using the GitHub CLI."
+    echo
+
+    read -r -p "Do you want to grant this scope now with 'gh auth refresh -h github.com -s delete_repo'? [y/N] " ans
+    ans="${ans,,}"
+
+    if [[ "$ans" == "y" || "$ans" == "yes" ]]; then
+      gh auth refresh -h github.com -s delete_repo
+    else
+      echo "Aborting. Cannot continue without the required 'delete_repo' scope."
+      exit 1
+    fi
+  fi
+}
+
+check_local_repo() {
+  local local_repo=$1
+  if [[ ! -d "$local_repo" ]]; then
+    echo "Local directory '$local_repo' does not exist. Aborting."
+    exit 1
+  fi
+}
+
+check_remote_repo() {
+  local username=$1
+  local remote_repo=$2
+
+  if ! gh repo view "$username/$remote_repo" &>/dev/null; then
+    echo "Remote GitHub repo '$username/$remote_repo' not found. Aborting."
+    exit 1
+  fi
+}
+
+confirm_delete() {
+  local repo="$1"
+  local user="$2"
+
+  # Due to the dramatic nature of the action, I felt it natural to use emojis. Specially given that my terminal allows them.
+  echo "⚠️  You are about to delete:"
+  echo "    • Local directory:    $(realpath "$repo")"
+  echo "    • Remote GitHub repo: https://github.com/$user/$repo"
+  echo
+
+  read -r -p "Are you absolutely sure? [y/N] " confirm
+  confirm="${confirm,,}"
+  if [[ "$confirm" != "y" && "$confirm" != "yes" ]]; then
+    echo "Aborted."
+    exit 1
+  fi
+
+  # Similarly, I found it appropiate to follow the same procedure that GitHub itself forces us to.
+  echo
+  read -r -p "Type the repository name ($repo) to confirm deletion: " typed_name
+  if [[ "$typed_name" != "$repo" ]]; then
+    echo "❌ Name mismatch. Expected '$repo', got '$typed_name'. Aborting."
+    exit 1
+  fi
+}
+
+main "$@"

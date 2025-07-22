@@ -21,3 +21,12 @@ if [[ "$ans" == "y" || "$ans" == "yes" ]]; then
 else
   echo "Skipping GitHub login. You can run 'gh auth login' later."
 fi
+
+read -r -p "Do you want to log into GitHub now with 'gh auth login'? [y/N] " ans
+ans="${ans,,}" # convert to lowercase
+
+if [[ "$ans" == "y" || "$ans" == "yes" ]]; then
+  gh auth refresh -h github.com -s delete_repo
+else
+  echo "Skipping GitHub login. You can run 'gh auth login' later."
+fi
