@@ -152,11 +152,19 @@ update_pm_if_needed() {
 }
 
 install_package_by_pm() {
-  local package=$1
+  local package="$1"
+
+  # Read the list of packages to install using the current package manager
+  mapfile -t manager_packages < <(jq -r --arg pkg "$package" --arg pm "$PACKAGE_MANAGER" 'try .packages[$pkg].installation[$pm][] catch empty' "$PKG_FILE")
+
+  if [[ "${#manager_packages[@]}" -eq 0 ]]; then
+    log_error "No packages defined for '$package' under package manager '$PACKAGE_MANAGER'."
+    return 1
+  fi
 
   case "$PACKAGE_MANAGER" in
   apt)
-    sudo apt install -y $package
+    sudo apt install -y "${manager_packages[@]}"
     ;;
   *)
     log_info "Package manager $PACKAGE_MANAGER not supported. Skipping installation of $package."

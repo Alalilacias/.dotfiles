@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs Docker Engine, Docker CLI, and Docker Compose Plugin via the official apt repository
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/docker"
+# Version: 0.2
+
+log_debug "Installing Docker via apt repository..."
+
+# Install required base dependencies
+log_debug "Ensuring required packages are installed: ca-certificates, curl..."
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl
+
+# Add Docker's official GPG key
+log_debug "Adding Docker's official GPG key..."
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add Docker repository
+log_debug "Adding Docker apt repository..."
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" |
+  sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+
+# Refresh apt sources AFTER adding repository
+log_debug "Updating apt package index..."
+sudo apt-get update
+
+# Install Docker packages
+log_debug "Installing Docker Engine and related components..."
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Configure docker group for non-root usage
+log_debug "Ensuring current user is in 'docker' group..."
+sudo groupadd docker 2>/dev/null || true
+sudo usermod -aG docker "$USER"
+
+# Fix ~/.docker permission issues if necessary
+if [[ -d "$HOME/.docker" ]]; then
+  log_debug "Fixing ~/.docker ownership and permissions..."
+  sudo chown "$USER":"$USER" "$HOME/.docker" -R
+  sudo chmod g+rwx "$HOME/.docker" -R
+fi
+
+log_info "Docker installed successfully. You may need to log out and back in, reboot or run 'newgrp docker' for group changes to apply."
+return 0

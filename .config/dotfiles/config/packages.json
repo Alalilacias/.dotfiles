@@ -160,6 +160,22 @@
       "installation": {},
       "dependencies": ["ruby-dev"]
     },
+    "gh": {
+      "description": "GitHub CLI for managing repositories, issues, pull requests, and workflows from the terminal.",
+      "check_type": "executable",
+      "check_value": "gh",
+      "available_through_pm": false,
+      "install": {},
+      "dependencies": []
+    },
+    "docker": {
+      "description": "Docker Engine and Docker Compose CLI plugin, used to build and run containers. Required for containerized development and deployment workflows.",
+      "check_type": "executable",
+      "check_value": "docker",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": []
+    },
     "fnm": {
       "description": "Fast and simple Node.js version manager, used to manage multiple Node versions. Installed via a custom script since it's not available through default package managers. It’s required for managing versions cleanly and used by tools like tree-sitter.",
       "check_type": "executable",
