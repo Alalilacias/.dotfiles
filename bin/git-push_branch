@@ -37,7 +37,7 @@ check_git_repo() {
 }
 
 check_changes_exist() {
-  if git diff --quiet && git diff --cached --quiet; then
+  if [[ -z "$(git status --porcelain)" ]]; then
     echo "No changes to commit. Working tree clean."
     exit 0
   fi
