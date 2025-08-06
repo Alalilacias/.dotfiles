@@ -1,52 +1,65 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs the latest Neovim using system-specific unstable repositories
-# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/nvim"
-# Version: 0.3
+# Description: Installs the latest Neovim following the build guide on the main repository: https://github.com/neovim/neovim/blob/master/BUILD.md
+# Version: 0.4
+
+DEPENDENCIES=(ninja-build gettext cmake curl build-essential)
+IS_LOGGER_AVAILABLE=false
+NEOVIM_REPO="https://github.com/neovim/neovim"
+NEOVIM_DIR="${HOME}/.local/src/neovim"
+NEOVIM_INSTALL_DIR="${HOME}/.local"
 
 main() {
+  logging_setup
+
   if command -v apt &>/dev/null; then
     debian_installation
-  elif command -v dnf &>/dev/null; then
-    fedora_installation
-  elif command -v pacman &>/dev/null; then
-    arch_installation
   else
-    log_error "Unsupported system: no known package manager found"
+    log error "Unsupported system: no known package manager found"
     return 1
   fi
 }
+logging_setup() { declare -F log_info >/dev/null && IS_LOGGER_AVAILABLE=true; }
+log() {
+  local level="$1"
+  local message="$2"
 
+  if $IS_LOGGER_AVAILABLE; then
+    case "$level" in
+    debug) log_debug "$message" ;;
+    info) log_info "$message" ;;
+    warn) log_warn "$message" ;;
+    error) log_error "$message" ;;
+    *) log_debug "$message" ;;
+    esac
+  else
+    echo message
+  fi
+}
 debian_installation() {
-  if ! command -v add-apt-repository &>/dev/null; then
-    log_error "software-properties-common not found, unable to install neovim."
-    return 1
-  fi
+  log info "Installing dependencies..."
+  sudo apt-get update -qq
+  sudo apt-get install -y "${DEPENDENCIES[@]}"
 
-  log_debug "Adding Neovim unstable PPA"
-  sudo add-apt-repository -y ppa:neovim-ppa/unstable
-  sudo apt update
-  sudo apt install -y neovim
-}
-
-fedora_installation() {
-  log_debug "Installing dnf-plugins-core if not present"
-  sudo dnf install -y dnf-plugins-core
-
-  log_debug "Enabling Neovim nightly COPR repo"
-  sudo dnf copr enable -y agriffis/neovim-nightly
-  sudo dnf install -y neovim
-}
-
-arch_installation() {
-  if command -v paru &>/dev/null || command -v yay &>/dev/null; then
-    AUR_HELPER=$(command -v paru || command -v yay)
-    log_debug "Installing neovim-nightly-bin via $AUR_HELPER"
-    "$AUR_HELPER" -S --noconfirm neovim-nightly-bin
+  log info "Cloning Neovim repository..."
+  if [[ -d "$NEOVIM_DIR" ]]; then
+    log debug "Neovim source already cloned, pulling latest changes..."
+    git -C "$NEOVIM_DIR" pull --rebase
   else
-    log_warn "No AUR helper (paru or yay) found. Falling back to stable Neovim."
-    sudo pacman -S --noconfirm neovim
+    git clone "$NEOVIM_REPO" "$NEOVIM_DIR"
   fi
+
+  build_and_install
+}
+build_and_install() {
+  log info "Building Neovim..."
+  cd "$NEOVIM_DIR"
+  make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX="$NEOVIM_INSTALL_DIR"
+
+  log info "Installing Neovim..."
+  make install
+
+  log info "Neovim installed to $NEOVIM_INSTALL_DIR/bin/nvim"
 }
 
 main

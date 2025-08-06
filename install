@@ -5,9 +5,9 @@
 # Syntax: ./install
 # Version: 0.1
 
-# TODO Finish setting up the script. That includes:
-# - Modify install.json or the method for configuration of installation database used by script.
-# - Finish setting up installation.
+# TODO: Finish setting up the script. That includes:
+# - Finish setting connections installation. Currently all are installed.
+# - Look into a configuration file. Rather than using cli-args, using one could simplify this setup.
 
 # Global Variables
 # Directories
@@ -15,6 +15,7 @@ DOTFILES_DIR="${HOME}/.dotfiles"
 DOTCONFIG_DIR="${DOTFILES_DIR}/.config/dotfiles"
 # Function files
 SETUP_FUNCS="${DOTCONFIG_DIR}/dotfiles-setup"
+CONNECTIONS_FUNCS="${DOTCONFIG_DIR}/dotfiles-connections"
 INSTALL_FUNCS="${DOTCONFIG_DIR}/dotfiles-installation"
 #Utility
 PACKAGE_MANAGER=""
@@ -65,6 +66,25 @@ manage_setup() {
 
   PACKAGE_MANAGER=$(extract_pm)
   log_debug "Detected package manager: $PACKAGE_MANAGER"
+}
+manage_connections() {
+  source "${CONNECTIONS_FUNCS}"
+  # compile_cpp
+  make_executable "$DOTFILES_BIN/compile_cpp"
+  # yq
+  make_executable "$DOTFILES_BIN/yq"
+  # xdg-ninja
+  make_executable "$DOTFILES_BIN/xdg-ninja"
+  create_symlink "$DOTFILES_DIR/submodules/xdg-ninja/xdg-ninja.sh" "$DOTFILES_BIN/xdg-ninja"
+  # Zsh
+  create_symlink "$DOTFILES_DIR/.config/zsh/.zshenv" "$HOME/.zshenv"
+  create_symlink "$DOTFILES_DIR/.config/zsh/.zshrc" "$HOME/.zshrc"
+  # Kitty
+  create_symlink "$DOTFILES_DIR/.config/kitty" "$HOME/.config/kitty"
+  # Neovim
+  create_symlink "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
+  # Fonts
+  create_symlink "$DOTFILES_DIR/.local/share/fonts" "$HOME/.local/share/fonts"
 }
 manage_installation() {
   # Setup finished, starting installation.

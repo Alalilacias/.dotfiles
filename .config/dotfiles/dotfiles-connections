@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 #
 # Author: Alalilacias
-# Description: Creates all connections necessary for the system to use the configurations set in this directory
+# Description: Helper script to create all connections necessary for the system to use the configurations set in this directory
 # Syntax: (. ./"$HOME/.dotfiles/.config/dotfiles/connections")
-# Version: 0.3
-
-echo "Creating symlinks and giving permissions to necessary files"
+# Version: 0.4
 
 # Dotfiles path (configurable via environment variable)
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
@@ -36,23 +34,3 @@ create_symlink() {
     echo "Symlink for $source already exists."
   fi
 }
-main() {
-  # compile_cpp
-  make_executable "$DOTFILES_BIN/compile_cpp"
-  # yq
-  make_executable "$DOTFILES_BIN/yq"
-  # xdg-ninja
-  make_executable "$DOTFILES_BIN/xdg-ninja"
-  create_symlink "$DOTFILES_DIR/submodules/xdg-ninja/xdg-ninja.sh" "$DOTFILES_BIN/xdg-ninja"
-  # Zsh
-  create_symlink "$DOTFILES_DIR/.config/zsh/.zshenv" "$HOME/.zshenv"
-  create_symlink "$DOTFILES_DIR/.config/zsh/.zshrc" "$HOME/.zshrc"
-  # Kitty
-  create_symlink "$DOTFILES_DIR/.config/kitty" "$HOME/.config/kitty"
-  # Neovim
-  create_symlink "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
-  # Fonts
-  create_symlink "$DOTFILES_DIR/.local/share/fonts" "$HOME/.local/share/fonts"
-}
-
-main
