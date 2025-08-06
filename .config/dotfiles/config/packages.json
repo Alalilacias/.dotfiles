@@ -30,16 +30,6 @@
       },
       "dependencies": []
     },
-    "software-properties-common": {
-      "description": "Ubuntu/Debian package providing scripts like add-apt-repository to manage APT sources more easily. Used mainly for the executable add-apt-repository that I use to get some unstable repositories.",
-      "check_type": "executable",
-      "check_value": "add-apt-repository",
-      "available_through_pm": true,
-      "installation": {
-        "apt": ["software-properties-common"]
-      },
-      "dependencies": []
-    },
     "build-essential": {
       "description": "Meta-package in Debian-based systems that installs essential tools for building software, including gcc, g++, make, and others. Given that it is a set of essential tools for compiling and building software, including GCC, G++, Make, and development headers, I searched for equivalents on Google and the package to it.",
       "check_type": "executable",
@@ -238,44 +228,6 @@
       },
       "dependencies": []
     },
-    "pandoc": {
-      "description": "Universal document converter that supports conversion between numerous markup and word processing formats, widely used for documentation, academic writing, and scripting.",
-      "check_type": "executable",
-      "check_value": "pandoc",
-      "available_through_pm": true,
-      "installation": {
-        "apt": ["pandoc"]
-      },
-      "dependencies": []
-    },
-    "texlive-xetex": {
-      "description": "LaTeX engine supporting Unicode and OpenType fonts. Required for generating PDF documents from markdown via Pandoc using the XeTeX engine.",
-      "check_type": "executable",
-      "check_value": "xelatex",
-      "available_through_pm": true,
-      "installation": {
-        "apt": ["texlive-xetex"]
-      },
-      "dependencies": []
-    },
-    "latex2text": {
-      "description": "Python-based utility to convert LaTeX content into plain text. Useful for document processing or extracting readable content from LaTeX sources.",
-      "check_type": "executable",
-      "check_value": "latex2text",
-      "available_through_pm": false,
-      "installation": {},
-      "dependencies": ["python3-pip"]
-    },
-    "imagemagick": {
-      "description": "Suite of tools for image manipulation and conversion. Commonly used in automation scripts and document generation workflows (e.g., PDF to PNG).",
-      "check_type": "executable",
-      "check_value": "convert",
-      "available_through_pm": true,
-      "installation": {
-        "apt": ["imagemagick"]
-      },
-      "dependencies": []
-    },
     "mmdc": {
       "description": "CLI tool for rendering Mermaid.js diagrams to images (SVG, PNG, PDF). Installed via npm and useful for documentation workflows.",
       "check_type": "executable",
@@ -337,16 +289,6 @@
         "apt": ["python3-setuptools", "python3-venv"]
       },
       "dependencies": ["python3-pip"]
-    },
-    "julia": {
-      "description": "High-level, high-performance programming language for scientific computing, machine learning, and data analysis. Often used in academia and research environments.",
-      "check_type": "executable",
-      "check_value": "julia",
-      "available_through_pm": true,
-      "installation": {
-        "apt": ["julia"]
-      },
-      "dependencies": []
     },
     "fish": {
       "description": "A smart and user-friendly interactive shell, with autosuggestions, syntax highlighting, and scripting support. Used as an alternative to Bash or Zsh. Needed for some functionality in LazyVim.",

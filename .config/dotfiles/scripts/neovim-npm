@@ -4,12 +4,6 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/neovim-npm"
 # Version: 0.3
 
-INSTALL_DIR="$HOME/.dotfiles/.local/tools/neovim-npm"
-BIN_DIR="$HOME/.dotfiles/bin"
+npm install -g neovim
 
-mkdir -p "$INSTALL_DIR" "$BIN_DIR"
-
-npm install -g neovim --prefix "$INSTALL_DIR"
-ln -sf "$INSTALL_DIR/lib/node_modules/neovim/bin/cli.js" "$BIN_DIR/neovim"
-
-log_debug "neovim npm package installed and linked to $BIN_DIR/neovim"
+log_debug "neovim npm package installed"

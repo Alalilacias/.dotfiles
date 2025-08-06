@@ -6,7 +6,6 @@ return {
         bash = { "shfmt" },
         c = { "clang_format" },
         cpp = { "clang_format" },
-        c_sharp = {},
         cmake = { "cmakelang" },
         java = {},
         json = { "prettier", "jsonlint" },

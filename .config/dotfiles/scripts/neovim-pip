@@ -4,16 +4,9 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/neovim-pip"
 # Version: 0.3
 
-PYTHON_HOME="$HOME/.dotfiles/.local/tools/python"
-PIP_TARGET="$PYTHON_HOME/lib"
-
-mkdir -p "$PIP_TARGET"
-
 if ! command -v pip3 &>/dev/null; then
   log_error "pip3 is required but not found in PATH."
   return 1
 fi
 
-PYTHONUSERBASE="$PYTHON_HOME" pip3 install --no-warn-script-location --upgrade pynvim
-
-log_info "Neovim Python provider installed to $PYTHON_HOME"
+pip3 install --user pynvim

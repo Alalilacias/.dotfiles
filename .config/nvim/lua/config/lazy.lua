@@ -36,9 +36,9 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.lang.json" }, -- For JSON, JSON5, JSONC
     { import = "lazyvim.plugins.extras.lang.kotlin" }, -- For Kotlin support
     { import = "lazyvim.plugins.extras.lang.markdown" }, -- For Markdown syntax highlighting and editing
-    { import = "lazyvim.plugins.extras.lang.rust" }, -- For Rust support
+    -- { import = "lazyvim.plugins.extras.lang.rust" }, -- For Rust support
     { import = "lazyvim.plugins.extras.lang.sql" }, -- For SQL support
-    { import = "lazyvim.plugins.extras.lang.toml" }, -- For TOML support
+    -- { import = "lazyvim.plugins.extras.lang.toml" }, -- For TOML support
     { import = "lazyvim.plugins.extras.lang.yaml" }, -- For YAML support
 
     -- Testing

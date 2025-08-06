@@ -1,5 +1,5 @@
 {
-  "base": ["git", "zsh", "curl", "software-properties-common", "gh"],
+  "base": ["git", "zsh", "curl", "gh"],
   "cpp": ["build-essential", "libstdc++-12-dev", "cmake", "tree-sitter"],
   "java": ["openjdk-17-jdk", "docker"],
   "neovim-minimal": ["nvim", "ripgrep", "fd-find", "luarocks"],
@@ -20,7 +20,5 @@
     "luarocks",
     "tree",
     "mmdc"
-  ],
-  "data-sci": ["julia", "python-modules", "python3-pip"],
-  "docs": ["pandoc", "texlive-xetex", "latex2text", "imagemagick"]
+  ]
 }

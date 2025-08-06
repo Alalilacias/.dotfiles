@@ -8,9 +8,6 @@
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 local keymap = vim.keymap
 
--- Export to PDF using Pandoc
-keymap.set("n", "<leader>mpd", ":!pandoc % -o %:r.pdf --pdf-engine=xelatex<CR>", { desc = "Export Markdown to PDF" })
-
 -- Compiles current file using custom function compile_cpp
 keymap.set("n", "<leader>cc", function()
   local filename = vim.fn.expand("%:p")

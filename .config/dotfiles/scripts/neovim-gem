@@ -4,25 +4,9 @@
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/neovim-gem"
 # Version: 0.3
 
-GEM_HOME="$HOME/.dotfiles/.local/tools/gems"
-BIN_DIR="$HOME/.dotfiles/bin"
-
 if ! command -v gem &>/dev/null; then
   log_error "RubyGems (gem) not found in PATH."
   return 1
 fi
 
-mkdir -p "$GEM_HOME/bin" "$BIN_DIR"
-
-export GEM_HOME
-export PATH="$GEM_HOME/bin:$PATH"
-
-gem install --no-document neovim
-
-# Symlink the binary (if it exists)
-if [ -f "$GEM_HOME/bin/neovim-ruby-host" ]; then
-  ln -sf "$GEM_HOME/bin/neovim-ruby-host" "$BIN_DIR/neovim-ruby-host"
-  echo "neovim-ruby-host installed successfully to $BIN_DIR/neovim-ruby-host"
-else
-  echo "Installation completed, but binary not found."
-fi
+sudo gem install neovim
