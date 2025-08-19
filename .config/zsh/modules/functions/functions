@@ -49,3 +49,42 @@ timezsh() {
   local shell=${1:-$SHELL}                    # Use the provided shell or default to $SHELL
   repeat 10 /usr/bin/time "$shell" -i -c exit # Run the timing test 10 times
 }
+
+###############################################################################
+# Temporary functions for OhMyTodo
+###############################################################################
+omysize() {
+  local environment=$1
+  local images=()
+  local total_mb=0
+
+  case "$environment" in
+  original)
+    images=("ohmytodo-app" "postgres:16" "redis:7")
+    ;;
+  alpine)
+    images=("ohmytodo-app" "postgres:16-alpine" "redis:7-alpine")
+    ;;
+  current)
+    images=("ohmytodo-app" "postgres:16-alpine")
+    ;;
+  *)
+    echo "Unkown environment: $environment"
+    exit 1
+    ;;
+  esac
+
+  printf "%-20s %-10s\n" "IMAGE" "SIZE"
+
+  for image in "${images[@]}"; do
+    local size=$(docker image ls "$image" --format "{{.Size}}")
+    local size_num=$(echo "$size" | grep -Eo '^[0-9.]+')
+
+    total_mb=$(echo "$total_mb + $size_num" | bc)
+
+    printf "%-20s %-10s\n" "$image" "$size"
+  done
+
+  echo
+  printf "%-20s %-10s\n" "TOTAL" "${total_mb}MB"
+}

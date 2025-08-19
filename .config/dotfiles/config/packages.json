@@ -68,13 +68,13 @@
       "installation": {},
       "dependencies": ["fnm", "node"]
     },
-    "openjdk-17-jdk": {
+    "openjdk-21-jdk": {
       "description": "Open-source implementation of the Java Platform, Standard Edition — includes the JDK, compiler, and development tools for Java 17.",
       "check_type": "executable",
       "check_value": "javac",
       "available_through_pm": true,
       "installation": {
-        "apt": ["openjdk-17-jdk"]
+        "apt": ["openjdk-21-jdk"]
       },
       "dependencies": []
     },
