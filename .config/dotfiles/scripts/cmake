@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#
+# Author: Alalilacias
+# Description: Script to manually install latest version of CMake.
+# Created at: 20/08/2025
+
+TARGET_VERSION=4.1.0
+TARGET_ARCH=linux-x86_64
+INSTALL_DIR=/usr/local
+
+PACKAGE="cmake-${TARGET_VERSION}-${TARGET_ARCH}"
+URL="https://github.com/Kitware/CMake/releases/download/v${TARGET_VERSION}/${PACKAGE}.sh"
+
+main() {
+  log_debug "Installing CMake version $TARGET_VERSION for $TARGET_ARCH at $INSTALL_DIR"
+
+  tmp="$(mktemp)"
+  trap 'rm -f "$tmp"' EXIT
+
+  curl -fL --retry 3 --retry-delay 2 -o "$tmp" "$URL"
+  chmod +x "$tmp"
+  sudo sh "$tmp" --prefix="$INSTALL_DIR" --exclude-subdir --skip-license
+
+  log_info "CMake version $TARGET_VERSION-$TARGET_ARCH installed at $INSTALL_DIR"
+}
+
+main

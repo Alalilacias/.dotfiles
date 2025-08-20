@@ -54,10 +54,8 @@
       "description": "Cross-platform tool for managing the build process of software using compiler-independent configuration files. I love this thing. Perhaps it's lack of experience with it and I might grow to hate it one day, but, for now, my cpp experience depends on it.",
       "check_type": "executable",
       "check_value": "cmake",
-      "available_through_pm": true,
-      "installation": {
-        "apt": ["cmake"]
-      },
+      "available_through_pm": false,
+      "installation": {},
       "dependencies": []
     },
     "tree-sitter": {
