@@ -1,37 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="warn" name="Esade gecac" packages="">
-  <Properties>
+<Configuration status="warn" name="Esade gestion de usuarios"
+  packages="">
+<Properties>
     <Property name="console_prefix">%d{HH:mm:ss.SSS}</Property>
     <Property name="rolling_file_prefix">%d{yyy-MM-dd HH:mm:ss.SSS}</Property>
-    <Property name="userInfo">[%X{userId} - %X{userRole} - %X{accessUrl}] %l</Property>
+    <Property name="userInfo">[%X{userId}] [%X{userRole}]</Property>
+    <Property name="contextInfo">[%marker] %l %-5p</Property>
     <Property name="suffix">- %msg%n</Property>
   </Properties>
 
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout>
-        <MarkerPatternSelector defaultPattern="${console_prefix} ${userInfo} %-5p ${suffix}">
-          <PatternMatch key="ACCESS" pattern="${console_prefix} ${userInfo} %-6marker ${suffix}"/>
-          <PatternMatch key="LOGIN"  pattern="${console_prefix} ${userInfo} %-5marker ${suffix}"/>
-        </MarkerPatternSelector>
-      </PatternLayout>
+      <PatternLayout pattern="${console_prefix} ${userInfo} ${contextInfo} ${suffix}"/>
 		</Console>
-		<RollingFile name="File" fileName="/esade/logs/esade-gecac-spring/esade-gecac-spring.log"
-			filePattern="/esade/logs/esade-gecac-spring/esade-gaus-spring.log.%i">
-			<PatternLayout>
-        <MarkerPatternSelector defaultPattern="${rolling_file_refix} ${userInfo} %-5p$ ${suffix}">
-          <PatternMatch key="ACCESS" pattern="${rolling_file_prefix} ${userInfo} %-6marker ${suffix}"/>
-          <PatternMatch key="LOGIN"  pattern="${rolling_file_prefix} ${userInfo} %-5marker ${suffix}"/>
-        </MarkerPatternSelector>
-      </PatternLayout>
-      <Policies>
+		<RollingFile name="File" fileName="/esade/logs/esade-gestusu-spring/esade-gestusu-spring.log"
+			filePattern="/esade/logs/esade-gestusu-spring/esade-gestusu-spring.log.%i">
+      <PatternLayout pattern="${rolling_file_prefix} ${userInfo} ${contextInfo} ${suffix}"/>
+			<Policies>
 				<SizeBasedTriggeringPolicy size="5000 KB" />
 			</Policies>
 			<DefaultRolloverStrategy max="5" />
 		</RollingFile>
 	</Appenders>
-
-  <Loggers>
+	<Loggers>
 		<Root level="info">
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="File" />
