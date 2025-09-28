@@ -23,6 +23,7 @@ PACKAGE_MANAGER=""
 main() {
   # See core functions at their adress. Mainly used for installation, but they help avoid some boilerplate code.
   manage_setup "$@"
+  manage_connections
   manage_installation
 }
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+!/usr/bin/env bash
 # Author: Alalilacias
 # Description: Installs fnm
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/fnm"
@@ -6,4 +6,6 @@
 
 log_info "fnm not found, installing..."
 
-curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
+curl -fsSL https://fnm.vercel.app/install | bash
+
+source /home/alalin/.bashrc
