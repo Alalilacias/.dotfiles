@@ -24,8 +24,7 @@ echo 'kitty.desktop' >~/.config/xdg-terminals.list
 
 chsh -s $(which zsh)
 
-sudo update-alternatives --set x-terminal-emulator /usr/bin/kitty update-alternatives: error: alternative /usr/bin/kitty for x-terminal-emulator not registered
-not setting
+sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator $(which kitty) 10
 sudo update-alternatives --set x-terminal-emulator $(which kitty)
 
 log_info "kitty installed successfully."

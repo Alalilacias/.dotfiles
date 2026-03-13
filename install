@@ -33,12 +33,16 @@ main() {
 
 # Help function, invoke on mistakes and whenever the user asks for it.
 usage() {
+  local env_list=$(get_available_environments)
   cat <<-EOF
 Usage $0 [options]
 
 Install is a script that installs the appropiate mix of programs into the current system.
 It is meant to be used at the root of the dotfiles folder and it uses mainly the package manager
 of the system to install the programs. Some programs can be installed without it, but they're the exception.
+
+Available development environments:
+$env_list
 
 Current available options are:
 -d| --devenv    Specify the development environment to install. 
@@ -51,6 +55,28 @@ Current available options are:
                 See .config/dotfiles/utils/bash_logging/bash_logging.md for available levels.
                 Default is INFO. Recommended are DEBUG, INFO or ERROR.
 EOF
+}
+get_available_environments() {
+  local environments_file="${DOTCONFIG_DIR}/config/environments.json"
+  local env_list=""
+
+  # Try to parse with jq first (best method)
+  if command -v jq &>/dev/null; then
+    env_list=$(jq -r 'keys[] | "  \(.)"' "$environments_file" 2>/dev/null)
+    if [[ -n "$env_list" ]]; then
+      echo "$env_list"
+      return
+    fi
+  fi
+
+  # Basic fallback with grep and sed (less reliable but no dependencies)
+  env_list=$(grep -o '"[^"]*"\s*:' "$environments_file" 2>/dev/null | sed 's/"//g; s/://g' | while read key; do
+    echo "  $key"
+  done)
+
+  if [[ -n "$env_list" ]]; then
+    echo "$env_list"
+  fi
 }
 manage_setup() {
   # Sourcing the file where most of the setup functions are.
