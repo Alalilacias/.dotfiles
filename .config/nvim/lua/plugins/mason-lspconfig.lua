@@ -5,7 +5,6 @@ return {
       ensure_installed = {
         "bashls",
         "clangd",
-        "csharp_ls",
         "cmake",
         "jdtls",
         "jsonls",
