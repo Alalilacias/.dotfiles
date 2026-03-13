@@ -19,12 +19,16 @@ CONNECTIONS_FUNCS="${DOTCONFIG_DIR}/dotfiles-connections"
 INSTALL_FUNCS="${DOTCONFIG_DIR}/dotfiles-installation"
 #Utility
 PACKAGE_MANAGER=""
+#For kitty config
+SHOULD_RESTART=false
 
 main() {
   # See core functions at their adress. Mainly used for installation, but they help avoid some boilerplate code.
   manage_setup "$@"
   manage_connections
   manage_installation
+
+  restart_if_necessary
 }
 
 # Help function, invoke on mistakes and whenever the user asks for it.
@@ -98,6 +102,25 @@ manage_installation() {
   check_databaseparser_availability
 
   install_all_environments
+}
+restart_if_necessary() {
+  # Check if "kitty" is in the DEVENVS array
+  for env in "${DEVENVS[@]}"; do
+    if [[ "$env" == "kitty" ]]; then
+      log_info "Kitty environment detected. System restart required."
+      log_info "Restarting system in 5 seconds. Press Ctrl+C to cancel..."
+      sleep 5
+
+      if command -v systemctl &>/dev/null; then
+        log_info "Restarting now..."
+        sudo systemctl reboot
+      else
+        log_info "Restarting now..."
+        sudo reboot
+      fi
+      break
+    fi
+  done
 }
 
 main "$@"
