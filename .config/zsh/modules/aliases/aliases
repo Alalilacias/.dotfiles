@@ -91,6 +91,9 @@ alias vi='nvim'
 # Remove
 alias rm='rm -iv'
 
+# Refresh
+alias refresh_console='source ~/.zshrc'
+
 # Secret aliases
 if [ -f "$HOME/.dotfiles/.config/zsh/modules/secrets/aliases.secrets" ]; then
   source "$HOME/.dotfiles/.config/zsh/modules/secrets/aliases.secrets"
