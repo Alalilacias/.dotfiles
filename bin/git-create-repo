@@ -9,6 +9,7 @@ main() {
   local reponame="$1"
   local desc="${2:-""}"
   local priv="${3:-true}" # true = private, false = public
+  local langs="${4:-"java"}"
 
   check_gh_git
   check_correct_wd "$reponame"
@@ -16,6 +17,7 @@ main() {
 
   mkdir "$reponame"
   cd "$reponame"
+  add-gitignore -t "$reponame" -l "$langs"
 
   # Init local repo
   git init -b main
