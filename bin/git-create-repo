@@ -3,38 +3,81 @@
 # Description: Automates local Git repo creation, initial commit, and pushing to GitHub.
 # Version: 0.0.1
 
-main() {
-  set -euo pipefail
+set -euo pipefail
+IFS=$'\n\t'
 
-  local reponame="$1"
-  local desc="${2:-""}"
-  local priv="${3:-true}" # true = private, false = public
-  local langs="${4:-"java"}"
+readonly VERSION="0.0.1"
+readonly SCRIPT_NAME="$(basename "$0")"
+REPONAME=""
+DESC=""
+PRIV=true # true = private, false = public
+LANGS="java"
 
-  check_gh_git
-  check_correct_wd "$reponame"
-  check_repo_name "$reponame"
+usage() {
+  cat <<EOF
+Usage: $SCRIPT_NAME [options]
 
-  mkdir "$reponame"
-
-  add-gitignore -t "$reponame" -l "$langs"
-
-  cd "$reponame"
-
-  # Init local repo
-  git init -b main
-  echo "# $reponame" >README.md
-  git add README.md
-  git commit -m "chore: initial commit"
-
-  # Create GitHub repo via API (requires gh CLI)
-  gh repo create "$reponame" \
-    --description "$desc" \
-    --"$([[ "$priv" == "true" ]] && echo "private" || echo "public")" \
-    --source=. \
-    --remote=origin \
-    --push
+Options:
+  -h, --help              Show this help message
+  -v, --version           Show version information
+  -n, --name              Repository name (required)
+  -d, --description       Repository description (optional)
+  -p, --public            Create a public repository (default: private)
+  -l, --lang              Comma-separated list of languages for .gitignore (default: java)
+EOF
 }
+version() {
+  echo "$SCRIPT_NAME version $VERSION"
+}
+parse_args() {
+  # Parse options with getopt. As a quick reminder:
+  #   Format: -o for short options, --long for long options
+  #   Colon (:) after option means it requires an argument
+  TEMP=$(getopt -o hvn:d:pl: --long help,version,name:,description:,public,lang: -n "$SCRIPT_NAME" -- "$@")
+
+  if [ $? -ne 0 ]; then
+    echo "Error: Failed to parse options" >"&2"
+    usage
+    exit 1
+  fi
+
+  eval set -- "$TEMP"
+
+  while true; do
+    case $1 in
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    -v | --version)
+      version
+      exit 0
+      ;;
+    -n | --name)
+      REPONAME="$2"
+      shift 2
+      ;;
+    -d | --description)
+      DESC="$2"
+      shift 2
+      ;;
+    -p | --public)
+      PRIV=false
+      shift
+      ;;
+    -l | --lang)
+      LANGS="$2"
+      shift 2
+      ;;
+    --)
+      shift
+      break
+      ;;
+    esac
+    shift
+  done
+}
+
 check_gh_git() {
   command -v gh >/dev/null || {
     echo "gh CLI not installed"
@@ -45,6 +88,7 @@ check_gh_git() {
     exit 1
   }
 }
+
 check_correct_wd() {
   echo "You are about to create the repository '$1' at: $PWD"
   read -r -p "Continue? [y/N] " response
@@ -55,11 +99,38 @@ check_correct_wd() {
     exit 1
   fi
 }
+
 check_repo_name() {
   if [[ -d "$1" ]]; then
     echo "Directory '$1' already exists."
     exit 1
   fi
+}
+
+main() {
+  check_gh_git
+  check_correct_wd "$REPONAME"
+  check_repo_name "$REPONAME"
+
+  mkdir "$REPONAME"
+
+  add-gitignore -t "$REPONAME" -l "$LANGS"
+
+  cd "$REPONAME"
+
+  # Init local repo
+  git init -b main
+  echo "# $REPONAME" >README.md
+  git add .
+  git commit -m "chore: initial commit"
+
+  # Create GitHub repo via API (requires gh CLI)
+  gh repo create "$reponame" \
+    --description "$desc" \
+    --"$([[ "$priv" == "true" ]] && echo "private" || echo "public")" \
+    --source=. \
+    --remote=origin \
+    --push
 }
 
 main "$@"

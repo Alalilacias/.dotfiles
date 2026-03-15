@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
 # Author: Alalilacias
-# Description:
-# Created at:
+# Description: Automatically generates .gitignore file based on the opts provided
+# Created at: 2026-03-15 20:21
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -19,10 +19,10 @@ usage() {
 Usage: $SCRIPT_NAME [options]
 
 Options:
-  -h, --help     Show this help message
-  -v, --version  Show version information
-  -t, --target DIR     Target directory for .gitignore (default: current directory)
-  -l, --language LANG  Specify language(s) (comma-separated or multiple flags)
+  -h, --help      Show this help message
+  -v, --version   Show version information
+  -t, --target    Target directory for .gitignore (default: current directory)
+  -l, --language  Specify language(s) (comma-separated or multiple flags)
 EOF
 }
 

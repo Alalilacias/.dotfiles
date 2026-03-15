@@ -1,0 +1,114 @@
+#!/usr/bin/env bash
+#
+# Author: Alalilacias
+# Description: Automatically generates LICENSE file based on the opts provided
+# Created at: 2026-03-15 20:22
+
+set -euo pipefail
+IFS=$'\n\t'
+
+readonly VERSION="0.0.1"
+readonly SCRIPT_NAME="$(basename "$0")"
+readonly LOGGER="$HOME/.dotfiles/bin/dot-logger"
+readonly LICENSE_PATH=".dotfiles/share/licences/"
+readonly LICENSE_DIR="$HOME/$GITIGNORE_PATH"
+TARGET_DIR=""
+
+if [ -f "$LOGGER" ] && [ -r "$LOGGER" ]; then
+  source "$LOGGER"
+fi
+
+usage() {
+  cat <<EOF
+Usage: $SCRIPT_NAME [options]
+
+Options:
+  -h, --help     Show this help message
+  -v, --version  Show version information
+  -t, --target   Target directory for LICENSE (default: current directory)
+EOF
+}
+
+version() {
+  echo "$SCRIPT_NAME version $VERSION"
+}
+
+parse_args() {
+  # Parse options with getopt. As a quick reminder:
+  #   Format: -o for short options, --long for long options
+  #   Colon (:) after option means it requires an argument
+  TEMP=$(getopt -o hv --long help,version -n "$SCRIPT_NAME" -- "$@")
+
+  if [ $? -ne 0 ]; then
+    echo "Error: Failed to parse options" >"&2"
+    usage
+    exit 1
+  fi
+
+  eval set -- "$TEMP"
+
+  while true; do
+    case $1 in
+    -h | --help)
+      usage
+      exit 0
+      ;;
+    -v | --version)
+      version
+      exit 0
+      ;;
+    -t | --target)
+      TARGET_DIR="$2"
+      shift 2
+      ;;
+    --)
+      shift
+      break
+      ;;
+    esac
+    shift
+  done
+}
+
+validate_folders() {
+  if [[ -z "$TARGET_DIR" ]]; then
+    TARGET_DIR="$PWD"
+    echo "No target directory specified, using current directory: $TARGET_DIR"
+  else
+    echo "Using specified target directory: $TARGET_DIR"
+  fi
+
+  # Check if gitignores directory exists
+  if [[ ! -d "$LICENSE_DIR" ]]; then
+    echo "Gitignores directory not found: $LICENSE_DIR" >&2
+    echo "Please create it or check the path" >&2
+    return 1
+  fi
+
+  # Check if target directory is writable
+  if [[ ! -w "$TARGET_DIR" ]]; then
+    echo "Error: Target directory is not writable: $TARGET_DIR" >&2
+    return 1
+  fi
+
+  # Check if .gitignore already exists and warn
+  if [[ -f "$TARGET_DIR/LICENSE" ]]; then
+    echo "Warning: .gitignore already exists in $TARGET_DIR" >&2
+    echo "It will be overwritten!" >&2
+
+    read -p "Continue? (y/N) " -n 1 -r user_reply
+    echo
+    if [[ ! $user_reply =~ ^[Yy]$ ]]; then
+      return 1
+    fi
+  fi
+
+  return 0
+}
+
+main() {
+  parse_args "$@"
+  validate_folders
+}
+
+main "$@"
