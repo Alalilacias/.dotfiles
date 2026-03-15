@@ -16,8 +16,10 @@ main() {
   check_repo_name "$reponame"
 
   mkdir "$reponame"
-  cd "$reponame"
+
   add-gitignore -t "$reponame" -l "$langs"
+
+  cd "$reponame"
 
   # Init local repo
   git init -b main
