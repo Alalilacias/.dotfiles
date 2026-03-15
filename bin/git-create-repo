@@ -35,10 +35,10 @@ parse_args() {
   # Parse options with getopt. As a quick reminder:
   #   Format: -o for short options, --long for long options
   #   Colon (:) after option means it requires an argument
-  TEMP=$(getopt -o hvn:d:pl: --long help,version,name:,description:,public,lang: -n "$SCRIPT_NAME" -- "$@")
+  TEMP=$(getopt -o hvn:d:pt:l: --long help,version,name:,description:,public,technologies:,license: -n "$SCRIPT_NAME" -- "$@")
 
   if [ $? -ne 0 ]; then
-    echo "Error: Failed to parse options" >"&2"
+    echo "Error: Failed to parse options" >&2
     usage
     exit 1
   fi
@@ -80,17 +80,31 @@ parse_args() {
       break
       ;;
     esac
-    shift
   done
+
+  # Ensure REPONAME is set
+  if [[ -z "$REPONAME" ]]; then
+    echo "Repository name is required (-n or --name)"
+    usage
+    exit 1
+  fi
 }
 
-check_gh_git() {
+check_dependencies() {
   command -v gh >/dev/null || {
     echo "gh CLI not installed"
     exit 1
   }
   command -v git >/dev/null || {
     echo "git not installed"
+    exit 1
+  }
+  command -v add-gitignore >/dev/null || {
+    echo "add-gitignore helper script not found in PATH"
+    exit 1
+  }
+  command -v add-license >/dev/null || {
+    echo "add-license helper script not found in PATH"
     exit 1
   }
 }
@@ -114,7 +128,9 @@ check_repo_name() {
 }
 
 main() {
-  check_gh_git
+  parse_args "$@"
+
+  check_dependencies
   check_correct_wd "$REPONAME"
   check_repo_name "$REPONAME"
 
@@ -132,9 +148,9 @@ main() {
   git commit -m "chore: initial commit"
 
   # Create GitHub repo via API (requires gh CLI)
-  gh repo create "$reponame" \
-    --description "$desc" \
-    --"$([[ "$priv" == "true" ]] && echo "private" || echo "public")" \
+  gh repo create "$REPONAME" \
+    --description "$DESC" \
+    --"$([[ "$PRIV" == "true" ]] && echo "private" || echo "public")" \
     --source=. \
     --remote=origin \
     --push

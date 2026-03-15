@@ -1,5 +1,5 @@
 {
-  "base": ["git", "zsh", "curl", "gh"],
+  "base": ["git", "zsh", "curl", "gh", "git-flow"],
   "cpp": ["build-essential", "libstdc++-12-dev", "cmake", "tree-sitter"],
   "java": ["openjdk-21-jdk", "docker"],
   "kitty": ["kitty"],

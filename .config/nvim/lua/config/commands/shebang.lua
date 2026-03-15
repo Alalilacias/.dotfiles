@@ -41,7 +41,7 @@ parse_args() {
   TEMP=$(getopt -o hv --long help,version -n "$SCRIPT_NAME" -- "$@")
   
   if [ $? -ne 0 ]; then
-    echo "Error: Failed to parse options" >"&2"
+    echo "Error: Failed to parse options" >&2
     usage
     exit 1
   fi
@@ -54,7 +54,6 @@ parse_args() {
       -v|--version) version; exit 0 ;;
       --) shift; break ;;
     esac
-    shift
   done
 }
 

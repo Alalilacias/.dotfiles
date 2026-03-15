@@ -2,29 +2,18 @@
 # Author: Alalilacias
 # Description: Deletes GitHub repo only if local copy exists. Requires double confirmation.
 # Somehow scared by the power this script gives me.
-# Version: 0.0.5
+# Version: 0.0.6
 
 set -euo pipefail
 
-main() {
-  local reponame="$1"
-  local github_user="${2:-$(gh api user -q .login)}"
+readonly SCRIPT_NAME="$(basename "$0")"
 
-  check_gh_git
-
-  check_delete_scope
-
-  check_local_repo "$reponame"
-  check_remote_repo "$github_user" "$reponame"
-
-  confirm_delete "$reponame" "$github_user"
-
-  # Delete remote repo
-  gh repo delete "$github_user/$reponame" --yes
-
-  # Delete local repo
-  rm -rf "$reponame"
-  echo "✅ Deleted both local and remote repositories: $reponame"
+check_if_necessary_variables() {
+  if [[ $# -lt 1 ]]; then
+    echo "Repository name is required" >&2
+    echo "Usage: $SCRIPT_NAME <repository-name> [github-username]" >&2
+    exit 1
+  fi
 }
 
 check_gh_git() {
@@ -102,6 +91,29 @@ confirm_delete() {
     echo "❌ Name mismatch. Expected '$repo', got '$typed_name'. Aborting."
     exit 1
   fi
+}
+
+main() {
+  check_if_necessary_variables "$@"
+
+  local reponame="$1"
+  local github_user="${2:-$(gh api user -q .login)}"
+
+  check_gh_git
+
+  check_delete_scope
+
+  check_local_repo "$reponame"
+  check_remote_repo "$github_user" "$reponame"
+
+  confirm_delete "$reponame" "$github_user"
+
+  # Delete remote repo
+  gh repo delete "$github_user/$reponame" --yes
+
+  # Delete local repo
+  rm -rf "$reponame"
+  echo "✅ Deleted both local and remote repositories: $reponame"
 }
 
 main "$@"

@@ -11,9 +11,10 @@ readonly VERSION="0.0.1"
 readonly SCRIPT_NAME="$(basename "$0")"
 readonly LOGGER="$HOME/.dotfiles/bin/dot-logger"
 readonly LICENSE_PATH=".dotfiles/share/licences/"
-readonly LICENSE_DIR="$HOME/$GITIGNORE_PATH"
+readonly LICENSE_DIR="$HOME/$LICENSE_PATH"
+
 TARGET_DIR=""
-TARGET_LICENSE=""
+TARGET_LICENSE="mit"
 
 if [ -f "$LOGGER" ] && [ -r "$LOGGER" ]; then
   source "$LOGGER"
@@ -39,10 +40,10 @@ parse_args() {
   # Parse options with getopt. As a quick reminder:
   #   Format: -o for short options, --long for long options
   #   Colon (:) after option means it requires an argument
-  TEMP=$(getopt -o hv --long help,version -n "$SCRIPT_NAME" -- "$@")
+  TEMP=$(getopt -o hvt:l: --long help,version,target:,license: -n "$SCRIPT_NAME" -- "$@")
 
   if [ $? -ne 0 ]; then
-    echo "Error: Failed to parse options" >"&2"
+    echo "Error: Failed to parse options" >&2
     usage
     exit 1
   fi
@@ -72,7 +73,6 @@ parse_args() {
       break
       ;;
     esac
-    shift
   done
 }
 
@@ -86,7 +86,7 @@ validate_folders() {
 
   # Check if gitignores directory exists
   if [[ ! -d "$LICENSE_DIR" ]]; then
-    echo "Gitignores directory not found: $LICENSE_DIR" >&2
+    echo "licenses directory not found: $LICENSE_DIR" >&2
     echo "Please create it or check the path" >&2
     return 1
   fi
@@ -99,7 +99,7 @@ validate_folders() {
 
   # Check if .gitignore already exists and warn
   if [[ -f "$TARGET_DIR/LICENSE" ]]; then
-    echo "Warning: .gitignore already exists in $TARGET_DIR" >&2
+    echo "Warning: LICENSE already exists in $TARGET_DIR" >&2
     echo "It will be overwritten!" >&2
 
     read -p "Continue? (y/N) " -n 1 -r user_reply
@@ -136,7 +136,7 @@ manage_license() {
   done
 
   if [[ $found -eq 0 ]]; then
-    echo "LICENSE file for language ${requested} not available"
+    echo "LICENSE file for language ${TARGET_LICENSE} not available"
   fi
 }
 

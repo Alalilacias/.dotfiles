@@ -153,8 +153,18 @@
       "check_type": "executable",
       "check_value": "gh",
       "available_through_pm": false,
-      "install": {},
+      "installation": {},
       "dependencies": []
+    },
+    "git-flow": {
+      "description": "Git extension providing high-level repository operations, particularly suited for managing feature/release/hotfix branches.",
+      "check_type": "executable",
+      "check_value": "git-flow",
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["git-flow"]
+      },
+      "dependencies": ["git"]
     },
     "docker": {
       "description": "Docker Engine and Docker Compose CLI plugin, used to build and run containers. Required for containerized development and deployment workflows.",
