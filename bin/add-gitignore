@@ -121,6 +121,12 @@ validate_folders() {
     return 1
   fi
 
+  # Check if target directory is writable
+  if [[ ! -w "$TARGET_DIR" ]]; then
+    echo "Error: Target directory is not writable: $TARGET_DIR" >&2
+    return 1
+  fi
+
   # Check if .gitignore already exists and warn
   if [[ -f "$TARGET_DIR/.gitignore" ]]; then
     echo "Warning: .gitignore already exists in $TARGET_DIR" >&2
@@ -131,8 +137,6 @@ validate_folders() {
     if [[ ! $user_reply =~ ^[Yy]$ ]]; then
       return 1
     fi
-  else
-    touch "$TARGET_DIR/.gitignore"
   fi
 
   return 0
