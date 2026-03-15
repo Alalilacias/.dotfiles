@@ -100,6 +100,12 @@ manage_setup() {
 }
 manage_connections() {
   source "${CONNECTIONS_FUNCS}"
+
+  # Make all files in the bin executable, just in case
+  for file in "$HOME/.dotfiles/bin/"/*; do
+    [ -f "$file" ] && chmod +x "$file"
+  done
+
   # compile_cpp
   make_executable "$DOTFILES_BIN/compile_cpp"
   # yq

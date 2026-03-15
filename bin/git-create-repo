@@ -12,6 +12,7 @@ REPONAME=""
 DESC=""
 PRIV=true # true = private, false = public
 LANGS="java"
+LICENSE="mit"
 
 usage() {
   cat <<EOF
@@ -23,7 +24,8 @@ Options:
   -n, --name              Repository name (required)
   -d, --description       Repository description (optional)
   -p, --public            Create a public repository (default: private)
-  -l, --lang              Comma-separated list of languages for .gitignore (default: java)
+  -t, --technologies      Comma-separated list of technologies for .gitignore (default: java)
+  -l, --license           License type (default: mit)
 EOF
 }
 version() {
@@ -65,8 +67,12 @@ parse_args() {
       PRIV=false
       shift
       ;;
-    -l | --lang)
+    -t | --technologies)
       LANGS="$2"
+      shift 2
+      ;;
+    -l | --license)
+      LICENSE="$2"
       shift 2
       ;;
     --)
@@ -115,6 +121,7 @@ main() {
   mkdir "$REPONAME"
 
   add-gitignore -t "$REPONAME" -l "$LANGS"
+  add-license -t "$REPONAME" -l "$LICENSE"
 
   cd "$REPONAME"
 
