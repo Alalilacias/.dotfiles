@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs glab (GitLab CLI) via package manager or GitLab release (fallback for apt)
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/glab"
+# Version: 0.0.1
+
+log_debug "Checking for glab..."
+
+if command -v pacman &>/dev/null; then
+  log_debug "Detected pacman. Installing glab..."
+  sudo pacman -Sy --noconfirm glab
+elif command -v dnf &>/dev/null; then
+  log_debug "Detected dnf. Installing glab..."
+  sudo dnf install -y glab
+elif command -v apt &>/dev/null; then
+  log_debug "Detected apt. Checking if glab is available..."
+  if apt-cache show glab &>/dev/null; then
+    log_debug "Installing glab from apt..."
+    sudo apt update
+    sudo apt install -y glab
+  else
+    log_debug "glab not available in apt. Falling back to GitLab release package..."
+
+    if [[ "$(dpkg --print-architecture)" != "amd64" ]]; then
+      log_error "Manual install only supports amd64 at this time."
+      return 1
+    fi
+
+    GLAB_VERSION=$(curl -s "https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/releases/permalink/latest" | grep -Po '"tag_name": *"v\K[^"]*')
+    URL="https://gitlab.com/gitlab-org/cli/-/releases/v${GLAB_VERSION}/downloads/glab_${GLAB_VERSION}_linux_amd64.deb"
+
+    log_debug "Downloading glab $GLAB_VERSION from GitLab..."
+    TMP_DEB=$(mktemp --suffix=.deb)
+    curl -Lo "$TMP_DEB" "$URL"
+    sudo apt install -y "$TMP_DEB"
+    rm -f "$TMP_DEB"
+
+    log_info "glab installed manually from GitLab."
+  fi
+else
+  log_error "Unsupported package manager. Please install glab manually."
+  return 1
+fi
+
+log_info "glab installation complete."
