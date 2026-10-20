@@ -53,18 +53,12 @@ timezsh() {
 # --- Git workflow helpers ---
 
 get_merged_and_existing_features() {
-  local quiet=false
-  local detailed=false
-  local tag_depth=1
+  local quiet=false tag_depth=1
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
     --quiet)
       quiet=true
-      shift
-      ;;
-    --detailed)
-      detailed=true
       shift
       ;;
     --tag-depth)
@@ -75,51 +69,34 @@ get_merged_and_existing_features() {
     esac
   done
 
+  # Nth most recent tag reachable from HEAD
   local latest_tag=""
-  if [[ "$tag_depth" -gt 0 ]]; then
-    latest_tag=$(git describe --tags --abbrev=0 --skip=$((tag_depth - 1)) 2>/dev/null)
+  if ((tag_depth > 0)); then
+    latest_tag=$(git tag --merged HEAD --sort=-creatordate | sed -n "${tag_depth}p")
   fi
 
-  local range="HEAD"
-  if [[ -z "$latest_tag" ]]; then
-    [[ "$quiet" == false ]] && echo -e "\033[33mNo tags found or tags ignored. Scanning all history...\033[0m"
+  local args=(--merged HEAD --format='%(refname:short)')
+  if [[ -n "$latest_tag" ]]; then
+    args+=(--no-merged "$latest_tag")
+    $quiet || printf '\033[36mScanning merges since tag: %s\033[0m\n' "$latest_tag" >&2
   else
-    [[ "$quiet" == false ]] && echo -e "\033[36mScanning merges since tag: $latest_tag\033[0m"
-    range="${latest_tag}..HEAD"
+    $quiet || printf '\033[33mNo tags found or tags ignored. Scanning all history...\033[0m\n' >&2
   fi
 
-  # 1. Collect and deduplicate branch names from merge commits
-  local branches
-  branches=$(git log "$range" --merges --format="%s" |
-    sed -n "s/Merge branch '\(.*\)' into.*/\1/p" |
-    sort -u)
+  local current
+  current=$(git symbolic-ref --quiet --short HEAD)
 
-  # 2. Iterate and verify existence
-  while IFS= read -r branch_name; do
-    [[ -z "$branch_name" ]] && continue
-
-    local is_excluded=false
-    case "$branch_name" in
-    main | master | develop) is_excluded=true ;;
+  git branch "${args[@]}" | while IFS= read -r branch; do
+    case "$branch" in
+    main | master | develop | "$current") continue ;;
     esac
-
-    local exists=""
-    if [[ "$is_excluded" == false ]]; then
-      exists=$(git branch --list "$branch_name")
+    if $quiet; then
+      echo "$branch"
+    else
+      printf '\033[32m[ACTIVE] %s\033[0m\n' "$branch"
     fi
-
-    if [[ -n "$exists" ]]; then
-      if [[ "$quiet" == true ]]; then
-        echo "$branch_name"
-      else
-        echo -e "\033[32m[ACTIVE] $branch_name\033[0m"
-      fi
-    elif [[ "$detailed" == true && "$quiet" == false ]]; then
-      echo -e "\033[90m[DELETED] $branch_name\033[0m"
-    fi
-  done <<<"$branches"
+  done
 }
-
 end_branch() {
   local current_branch
   current_branch=$(git rev-parse --abbrev-ref HEAD)
