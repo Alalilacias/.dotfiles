@@ -14,6 +14,7 @@ return {
       "hadolint",
       "luacheck",
       "cmakelang",
+      "shellcheck",
     },
   },
 }
