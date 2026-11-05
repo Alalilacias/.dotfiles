@@ -2,6 +2,14 @@ return {
   {
     "stevearc/conform.nvim",
     opts = {
+      formatters = {
+        prettier = {
+          options = {
+            -- Sin esto prettier falla en ficheros sin extension (p.ej. "random") aunque el filetype sea json
+            ft_parsers = { json = "json", jsonc = "jsonc", json5 = "json5", markdown = "markdown", yaml = "yaml" },
+          },
+        },
+      },
       formatters_by_ft = {
         bash = { "shfmt" },
         c = { "clang_format" },

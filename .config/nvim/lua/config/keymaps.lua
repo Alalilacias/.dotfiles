@@ -4,3 +4,8 @@
 local keymap = vim.keymap
 
 keymap.set("n", "<C-l>", "z=", { desc = "Quick Spell Correction" })
+
+keymap.set("n", "<leader>fj", function()
+  vim.bo.filetype = "json"
+  require("conform").format({ async = false, lsp_format = "never" })
+end, { desc = "Set filetype to JSON and format" })
