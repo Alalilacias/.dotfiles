@@ -8,7 +8,7 @@ return {
         "cmake",
         "jdtls",
         "jsonls",
-        "kotlin_language_server",
+        "kotlin_lsp",
         "lua_ls",
         "marksman",
         "rust_analyzer",

@@ -19,7 +19,7 @@ return {
         json = { "prettier" },
         json5 = { "prettier" },
         jsonc = { "prettier" },
-        kotlin = {},
+        kotlin = { "ktlint" },
         lua = { "stylua" },
         make = {},
         markdown = { "prettier", "markdown-toc" },

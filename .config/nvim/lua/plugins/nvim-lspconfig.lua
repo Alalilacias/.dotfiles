@@ -13,6 +13,13 @@ return {
           "--fallback-style=google",
         },
       },
+      -- fwcd/kotlin-language-server (enabled by the LazyVim kotlin extra) is unmaintained
+      -- and crashes on Kotlin 2.x; use JetBrains' official kotlin-lsp instead.
+      kotlin_language_server = { enabled = false },
+      kotlin_lsp = {
+        -- Mason installs the kotlin-lsp binary as "intellij-server", not "kotlin-lsp"
+        cmd = { "intellij-server", "--stdio" },
+      },
     },
   },
 }
