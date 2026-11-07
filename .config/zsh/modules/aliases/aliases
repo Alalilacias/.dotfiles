@@ -42,9 +42,20 @@ alias nealias='nvim ~/.dotfiles/.config/zsh/modules/environment/aliases.env'
 # Functions
 alias nfunctions='nvim ~/.dotfiles/.config/zsh/modules/functions/functions'
 
+# Environmentally dependant aliases
+if [ -f "$HOME/.dotfiles/.config/zsh/modules/environment/functions.env" ]; then
+  source "$HOME/.dotfiles/.config/zsh/modules/environment/functions.env"
+else
+  echo "Unable to locate environment aliases"
+fi
+alias nefunctions='nvim ~/.dotfiles/.config/zsh/modules/environment/functions.env'
+
 # Git
 alias ga='git add'
 alias gaa='git add .'
+alias gac='gaa && gc'
+alias gacpo='gaa && gc && gpo'
+alias gacposu='gaa && gc && gposu'
 alias gaf='git add -f'
 alias gb='git branch'
 alias gbd='git branch -d'
@@ -57,7 +68,7 @@ alias gp='git push'
 alias gplo='git pull origin'
 alias gpo='git push origin'
 alias gpod='git push origin --delete'
-alias gposu='git push --set-upstream origin'
+alias gposu='git push --set-upstream origin $(git branch --show-current)'
 alias gr='git remote'
 alias gro='git remote origin'
 alias grs='git remote show'

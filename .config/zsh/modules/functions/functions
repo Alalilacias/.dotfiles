@@ -49,3 +49,102 @@ timezsh() {
   local shell=${1:-$SHELL}                    # Use the provided shell or default to $SHELL
   repeat 10 /usr/bin/time "$shell" -i -c exit # Run the timing test 10 times
 }
+
+# --- Git workflow helpers ---
+
+get_merged_and_existing_features() {
+  local quiet=false tag_depth=1
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    --quiet)
+      quiet=true
+      shift
+      ;;
+    --tag-depth)
+      tag_depth="$2"
+      shift 2
+      ;;
+    *) shift ;;
+    esac
+  done
+
+  # Nth most recent tag reachable from HEAD
+  local latest_tag=""
+  if ((tag_depth > 0)); then
+    latest_tag=$(git tag --merged HEAD --sort=-creatordate | sed -n "${tag_depth}p")
+  fi
+
+  local args=(--merged HEAD --format='%(refname:short)')
+  if [[ -n "$latest_tag" ]]; then
+    args+=(--no-merged "$latest_tag")
+    $quiet || printf '\033[36mScanning merges since tag: %s\033[0m\n' "$latest_tag" >&2
+  else
+    $quiet || printf '\033[33mNo tags found or tags ignored. Scanning all history...\033[0m\n' >&2
+  fi
+
+  local current
+  current=$(git symbolic-ref --quiet --short HEAD)
+
+  git branch "${args[@]}" | while IFS= read -r branch; do
+    case "$branch" in
+    main | master | develop | "$current") continue ;;
+    esac
+    if $quiet; then
+      echo "$branch"
+    else
+      printf '\033[32m[ACTIVE] %s\033[0m\n' "$branch"
+    fi
+  done
+}
+end_branch() {
+  local current_branch
+  current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+  if [[ "$current_branch" == "main" ]]; then
+    echo "Already on main branch, nothing to end." >&2
+    return 1
+  fi
+
+  git add .
+  git commit
+
+  git push origin "$current_branch"
+
+  git checkout main
+  git pull origin main
+  git merge "$current_branch"
+
+  git push origin main
+
+  git branch -d "$current_branch"
+  git push origin --delete "$current_branch"
+
+  echo -e "\033[32mBranch '$current_branch' has been merged into main and deleted locally & remotely.\033[0m"
+}
+
+# Courtesy of https://stackoverflow.com/questions/30590083/git-how-to-rename-a-branch-both-local-and-remote
+rename_branch() {
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: rename_branch <old> <new>" >&2
+    return 1
+  fi
+  local old="$1"
+  local new="$2"
+  local remote="origin"
+
+  # Rename the local branch to the new name
+  git branch -m "$old" "$new"
+
+  # Delete the old branch on remote
+  git push "$remote" --delete "$old"
+
+  # Prevent git from using the old name when pushing in the next step.
+  git branch --unset-upstream "$new"
+
+  # Push the new branch to remote
+  git push "$remote" "$new"
+
+  # Reset the upstream branch for the new_name local branch
+  git push "$remote" -u "$new"
+}

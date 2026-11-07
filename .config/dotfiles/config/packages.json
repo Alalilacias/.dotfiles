@@ -156,6 +156,14 @@
       "installation": {},
       "dependencies": []
     },
+    "glab": {
+      "description": "GitLab CLI for managing repositories, issues, merge requests, and pipelines from the terminal.",
+      "check_type": "executable",
+      "check_value": "glab",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["curl"]
+    },
     "git-flow": {
       "description": "Git extension providing high-level repository operations, particularly suited for managing feature/release/hotfix branches.",
       "check_type": "executable",

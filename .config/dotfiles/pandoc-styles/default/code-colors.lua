@@ -1,0 +1,5 @@
+-- Default md2pdf style: inline `code` renders as plain pandoc default
+-- (monospace, no color). Every style needs this file to exist even if it
+-- does nothing — swap in your own Code()/CodeBlock() handler for a
+-- branded style. Pandoc Lua filter API: https://pandoc.org/lua-filters.html
+-- (Code/CodeBlock, pandoc.RawInline, the FORMAT global, etc.)

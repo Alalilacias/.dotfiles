@@ -14,7 +14,7 @@ return {
       "hadolint",
       "luacheck",
       "cmakelang",
-      "rustfmt",
+      "shellcheck",
     },
   },
 }

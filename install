@@ -120,6 +120,8 @@ manage_connections() {
   create_symlink "$DOTFILES_DIR/.config/kitty" "$HOME/.config/kitty"
   # Neovim
   create_symlink "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
+  # sqlfluff (global config dir, holds .sqlfluff)
+  create_symlink "$DOTFILES_DIR/.config/sqlfluff" "$HOME/.config/sqlfluff"
   # Fonts
   create_symlink "$DOTFILES_DIR/.local/share/fonts" "$HOME/.local/share/fonts"
 }

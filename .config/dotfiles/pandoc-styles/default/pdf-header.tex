@@ -1,0 +1,49 @@
+% Default pandoc/md2pdf style: generic, unbranded baseline.
+% Package docs (run `texdoc <name>`, e.g. `texdoc titlesec`):
+%   fontspec-less fonts: texdoc tgheros / texdoc lmodern
+%   titlesec (\titleformat, \titlespacing, sectionbreak hooks): texdoc titlesec
+%   fvextra (breaklines/breakanywhere on Verbatim/code blocks): texdoc fvextra
+%   xcolor (\definecolor, HTML model): texdoc xcolor
+%   hyperref (\hypersetup options): texdoc hyperref
+%   float (\floatplacement, the [H] specifier): texdoc float
+% Pandoc's own manual (variables, --include-in-header, image attributes):
+%   https://pandoc.org/MANUAL.html
+
+\usepackage[T1]{fontenc}
+\usepackage{tgheros}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{lmodern}
+\renewcommand{\ttdefault}{lmtt}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{setspace}
+\setstretch{1.15}
+
+% Code blocks (```lang fences) don't wrap long lines by default and
+% overflow the page. fvextra is what actually provides the
+% breaklines/breakanywhere keys — plain fancyvrb doesn't have them.
+\usepackage{fvextra}
+\fvset{breaklines=true, breakanywhere=true, breaksymbolleft={}}
+
+% Neutral, unbranded palette: dark slate for headings, mid gray for links,
+% near-black for body text.
+\definecolor{titlecolor}{HTML}{2D3E50}
+\definecolor{subtitlecolor}{HTML}{3D5266}
+\definecolor{linkcolor}{HTML}{595959}
+\definecolor{bodycolor}{HTML}{262626}
+
+\titleformat{\section}
+  {\normalfont\LARGE\bfseries\color{titlecolor}}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{subtitlecolor}}{\thesubsection}{1em}{}
+
+\AtBeginDocument{\color{bodycolor}}
+\AtBeginDocument{\hypersetup{colorlinks=true, linkcolor=linkcolor, urlcolor=linkcolor}}
+
+% Without this, images become LaTeX floats and can drift away from where
+% they were written in the source (LaTeX moves floats to "wherever fits").
+% Pin them exactly where they are instead.
+\usepackage{float}
+\floatplacement{figure}{H}

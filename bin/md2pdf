@@ -1,0 +1,176 @@
+#!/usr/bin/env bash
+#
+# Author: Alalilacias
+# Version: 0.1
+
+DOTFILES_DIR="$HOME/.dotfiles"
+STYLES_DIR="$DOTFILES_DIR/.config/dotfiles/pandoc-styles"
+LOCAL_STYLES_DIR="$DOTFILES_DIR/.local/pandoc-styles"
+DEFAULT_STYLE="default"
+
+REQUIRED_STY=(fvextra titlesec xcolor tgheros lmodern microtype parskip setspace float fontenc)
+
+# shellcheck source=/dev/null
+source "$DOTFILES_DIR/.config/dotfiles/utils/bash_logging/logging.sh"
+init_logger
+
+usage() {
+  cat <<-EOF
+Usage: md2pdf <input.md> [output.pdf] [--style NAME|PATH]
+
+Renders a Markdown file to PDF (pandoc + pdflatex), applying a "style":
+a directory holding pdf-header.tex (LaTeX preamble) and code-colors.lua
+(a pandoc Lua filter controlling how inline \`code\` renders).
+
+Arguments:
+  input.md          Markdown file to render (required).
+  output.pdf         Output path. Defaults to input.md with a .pdf extension.
+
+Options:
+  -s, --style NAME|PATH
+                      Style to use. A bare NAME is resolved against, in order:
+                        1) $LOCAL_STYLES_DIR/NAME   (private, untracked, per-machine)
+                        2) $STYLES_DIR/NAME  (shared default, tracked in dotfiles)
+                      A value containing a "/" is used as a literal path instead
+                      (e.g. --style ~/Documents/.pandoc-utils/ohmycode).
+                      Defaults to "$DEFAULT_STYLE".
+  -h, --help          Show this help.
+
+Adding your own style:
+  Copy $STYLES_DIR/$DEFAULT_STYLE
+  to $LOCAL_STYLES_DIR/<name>, edit pdf-header.tex/code-colors.lua, then
+  pass --style <name>. Anything under .local/ is gitignored, so this is
+  the right place for a personal or work-specific style you don't want in
+  the shared dotfiles repo.
+EOF
+}
+
+check_dependencies() {
+  local missing_bins=()
+  local missing_sty=()
+
+  command -v pandoc &>/dev/null || missing_bins+=(pandoc)
+  command -v pdflatex &>/dev/null || missing_bins+=(pdflatex)
+
+  if ((${#missing_bins[@]} > 0)); then
+    log_error "Missing required tools: ${missing_bins[*]}"
+    log_error "Install with: sudo apt install pandoc texlive-latex-base texlive-latex-extra"
+    exit 1
+  fi
+
+  if command -v kpsewhich &>/dev/null; then
+    for pkg in "${REQUIRED_STY[@]}"; do
+      kpsewhich "${pkg}.sty" &>/dev/null || missing_sty+=("$pkg")
+    done
+  else
+    log_warn "kpsewhich not found, skipping LaTeX package checks."
+  fi
+
+  if ((${#missing_sty[@]} > 0)); then
+    log_error "Missing LaTeX packages: ${missing_sty[*]}"
+    log_error "Install with: sudo apt install texlive-latex-extra texlive-fonts-extra"
+    exit 1
+  fi
+}
+
+# Prints the resolved style directory on stdout, or exits with an error.
+resolve_style() {
+  local style="$1"
+  local candidate
+
+  if [[ "$style" == */* ]]; then
+    candidate="${style/#\~/$HOME}"
+    if [[ ! -d "$candidate" ]]; then
+      log_error "Style path not found: $candidate"
+      exit 1
+    fi
+    echo "$candidate"
+    return
+  fi
+
+  if [[ -d "$LOCAL_STYLES_DIR/$style" ]]; then
+    echo "$LOCAL_STYLES_DIR/$style"
+    return
+  fi
+
+  if [[ -d "$STYLES_DIR/$style" ]]; then
+    echo "$STYLES_DIR/$style"
+    return
+  fi
+
+  log_error "Style '$style' not found in $LOCAL_STYLES_DIR or $STYLES_DIR"
+  local available
+  available=$(
+    find "$LOCAL_STYLES_DIR" "$STYLES_DIR" -mindepth 1 -maxdepth 1 -type d \
+      -exec basename {} \; 2>/dev/null | sort -u
+  )
+  log_error "Available styles: ${available:-none}"
+  exit 1
+}
+
+main() {
+  local input="" output="" style="$DEFAULT_STYLE"
+  local positional=()
+
+  while (($#)); do
+    case "$1" in
+      -h | --help)
+        usage
+        exit 0
+        ;;
+      -s | --style)
+        style="${2:?--style requires a value}"
+        shift 2
+        ;;
+      *)
+        positional+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+  input="${positional[0]:-}"
+  output="${positional[1]:-}"
+  # Backwards-compatible 3rd positional style, same as the old shell function.
+  [[ -n "${positional[2]:-}" ]] && style="${positional[2]}"
+
+  if [[ -z "$input" ]]; then
+    usage
+    exit 1
+  fi
+  if [[ ! -f "$input" ]]; then
+    log_error "No such file: $input"
+    exit 1
+  fi
+
+  check_dependencies
+
+  local style_dir
+  style_dir="$(resolve_style "$style")" || exit 1
+
+  if [[ ! -f "$style_dir/pdf-header.tex" || ! -f "$style_dir/code-colors.lua" ]]; then
+    log_error "Style dir '$style_dir' must contain both pdf-header.tex and code-colors.lua"
+    exit 1
+  fi
+
+  output="${output:-${input%.md}.pdf}"
+  local input_dir
+  input_dir="$(cd "$(dirname "$input")" && pwd)"
+
+  log_info "Rendering $input -> $output (style: $style_dir)"
+
+  if ! pandoc "$input" -o "$output" \
+    --pdf-engine=pdflatex \
+    --resource-path="$input_dir" \
+    -V geometry:margin=2.5cm \
+    -V fontsize=12pt \
+    --include-in-header="$style_dir/pdf-header.tex" \
+    --lua-filter="$style_dir/code-colors.lua"; then
+    log_error "pandoc failed, see output above"
+    exit 1
+  fi
+
+  log_info "Generated: $output"
+}
+
+main "$@"
