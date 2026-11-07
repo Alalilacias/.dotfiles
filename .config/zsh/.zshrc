@@ -16,4 +16,6 @@ if [ -d "$FNM_PATH" ]; then
   eval "$(fnm env --shell zsh)"
 fi
 
-. "$HOME/.local/share/../bin/env"
+if [ -f "$HOME/.local/bin/env" ]; then
+  . "$HOME/.local/bin/env"
+fi

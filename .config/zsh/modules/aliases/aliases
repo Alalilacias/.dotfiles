@@ -42,11 +42,11 @@ alias nealias='nvim ~/.dotfiles/.config/zsh/modules/environment/aliases.env'
 # Functions
 alias nfunctions='nvim ~/.dotfiles/.config/zsh/modules/functions/functions'
 
-# Environmentally dependant aliases
+# Environmentally dependant functions
 if [ -f "$HOME/.dotfiles/.config/zsh/modules/environment/functions.env" ]; then
   source "$HOME/.dotfiles/.config/zsh/modules/environment/functions.env"
 else
-  echo "Unable to locate environment aliases"
+  echo "Unable to locate environment functions"
 fi
 alias nefunctions='nvim ~/.dotfiles/.config/zsh/modules/environment/functions.env'
 
