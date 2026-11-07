@@ -29,7 +29,8 @@ return {
         rust = { "rustfmt" },
         sql = { "sqlfluff" },
         yaml = { "prettier" },
-        ["*"] = { "prettier" },
+        -- "_" = fallback for filetypes without formatters ("*" would also run after every filetype's own)
+        ["_"] = { "prettier" },
       },
     },
   },
