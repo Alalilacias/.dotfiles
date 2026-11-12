@@ -3,7 +3,7 @@
 # Author: Alalilacias
 # Description: Helper script to create all connections necessary for the system to use the configurations set in this directory
 # Syntax: (. ./"$HOME/.dotfiles/.config/dotfiles/connections")
-# Version: 0.4
+# Version: 0.5
 
 # Dotfiles path (configurable via environment variable)
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
@@ -24,13 +24,31 @@ make_executable() {
     echo "$file is already executable."
   fi
 }
+# Links target to source. An existing target that is not already that link is left alone, unless FORCE is set,
+# in which case it is moved aside to <target>.bak.<timestamp> first.
 create_symlink() {
   local source="$1"
   local target="$2"
-  if [[ ! -L "$target" && ! -e "$target" ]]; then
-    echo "Creating symlink for $source..."
-    ln -sf "$source" "$target" && echo "Symlink created for $source." || echo "Failed to create symlink for $source."
+
+  if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
+    echo "Symlink for $source already in place."
+    return 0
+  fi
+
+  if [[ -e "$target" || -L "$target" ]]; then
+    if [[ "${FORCE:-false}" != "true" ]]; then
+      echo "$target already exists and does not point to $source. Skipping (use --force to back it up and relink)."
+      return 0
+    fi
+    local backup
+    backup="$target.bak.$(date +%Y%m%d%H%M%S)"
+    mv "$target" "$backup" && echo "Moved existing $target to $backup."
+  fi
+
+  mkdir -p "$(dirname "$target")"
+  if ln -s "$source" "$target"; then
+    echo "Symlink created for $source."
   else
-    echo "Symlink for $source already exists."
+    echo "Failed to create symlink for $source."
   fi
 }

@@ -1,11 +1,19 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs fnm
+# Description: Installs fnm. Shell integration lives in the zsh toolchain module, so the installer does not touch rc files.
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/fnm"
-# Version: 0.2
+# Version: 0.3
 
 log_info "fnm not found, installing..."
 
-curl -fsSL https://fnm.vercel.app/install | bash
+curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell || {
+  log_error "fnm installation failed."
+  return 1
+}
 
-source /home/alalin/.bashrc
+# Later scripts in this same run (node, npm packages) need fnm on PATH.
+export PATH="$HOME/.local/share/fnm:$PATH"
+eval "$(fnm env)"
+
+log_info "fnm installed successfully."
+return 0

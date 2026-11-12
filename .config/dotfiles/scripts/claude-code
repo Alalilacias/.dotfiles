@@ -28,7 +28,8 @@ link_claude_item() {
   fi
 
   if [[ -e "$target" || -L "$target" ]]; then
-    local backup="$target.bak.$(date +%Y%m%d%H%M%S)"
+    local backup
+    backup="$target.bak.$(date +%Y%m%d%H%M%S)"
     log_warn "Moving existing $target to $backup"
     mv "$target" "$backup"
   fi

@@ -8,7 +8,8 @@ set -euo pipefail
 IFS=$'\n\t'
 
 readonly VERSION="0.0.1"
-readonly SCRIPT_NAME="$(basename "$0")"
+SCRIPT_NAME="$(basename "$0")"
+readonly SCRIPT_NAME
 readonly GITIGNORE_PATH=".dotfiles/share/gitignores/"
 readonly GITIGNORE_DIR="$HOME/$GITIGNORE_PATH"
 TARGET_DIR=''

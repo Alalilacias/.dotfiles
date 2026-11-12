@@ -15,7 +15,7 @@ simple-file-source "$HOME/.dotfiles/.config/zsh/modules/functions/functions"
 # Plugins
 
 file-if-directory-source "$HOME/.dotfiles/submodules/fast-syntax-highlighting" "fast-syntax-highlighting.plugin.zsh"
-file-if-directory-source "$HOME/.dotfiles/submodules/zsh-autocomplete/" "zsh-autocomplete.plugin.zsh"
+file-if-directory-source "$HOME/.dotfiles/.config/zsh/submodules/zsh-autocomplete" "zsh-autocomplete.plugin.zsh"
 
 # Toolchains
 

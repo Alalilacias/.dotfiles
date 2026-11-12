@@ -8,7 +8,8 @@ set -euo pipefail
 IFS=$'\n\t'
 
 readonly VERSION="0.0.1"
-readonly SCRIPT_NAME="$(basename "$0")"
+SCRIPT_NAME="$(basename "$0")"
+readonly SCRIPT_NAME
 readonly LOGGER="$HOME/.dotfiles/bin/dot-logger"
 readonly LICENSE_PATH=".dotfiles/share/licences/"
 readonly LICENSE_DIR="$HOME/$LICENSE_PATH"

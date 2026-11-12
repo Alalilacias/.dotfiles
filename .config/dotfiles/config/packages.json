@@ -334,6 +334,14 @@
       "installation": {},
       "dependencies": ["curl"]
     },
+    "yq": {
+      "description": "Command-line YAML processor, installed from the latest GitHub release.",
+      "check_type": "executable",
+      "check_value": "yq",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["curl"]
+    },
     "claude-code": {
       "description": "Anthropic's terminal coding agent, installed with the official native installer. Its config (CLAUDE.md, settings.json, skills) is symlinked from the dotfiles by the same script, so it is skipped if claude already exists; use --force to relink.",
       "check_type": "executable",

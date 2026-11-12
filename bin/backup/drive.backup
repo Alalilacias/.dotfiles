@@ -13,7 +13,7 @@ detect_mounted_drives() {
 	# Notify user of script initialization
     	echo "Detecting mounted drives..."
 	# Define constant and populate with all mounted drives
-    	MOUNT_POINTS=($(lsblk -o MOUNTPOINT -n -l | grep -v "^$" | grep -v "/boot" | grep -v "/home" | grep -v "/efi"))
+    	mapfile -t MOUNT_POINTS < <(lsblk -o MOUNTPOINT -n -l | grep -v "^$" | grep -v "/boot" | grep -v "/home" | grep -v "/efi")
     	# Check if there's any, notify and exit if not
 	if [ ${#MOUNT_POINTS[@]} -eq 0 ]; then
         	echo "No mounted drives detected. Please mount a drive and try again."

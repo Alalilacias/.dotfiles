@@ -6,7 +6,8 @@
 
 set -euo pipefail
 
-readonly SCRIPT_NAME="$(basename "$0")"
+SCRIPT_NAME="$(basename "$0")"
+readonly SCRIPT_NAME
 
 check_if_necessary_variables() {
   if [[ $# -lt 1 ]]; then

@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs yq (YAML processor) from the latest GitHub release into ~/.local/bin
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/yq"
+# Version: 0.1
+
+case "$(uname -m)" in
+x86_64) YQ_ARCH="amd64" ;;
+aarch64 | arm64) YQ_ARCH="arm64" ;;
+*)
+  log_error "Unsupported architecture: $(uname -m)"
+  return 1
+  ;;
+esac
+
+BIN_DIR="$HOME/.local/bin"
+mkdir -p "$BIN_DIR"
+
+log_debug "Downloading yq ($YQ_ARCH)..."
+curl -fsSL -o "$BIN_DIR/yq" "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${YQ_ARCH}" || {
+  log_error "yq download failed."
+  return 1
+}
+chmod +x "$BIN_DIR/yq"
+
+log_info "yq installed to $BIN_DIR/yq"
+return 0

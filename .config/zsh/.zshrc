@@ -1,20 +1,13 @@
 # Set Font
 export TERMINAL_FONT="JetBrainsMono Nerd Font"
 
-# Load completion
-autoload -Uz compinit && compinit
-
-# Load externalized plugin sources
+# Load externalized plugin sources. zsh-autocomplete must be sourced before compinit and runs it itself.
 if [ -f "$HOME/.dotfiles/.config/zsh/sources" ]; then
     source "$HOME/.dotfiles/.config/zsh/sources"
 fi
 
-# fnm
-FNM_PATH="/home/alalin/.local/share/fnm"
-if [ -d "$FNM_PATH" ]; then
-  export PATH="$FNM_PATH:$PATH"
-  eval "$(fnm env --shell zsh)"
-fi
+# Fallback for when the zsh-autocomplete submodule is not checked out.
+(( $+functions[compdef] )) || { autoload -Uz compinit && compinit; }
 
 if [ -f "$HOME/.local/bin/env" ]; then
   . "$HOME/.local/bin/env"

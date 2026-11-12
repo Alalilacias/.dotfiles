@@ -19,8 +19,6 @@ CONNECTIONS_FUNCS="${DOTCONFIG_DIR}/dotfiles-connections"
 INSTALL_FUNCS="${DOTCONFIG_DIR}/dotfiles-installation"
 #Utility
 PACKAGE_MANAGER=""
-#For kitty config
-SHOULD_RESTART=false
 
 main() {
   # See core functions at their adress. Mainly used for installation, but they help avoid some boilerplate code.
@@ -33,7 +31,8 @@ main() {
 
 # Help function, invoke on mistakes and whenever the user asks for it.
 usage() {
-  local env_list=$(get_available_environments)
+  local env_list
+  env_list=$(get_available_environments)
   cat <<-EOF
 Usage $0 [options]
 
@@ -45,11 +44,11 @@ Available development environments:
 $env_list
 
 Current available options are:
--d| --devenv    Specify the development environment to install. 
-                Remember to include at least a single environment.
+-d| --devenv    Specify the development environment to install. Required.
                 More than one works provided they're separated by commas not spaces (e.g. java,cpp,server).
-                Lack of specification will install all environments.
--f| --force     Force installation, overwriting existing files
+-f| --force     Reinstall packages even if present, and relink existing config files (moving them to <name>.bak.<timestamp>).
+                Without it, existing files that are not the expected link are left alone.
+-r| --reboot    Reboot at the end when an environment requires it (kitty). Without it, only a notice is printed.
 -h| --help      Show this help message
 -l| --log-level The log level to use. 
                 See .config/dotfiles/utils/bash_logging/bash_logging.md for available levels.
@@ -106,13 +105,15 @@ manage_connections() {
     [ -f "$file" ] && chmod +x "$file"
   done
 
+  # Submodules (xdg-ninja, zsh plugins) are empty on a fresh clone.
+  if ! git -C "$DOTFILES_DIR" submodule update --init --recursive; then
+    log_warn "Could not initialise submodules; xdg-ninja and the zsh plugins will not work."
+  fi
+
   # compile_cpp
   make_executable "$DOTFILES_BIN/compile_cpp"
-  # yq
-  make_executable "$DOTFILES_BIN/yq"
-  # xdg-ninja
+  # xdg-ninja (bin/xdg-ninja is a tracked relative symlink into the submodule)
   make_executable "$DOTFILES_BIN/xdg-ninja"
-  create_symlink "$DOTFILES_DIR/submodules/xdg-ninja/xdg-ninja.sh" "$DOTFILES_BIN/xdg-ninja"
   # Zsh
   create_symlink "$DOTFILES_DIR/.config/zsh/.zshenv" "$HOME/.zshenv"
   create_symlink "$DOTFILES_DIR/.config/zsh/.zshrc" "$HOME/.zshrc"
@@ -141,6 +142,10 @@ restart_if_necessary() {
   # Check if "kitty" is in the DEVENVS array
   for env in "${DEVENVS[@]}"; do
     if [[ "$env" == "kitty" ]]; then
+      if [[ "$REBOOT" != "true" ]]; then
+        log_notice "Kitty environment detected. A restart is required; rerun with --reboot to do it automatically."
+        break
+      fi
       log_info "Kitty environment detected. System restart required."
       log_info "Restarting system in 5 seconds. Press Ctrl+C to cancel..."
       sleep 5

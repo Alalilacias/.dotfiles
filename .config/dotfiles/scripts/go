@@ -1,20 +1,46 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs Go into ~/.local/go
+# Description: Installs Go into ~/.local/go, verifying the tarball against the checksum published by go.dev
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/go"
-# Version: 0.4
+# Version: 0.5
 
-GO_VERSION="1.22.0"
+GO_VERSION="${GO_VERSION:-1.22.0}"
 GO_DIR="$HOME/.local/go"
-TMP_DIR="/tmp/dotfiles-go-install"
 
-log_info "Installing Go $GO_VERSION..."
+case "$(uname -m)" in
+x86_64) GO_ARCH="amd64" ;;
+aarch64 | arm64) GO_ARCH="arm64" ;;
+*)
+  log_error "Unsupported architecture: $(uname -m)"
+  return 1
+  ;;
+esac
 
-mkdir -p "$TMP_DIR" "$GO_DIR"
-cd "$TMP_DIR" || return 1
+GO_TARBALL="go${GO_VERSION}.linux-${GO_ARCH}.tar.gz"
+TMP_DIR="$(mktemp -d -t dotfiles-go-XXXXXX)"
 
-curl -LO "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz"
-tar -C "$GO_DIR" --strip-components=1 -xzf "go${GO_VERSION}.linux-amd64.tar.gz"
+log_info "Installing Go $GO_VERSION ($GO_ARCH)..."
+
+EXPECTED_SHA="$(curl -fsSL 'https://go.dev/dl/?mode=json&include=all' |
+  jq -r --arg f "$GO_TARBALL" '.[].files[] | select(.filename == $f) | .sha256')"
+if [[ -z "$EXPECTED_SHA" ]]; then
+  log_error "Could not find a published checksum for $GO_TARBALL."
+  rm -rf "$TMP_DIR"
+  return 1
+fi
+
+curl -fsSL -o "$TMP_DIR/$GO_TARBALL" "https://go.dev/dl/$GO_TARBALL"
+if ! echo "$EXPECTED_SHA  $TMP_DIR/$GO_TARBALL" | sha256sum -c --status -; then
+  log_error "Checksum mismatch for $GO_TARBALL."
+  rm -rf "$TMP_DIR"
+  return 1
+fi
+
+# Wipe first: extracting over an existing tree leaves stale files from the previous version.
+rm -rf "$GO_DIR"
+mkdir -p "$GO_DIR"
+tar -C "$GO_DIR" --strip-components=1 -xzf "$TMP_DIR/$GO_TARBALL"
 
 rm -rf "$TMP_DIR"
 log_info "Go $GO_VERSION installed to $GO_DIR"
+return 0

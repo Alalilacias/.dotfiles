@@ -6,7 +6,8 @@
 # Global variables.
 CLEANED_ARGS=()
 DEVENVS=()  # Environments are sets of programs, so they can be mixed and matched.
-FORCE=false # Ignore if the program is installed and proceed to installation request to pm.
+FORCE=false # Ignore if the program is installed and proceed to installation request to pm. Also relinks existing config files (backing them up).
+REBOOT=false # Reboot at the end when an environment needs it (currently only kitty).
 LOG_LEVEL="INFO"
 
 # Main functions.
@@ -88,7 +89,7 @@ extract_log_level() {
 }
 # Argument parsing.
 readopts() {
-  TEMP=$(getopt -o d:hf --long devenv:,help,force -n "$0" -- "$@")
+  TEMP=$(getopt -o d:hfr --long devenv:,help,force,reboot -n "$0" -- "$@")
 
   eval set -- "$TEMP"
 
@@ -101,6 +102,10 @@ readopts() {
       ;;
     -f | --force)
       FORCE=true
+      shift
+      ;;
+    -r | --reboot)
+      REBOOT=true
       shift
       ;;
     -h | --help)

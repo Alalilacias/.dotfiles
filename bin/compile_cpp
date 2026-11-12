@@ -95,10 +95,10 @@ compile_cpp() {
 
   # If --all is set, find all .cpp files
   if [[ "$compile_all" == true ]]; then
-    source_files=($(find_cpp_files))
+    mapfile -t source_files < <(find_cpp_files)
     include_dirs=$(find_include_dirs)
 
-    echo "Compiling files: ${source_files[@]}"
+    echo "Compiling files: ${source_files[*]}"
     echo "Including directories: ${include_dirs}"
   fi
 

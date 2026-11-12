@@ -33,7 +33,7 @@ log() {
     *) log_debug "$message" ;;
     esac
   else
-    echo message
+    echo "$message"
   fi
 }
 debian_installation() {
@@ -53,7 +53,7 @@ debian_installation() {
 }
 build_and_install() {
   log info "Building Neovim..."
-  cd "$NEOVIM_DIR"
+  cd "$NEOVIM_DIR" || return 1
   make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX="$NEOVIM_INSTALL_DIR"
 
   log info "Installing Neovim..."

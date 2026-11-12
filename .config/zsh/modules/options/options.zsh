@@ -1,5 +1,6 @@
 # History
-HISTFILE="$HOME/.dotfiles/.config/zsh/.zsh_history"
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+[[ -d "${HISTFILE:h}" ]] || mkdir -p "${HISTFILE:h}"
 HISTSIZE=10000
 SAVEHIST=10000
 setopt SHARE_HISTORY
