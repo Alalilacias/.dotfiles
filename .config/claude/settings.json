@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "defaultMode": "default"
+  },
+  "model": "sonnet",
+  "enabledPlugins": {
+    "code-review@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "security-guidance@claude-plugins-official": true,
+    "plugin-dev@claude-plugins-official": true,
+    "jdtls-lsp@claude-plugins-official": true,
+    "mcp-server-dev@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {},
+  "tui": "fullscreen",
+  "theme": "dark"
+}

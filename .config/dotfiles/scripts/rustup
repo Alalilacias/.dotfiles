@@ -2,7 +2,7 @@
 # Author: Alalilacias
 # Description: Installs Rust toolchain via rustup
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/rustup"
-# Version: 0.6
+# Version: 0.7
 
 log_debug "Installing Rust toolchain with rustup..."
 
@@ -13,6 +13,9 @@ if [[ ! -x "$HOME/.cargo/bin/cargo" ]]; then
   log_error "Rust installation failed or cargo binary not found at $HOME/.cargo/bin/cargo."
   return 1
 fi
+
+# Later scripts in this same run (e.g. fd-find) need cargo; the zsh module only applies on new shells.
+export PATH="$HOME/.cargo/bin:$PATH"
 
 log_debug "Adding rust-analyzer component..."
 "$HOME/.cargo/bin/rustup" component add rust-analyzer || {

@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# Author: Alalilacias
+# Description: Installs Claude Code (native installer, ~/.local/bin/claude) and then symlinks its config from the dotfiles into ~/.claude
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/claude-code"
+# Version: 0.3
+
+CLAUDE_SRC="$HOME/.dotfiles/.config/claude"
+CLAUDE_DIR="$HOME/.claude"
+
+install_claude_code() {
+  log_debug "Installing Claude Code..."
+
+  curl -fsSL https://claude.ai/install.sh | bash || {
+    log_error "Claude Code installation failed."
+    return 1
+  }
+
+  log_info "Claude Code installed successfully."
+}
+
+# Existing files are moved aside rather than skipped, so the repo version always wins without losing data.
+link_claude_item() {
+  local source="$1" target="$2"
+
+  if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
+    log_debug "$target already linked"
+    return 0
+  fi
+
+  if [[ -e "$target" || -L "$target" ]]; then
+    local backup="$target.bak.$(date +%Y%m%d%H%M%S)"
+    log_warn "Moving existing $target to $backup"
+    mv "$target" "$backup"
+  fi
+
+  ln -s "$source" "$target"
+  log_info "Linked $target"
+}
+
+# Skills are linked one by one so ~/.claude/skills/synced stays untouched.
+link_claude_config() {
+  mkdir -p "$CLAUDE_DIR/skills"
+
+  link_claude_item "$CLAUDE_SRC/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
+  link_claude_item "$CLAUDE_SRC/settings.json" "$CLAUDE_DIR/settings.json"
+
+  local skill
+  for skill in "$CLAUDE_SRC/skills"/*/; do
+    link_claude_item "${skill%/}" "$CLAUDE_DIR/skills/$(basename "$skill")"
+  done
+
+  log_info "Claude Code config linked into $CLAUDE_DIR"
+}
+
+install_claude_code || return 1
+link_claude_config
+return 0

@@ -334,6 +334,14 @@
       "installation": {},
       "dependencies": ["curl"]
     },
+    "claude-code": {
+      "description": "Anthropic's terminal coding agent, installed with the official native installer. Its config (CLAUDE.md, settings.json, skills) is symlinked from the dotfiles by the same script, so it is skipped if claude already exists; use --force to relink.",
+      "check_type": "executable",
+      "check_value": "claude",
+      "available_through_pm": false,
+      "installation": {},
+      "dependencies": ["curl"]
+    },
     "kitty": {
       "description": "GPU-accelerated terminal emulator with ligature, image, and tab support. Known for high performance and good font rendering, used in riced terminal setups.",
       "check_type": "executable",
