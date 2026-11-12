@@ -29,8 +29,28 @@ return {
         rust = { "rustfmt" },
         sql = { "sqlfluff" },
         yaml = { "prettier" },
-        -- "_" = fallback for filetypes without formatters ("*" would also run after every filetype's own)
-        ["_"] = { "prettier" },
+        -- "_" = fallback for filetypes without formatters ("*" would also run after every filetype's own).
+        -- Limited to filetypes prettier can parse; otherwise it errors on e.g. COMMIT_EDITMSG or *.env.
+        ["_"] = function(bufnr)
+          local prettier_fts = {
+            "javascript",
+            "javascriptreact",
+            "typescript",
+            "typescriptreact",
+            "css",
+            "scss",
+            "less",
+            "html",
+            "htmlangular",
+            "vue",
+            "graphql",
+            "handlebars",
+          }
+          if vim.tbl_contains(prettier_fts, vim.bo[bufnr].filetype) then
+            return { "prettier" }
+          end
+          return {}
+        end,
       },
     },
   },
