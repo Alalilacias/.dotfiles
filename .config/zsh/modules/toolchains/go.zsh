@@ -1,5 +1,5 @@
-export-if-exec "$HOME/.dotfiles/.local/tools/go/bin/go" \
-  "GOROOT=$HOME/.dotfiles/.local/tools/go" \
+export-if-exec "$HOME/.local/go/bin/go" \
+  "GOROOT=$HOME/.local/go" \
   "GOPATH=$HOME/go" \
   "GOBIN=$HOME/go/bin" \
-  "PATH=$HOME/.dotfiles/.local/tools/go/bin:$HOME/go/bin:$PATH"
+  "PATH=$HOME/.local/go/bin:$HOME/go/bin:$PATH"

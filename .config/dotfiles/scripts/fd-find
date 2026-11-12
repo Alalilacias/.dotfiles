@@ -1,27 +1,20 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs fd (modern find) via cargo into .local/tools and symlinks
-# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/fd"
-# Version: 0.3
+# Description: Installs fd (modern find) via cargo
+# Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/fd-find"
+# Version: 0.4
 
-CARGO_HOME="$HOME/.dotfiles/.local/tools/rust/.cargo"
-BIN_DIR="$HOME/.dotfiles/bin"
-FD_BIN="$CARGO_HOME/bin/fd"
-
-if [[ ! -x "$CARGO_HOME/bin/cargo" ]]; then
-  log_error "Rust is required but not found at $CARGO_HOME/bin/cargo."
+if ! command -v cargo &>/dev/null; then
+  log_error "Rust/cargo is required but not found in PATH."
   return 1
 fi
 
-if [[ -x "$FD_BIN" ]]; then
-  log_notice "fd is already installed at $FD_BIN"
+if command -v fd &>/dev/null; then
+  log_notice "fd is already installed"
   return 0
 fi
 
 log_info "Installing fd-find using cargo..."
-"$CARGO_HOME/bin/cargo" install --locked fd-find
+cargo install --locked fd-find
 
-mkdir -p "$BIN_DIR"
-ln -sf "$FD_BIN" "$BIN_DIR/fd"
-
-log_info "fd installed successfully and linked to $BIN_DIR/fd"
+log_info "fd installed successfully."

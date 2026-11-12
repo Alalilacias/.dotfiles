@@ -1,28 +1,21 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs .NET SDK locally into .local/tools and symlinks dotnet binary
+# Description: Installs .NET SDK into ~/.dotnet
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/dotnet"
-# Version: 0.3
+# Version: 0.4
 
 log_debug "Starting .NET SDK installation..."
 
-BIN_DIR="$HOME/.dotfiles/bin"
-DOTNET_ROOT="$HOME/.dotfiles/.local/tools/dotnet"
 INSTALLER_PATH="$(mktemp -t dotnet-install-XXXXXX.sh)"
-
-mkdir -p "$BIN_DIR" "$DOTNET_ROOT"
 
 log_debug "Downloading dotnet-install.sh to $INSTALLER_PATH"
 curl -sSL https://dot.net/v1/dotnet-install.sh -o "$INSTALLER_PATH"
 chmod +x "$INSTALLER_PATH"
 
 log_debug "Running dotnet installer..."
-"$INSTALLER_PATH" --install-dir "$DOTNET_ROOT" --channel STS
-
-log_debug "Linking dotnet binary to $BIN_DIR"
-ln -sf "$DOTNET_ROOT/dotnet" "$BIN_DIR/dotnet"
+"$INSTALLER_PATH" --channel STS
 
 rm -f "$INSTALLER_PATH"
 
-log_info ".NET SDK installed to $DOTNET_ROOT and linked to $BIN_DIR/dotnet"
+log_info ".NET SDK installed to $HOME/.dotnet"
 return 0

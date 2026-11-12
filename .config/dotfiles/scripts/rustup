@@ -1,34 +1,21 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs Rust toolchain via rustup into .local/tools
+# Description: Installs Rust toolchain via rustup
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/rustup"
-# Version: 0.5
+# Version: 0.6
 
 log_debug "Installing Rust toolchain with rustup..."
 
-export RUSTUP_HOME="$HOME/.dotfiles/.local/tools/rust"
-export CARGO_HOME="$RUSTUP_HOME/.cargo"
-BIN_DIR="$HOME/.dotfiles/bin"
-
-mkdir -p "$BIN_DIR"
-
-# Install rustup (without --prefix!)
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
   sh -s -- -y --no-modify-path --default-toolchain stable --profile default
 
-if [[ ! -x "$CARGO_HOME/bin/cargo" ]]; then
-  log_error "Rust installation failed or cargo binary not found at $CARGO_HOME/bin/cargo."
+if [[ ! -x "$HOME/.cargo/bin/cargo" ]]; then
+  log_error "Rust installation failed or cargo binary not found at $HOME/.cargo/bin/cargo."
   return 1
 fi
 
-log_debug "Creating symlinks to cargo, rustc, rust-analyzer, rustup..."
-ln -sf "$CARGO_HOME/bin/cargo" "$BIN_DIR/cargo"
-ln -sf "$CARGO_HOME/bin/rustc" "$BIN_DIR/rustc"
-ln -sf "$CARGO_HOME/bin/rust-analyzer" "$BIN_DIR/rust-analyzer"
-ln -sf "$CARGO_HOME/bin/rustup" "$BIN_DIR/rustup"
-
 log_debug "Adding rust-analyzer component..."
-"$CARGO_HOME/bin/rustup" component add rust-analyzer || {
+"$HOME/.cargo/bin/rustup" component add rust-analyzer || {
   log_warn "rust-analyzer component may already be installed or failed."
 }
 

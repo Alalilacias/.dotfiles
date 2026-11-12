@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs Neovim npm provider into .local/tools and symlinks binary
+# Description: Installs Neovim npm provider via npm -g
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/neovim-npm"
 # Version: 0.3
 

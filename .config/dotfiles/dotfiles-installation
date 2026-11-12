@@ -50,7 +50,7 @@ is_app_installed() {
     python3 -c "import $check_value" &>/dev/null
     ;;
   npm_global_module)
-    [[ -f "$HOME/.dotfiles/.local/tools/neovim-npm/lib/node_modules/$check_value/package.json" ]]
+    npm list -g "$check_value" --depth=0 &>/dev/null
     ;;
   *)
     log_warn "Unknown check_type '$check_type' with value '$check_value'. Assuming not installed."
@@ -175,8 +175,8 @@ install_package_by_custom_install() {
   local package=$1
   local custom_install_script="$CUSTOM_INSTALL_DIR/$package"
 
-  if [[ -f $custom_install_script ]]; then
-    source $custom_install_script
+  if [[ -f "$custom_install_script" ]]; then
+    source "$custom_install_script"
   else
     log_error "Install script for $package not found at $custom_install_script"
     return 1

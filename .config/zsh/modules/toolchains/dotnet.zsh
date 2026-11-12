@@ -1,3 +1,3 @@
-export-if-exec "$HOME/.dotfiles/.local/tools/dotnet/dotnet" \
-  "DOTNET_ROOT=$HOME/.dotfiles/.local/tools/dotnet" \
-  "PATH=$HOME/.dotfiles/.local/tools/dotnet:$PATH"
+export-if-exec "$HOME/.dotnet/dotnet" \
+  "DOTNET_ROOT=$HOME/.dotnet" \
+  "PATH=$HOME/.dotnet:$HOME/.dotnet/tools:$PATH"

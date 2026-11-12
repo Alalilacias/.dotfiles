@@ -5,6 +5,12 @@ local keymap = vim.keymap
 
 keymap.set("n", "<C-l>", "z=", { desc = "Quick Spell Correction" })
 
+keymap.set("n", "<leader>cc", function()
+  local filename = vim.fn.expand("%:p")
+  local output = vim.fn.expand("%:p:r")
+  vim.cmd("!compile_cpp " .. output .. " " .. filename)
+end, { desc = "Compile current C++ file" })
+
 keymap.set("n", "<leader>fj", function()
   vim.bo.filetype = "json"
   require("conform").format({ async = false, lsp_format = "never" })

@@ -2,7 +2,7 @@
 # Author: Alalilacias
 # Description: Installs Composer (PHP dependency manager)
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/composer"
-# Version: 0.6
+# Version: 0.7
 
 log_debug "Checking for php..."
 if ! command -v php &>/dev/null; then
@@ -12,7 +12,7 @@ fi
 
 log_debug "Installing Composer..."
 
-BIN_DIR="$HOME/.dotfiles/bin"
+BIN_DIR="$HOME/.local/bin"
 TMP_DIR="$(mktemp -d -t composer-install-XXXXXX)"
 
 mkdir -p "$BIN_DIR"
@@ -36,6 +36,7 @@ php "$TMP_DIR/composer-setup.php" --install-dir="$TMP_DIR" --filename=composer.p
 
 log_debug "Moving binary to $BIN_DIR/composer"
 mv "$TMP_DIR/composer.phar" "$BIN_DIR/composer"
+chmod +x "$BIN_DIR/composer"
 
 log_info "Composer installed successfully to $BIN_DIR/composer"
 return 0
