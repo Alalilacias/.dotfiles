@@ -95,9 +95,9 @@
       "dependencies": []
     },
     "fd-find": {
-      "description": "A simple, fast and user-friendly alternative to 'find', installed via cargo and symlinked locally. Again, needed for some extra functionalities in neovim.",
+      "description": "A simple, fast and user-friendly alternative to 'find', installed via cargo. Again, needed for some extra functionalities in neovim.",
       "check_type": "executable",
-      "check_value": "fdfind",
+      "check_value": "fd",
       "available_through_pm": false,
       "installation": {},
       "dependencies": ["rustup"]

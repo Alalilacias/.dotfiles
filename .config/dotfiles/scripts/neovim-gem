@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs Neovim Ruby gem locally into .local/tools
+# Description: Installs Neovim Ruby gem via system gem
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/neovim-gem"
 # Version: 0.3
 

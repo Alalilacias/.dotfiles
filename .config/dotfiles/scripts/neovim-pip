@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Author: Alalilacias
-# Description: Installs Neovim Python provider into .local/tools
+# Description: Installs Neovim Python provider (pynvim) via pip --user
 # Syntax: source "$HOME/.dotfiles/.config/dotfiles/scripts/neovim-pip"
 # Version: 0.3
 

@@ -11,7 +11,7 @@ TMP_DIR="/tmp/dotfiles-go-install"
 log_info "Installing Go $GO_VERSION..."
 
 mkdir -p "$TMP_DIR" "$GO_DIR"
-cd "$TMP_DIR" || exit 1
+cd "$TMP_DIR" || return 1
 
 curl -LO "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz"
 tar -C "$GO_DIR" --strip-components=1 -xzf "go${GO_VERSION}.linux-amd64.tar.gz"
