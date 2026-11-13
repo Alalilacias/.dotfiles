@@ -2,7 +2,7 @@
 #
 # Author: Alalilacias
 # Description: Installs dotfiles into system not configured by them.
-# Syntax: ./install
+# Syntax: ./install_dotfiles
 # Version: 0.1
 
 # TODO: Finish setting up the script. That includes:
@@ -36,7 +36,7 @@ usage() {
   cat <<-EOF
 Usage $0 [options]
 
-Install is a script that installs the appropiate mix of programs into the current system.
+Install_dotfiles is a script that installs the appropiate mix of programs into the current system.
 It is meant to be used at the root of the dotfiles folder and it uses mainly the package manager
 of the system to install the programs. Some programs can be installed without it, but they're the exception.
 

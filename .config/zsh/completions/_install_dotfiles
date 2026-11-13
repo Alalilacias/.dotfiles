@@ -1,0 +1,15 @@
+#compdef install_dotfiles
+# Environments come from environments.json, so new ones complete without editing this file.
+
+_install_dotfiles_environments() {
+  local -a envs
+  envs=(${(f)"$(jq -r 'keys[]' "$HOME/.dotfiles/.config/dotfiles/config/environments.json" 2>/dev/null)"})
+  _values -s , 'environment' $envs
+}
+
+_arguments -s \
+  '(- *)'{-h,--help}'[show help]' \
+  '*'{-d+,--devenv=}'[environments to install, comma separated]:environment:_install_dotfiles_environments' \
+  '(-f --force)'{-f,--force}'[reinstall the environment packages and relink existing config files]' \
+  '(-r --reboot)'{-r,--reboot}'[reboot at the end if an environment requires it]' \
+  '(-l --log-level)'{-l,--log-level}'[log level]:level:(DEBUG INFO NOTICE WARN ERROR CRITICAL ALERT EMERGENCY)'

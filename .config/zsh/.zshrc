@@ -1,6 +1,9 @@
 # Set Font
 export TERMINAL_FONT="JetBrainsMono Nerd Font"
 
+# Own completions (e.g. install_dotfiles). Must be in fpath before compinit runs.
+fpath=("$HOME/.dotfiles/.config/zsh/completions" $fpath)
+
 # Load externalized plugin sources. zsh-autocomplete must be sourced before compinit and runs it itself.
 if [ -f "$HOME/.dotfiles/.config/zsh/sources" ]; then
     source "$HOME/.dotfiles/.config/zsh/sources"
