@@ -46,7 +46,7 @@ $env_list
 Current available options are:
 -d| --devenv    Specify the development environment to install. Required.
                 More than one works provided they're separated by commas not spaces (e.g. java,cpp,server).
--f| --force     Reinstall packages even if present, and relink existing config files (moving them to <name>.bak.<timestamp>).
+-f| --force     Reinstall the environment's packages even if present (not their dependencies), and relink existing config files (moving them to <name>.bak.<timestamp>).
                 Without it, existing files that are not the expected link are left alone.
 -r| --reboot    Reboot at the end when an environment requires it (kitty). Without it, only a notice is printed.
 -h| --help      Show this help message

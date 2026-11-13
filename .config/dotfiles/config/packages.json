@@ -123,12 +123,14 @@
       "dependencies": []
     },
     "neovim-pip": {
-      "description": "Python client for Neovim, required for Python plugin support in Neovim.",
+      "description": "Python client for Neovim, required for Python plugin support in Neovim. Installed from apt because Debian blocks pip --user installs (PEP 668).",
       "check_type": "python_module",
       "check_value": "pynvim",
-      "available_through_pm": false,
-      "installation": {},
-      "dependencies": ["python3-pip"]
+      "available_through_pm": true,
+      "installation": {
+        "apt": ["python3-pynvim"]
+      },
+      "dependencies": []
     },
     "ruby-dev": {
       "description": "Development headers for Ruby, needed to build native extensions such as Neovim's Ruby provider.",

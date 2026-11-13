@@ -30,6 +30,12 @@ create_symlink() {
   local source="$1"
   local target="$2"
 
+  # Some sources (e.g. .local/share/fonts) are gitignored and may not exist; linking them would leave a dangling link.
+  if [[ ! -e "$source" ]]; then
+    echo "$source does not exist. Skipping link for $target."
+    return 0
+  fi
+
   if [[ -L "$target" && "$(readlink "$target")" == "$source" ]]; then
     echo "Symlink for $source already in place."
     return 0
